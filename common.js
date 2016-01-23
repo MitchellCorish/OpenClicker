@@ -5,10 +5,10 @@ Groups = new Mongo.Collection("groups");
 Answers = new Mongo.Collection("answers");
 
 // *****Collection Schemas*****
-var Schemas ={};
+var Schema ={};
 
 //Users Schema
-Schemas.Users = new SimpleSchema({
+Schema.Users = new SimpleSchema({
 	username: {
 		type: String,
 		label: "User Name",
@@ -67,71 +67,68 @@ Schemas.Users = new SimpleSchema({
 });
 
 //Questions Schema
-Schemas.Questions = new SimpleSchema({
-	question: {
+Schema.Questions = new SimpleSchema({
+	questionAsked: {
 		type: String,
 		label: "Question",
-		min: 0,
-		optiional: false
+		optional: false
 	},
 	possibleAnswers: {
 		type: String,
 		label: "Possible Question Answers",
-		min: 0,
-		optiional: false
+		optional: false
 	},
 	answer: {
 		type: String,
 		label: "Question Answer",
-		min: 0,
-		optiional: false
+		optional: false
 	},
 	
 });
 
 //Group Schema
-Schemas.Groups = new SimpleSchema({
+Schema.Groups = new SimpleSchema({
 	userID: {
 		type: Number,
 		label: "User Admin ID",
-		optiional: false
+		optional: false
 	},
 	groupName: {
 		type: String,
 		label: "Group Name",
-		optiional: false
+		optional: false
 	},
 	
 });
 
 //Answers Schema
-Schemas.Answers = new SimpleSchema({
+Schema.Answers = new SimpleSchema({
 	questionID: {
 		type: Number,
 		label: "Question ID",
-		optiional: false
+		optional: false
 	},
 	groupID: {
 		type: Number,
 		label: "Group ID",
-		optiional: false
+		optional: false
 	},
 	userID: {
 		type: Number,
 		label: "User ID",
-		optiional: false
+		optional: false
 	},
 	answer: {
 		type: String,
 		label: "Question Answer",
-		optiional: false
+		optional: false
 	},
 });
 
 //Attaching collections to schemas created
-Users.attachSchema(Schemas.Users, {replace: true});
-Questions.attachSchema(Schemas.Questions, {replace: true});
-Groups.attachSchema(Schemas.Groups, {replace: true});
-Answers.attachSchema(Schemas.Answers, {replace: true});
+Users.attachSchema(Schema.Users, {replace: true});
+Questions.attachSchema(Schema.Questions, {replace: true});
+Groups.attachSchema(Schema.Groups, {replace: true});
+Answers.attachSchema(Schema.Answers, {replace: true});
 
 
