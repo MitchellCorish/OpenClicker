@@ -1,5 +1,5 @@
 //Collection creation
-Users = new Mongo.Collection("users");
+Users = Meteor.users;
 Questions = new Mongo.Collection("questions");
 Groups = new Mongo.Collection("groups");
 Answers = new Mongo.Collection("answers");
@@ -7,63 +7,99 @@ Answers = new Mongo.Collection("answers");
 // *****Collection Schemas*****
 var Schema ={};
 
+//User Country Schema
+Schema.UserCountry = new SimpleSchema({
+    name: {
+        type: String
+    },
+    code: {
+        type: String,
+        regEx: /^[A-Z]{2}$/
+    }
+});
+
+//User Profile Schema
+Schema.UserProfile = new SimpleSchema({
+    firstName: {
+        type: String,
+        optional: true
+    },
+    lastName: {
+        type: String,
+        optional: true
+    },
+    birthday: {
+        type: Date,
+        optional: true
+    },
+    gender: {
+        type: String,
+        allowedValues: ['Male', 'Female'],
+        optional: true
+    },
+    organization : {
+        type: String,
+        optional: true
+    },
+    website: {
+        type: String,
+        regEx: SimpleSchema.RegEx.Url,
+        optional: true
+    },
+    bio: {
+        type: String,
+        optional: true
+    },
+    country: {
+        type: Schema.UserCountry,
+        optional: true
+    }
+});
+
 //Users Schema
 Schema.Users = new SimpleSchema({
 	username: {
-		type: String,
-		label: "User Name",
-		min: 0
-	},
-	password: {
-		type: String,
-		label: "Pass Word",
-		min: 0
-	},
-	email: {
-		type: String,
-		label: "User Email",
-		regEx: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-		min: 0
-	},
-	groups: {
-		type: Number,
-		label: "Groups for user",
-		min: 0,
-		optional: true
-	},
-	activated: {
-		type: Boolean,
-		label: "User Activation Status"
-	},
-	firstName: {
-		type: String,
-		optional: true
-	},
-	lastName: {
-		type: String,
-		optional: true
-	},
-	birthday: {
-		type: Date,
-		optional: true
-	},
-	organization : {
-		type: String,
-		optional: true
-	},
-	website: {
-		type: String,
-		regEx: SimpleSchema.RegEx.Url,
-		optional: true
-	},
-	bio: {
-		type: String,
-		optional: true
-	},
-	country: {
-		type: Schema.UserCountry,
-		optional: true
-	}
+        type: String,
+        optional: true
+    },
+    emails: {
+        type: Array,
+        optional: true
+    },
+    "emails.$": {
+        type: Object
+    },
+    "emails.$.address": {
+        type: String,
+        regEx: SimpleSchema.RegEx.Email
+    },
+    "emails.$.verified": {
+        type: Boolean
+    },
+    createdAt: {
+        type: Date
+    },
+    profile: {
+        type: Schema.UserProfile,
+        optional: true
+    },
+    // Make sure this services field is in your schema if you're using any of the accounts packages
+    services: {
+        type: Object,
+        optional: true,
+        blackbox: true
+    },
+    // In order to avoid an 'Exception in setInterval callback' from Meteor
+    heartbeat: {
+        type: Date,
+        optional: true
+    },
+    groups: {
+        type: Number,
+        label: "Groups for user",
+        min: 0,
+        optional: true
+    }
 });
 
 //Questions Schema
@@ -82,8 +118,7 @@ Schema.Questions = new SimpleSchema({
 		type: String,
 		label: "Question Answer",
 		optional: false
-	},
-	
+	}
 });
 
 //Group Schema
@@ -97,8 +132,7 @@ Schema.Groups = new SimpleSchema({
 		type: String,
 		label: "Group Name",
 		optional: false
-	},
-	
+	}
 });
 
 //Answers Schema
@@ -122,7 +156,7 @@ Schema.Answers = new SimpleSchema({
 		type: String,
 		label: "Question Answer",
 		optional: false
-	},
+	}
 });
 
 //Attaching collections to schemas created
