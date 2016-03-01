@@ -1,0 +1,14 @@
+<div>
+  <p>{{vm.question.questionAsked}}</p>
+  <form>
+    <div ng-repeat="answer in vm.question.possibleAnswers">
+      <label>
+        <input type="radio" ng-model="vm.selectedAnswer" value="{{$index}}" />
+        {{answer}}
+      </label>
+    </div>
+    <div>
+      <button ng-click="vm.answer()">Submit</button>
+    </div>
+  </form>
+</div>

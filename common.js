@@ -58,7 +58,7 @@ Schema.UserProfile = new SimpleSchema({
 
 //Users Schema
 Schema.Users = new SimpleSchema({
-	username: {
+  username: {
         type: String,
         optional: true
     },
@@ -116,27 +116,27 @@ Schema.Users = new SimpleSchema({
 //Questions Schema
 Schema.Questions = new SimpleSchema({
   userId: {
-		type: String,
-		label: "User ID"
-	},
+    type: String,
+    label: "User ID"
+  },
   groupId: {
     type: String,
     label: "Group ID"
   },
-	questionAsked: {
-		type: String,
-		label: "Question"
-	},
-	possibleAnswers: {
-		type: [String],
-		label: "Possible Answers",
+  questionAsked: {
+    type: String,
+    label: "Question"
+  },
+  possibleAnswers: {
+    type: [String],
+    label: "Possible Answers",
     minCount: 2
-	},
-	answer: {
-		type: Number,
-		label: "Correct Answer",
+  },
+  answer: {
+    type: Number,
+    label: "Correct Answer",
     min: 0
-	},
+  },
   active: {
     type: Boolean
   }
@@ -144,34 +144,34 @@ Schema.Questions = new SimpleSchema({
 
 //Group Schema
 Schema.Groups = new SimpleSchema({
-	userId: {
-		type: String,
-		label: "User Admin ID"
-	},
-	name: {
-		type: String,
-		label: "Group Name"
-	}
+  userId: {
+    type: String,
+    label: "User Admin ID"
+  },
+  name: {
+    type: String,
+    label: "Group Name"
+  }
 });
 
 //Answers Schema
 Schema.Answers = new SimpleSchema({
-	questionId: {
-		type: String,
-		label: "Question ID"
-	},
+  questionId: {
+    type: String,
+    label: "Question ID"
+  },
   groupId: {
     type: String,
     label: "Group ID"
   },
-	userId: {
-		type: String,
-		label: "User ID"
-	},
-	answer: {
-		type: Number,
-		label: "Answer"
-	}
+  userId: {
+    type: String,
+    label: "User ID"
+  },
+  answer: {
+    type: Number,
+    label: "Answer"
+  }
 });
 
 //Attaching collections to schemas created
@@ -181,6 +181,33 @@ Groups.attachSchema(Schema.Groups, {replace: true});
 Answers.attachSchema(Schema.Answers, {replace: true});
 
 Meteor.methods({
+  answerQuestion: function (questionId, selectedAnswer) {
+    MethodHelpers.checkUserLoggedIn();
+    MethodHelpers.checkVerifiedUser();
+    MethodHelpers.checkQuestionExists(questionId);
+    MethodHelpers.checkQuestionIsActive(questionId);
+    
+    var question = Questions.findOne({
+      _id: questionId
+    });
+    
+    MethodHelpers.checkUserInGroup(question.groupId);
+    MethodHelpers.checkAnswerInRange(questionId, selectedAnswer);
+    
+    Answers.update({
+      questionId: question._id,
+      groupId: question.groupId,
+      userId: Meteor.userId()
+    }, {
+      $set: {
+        answer: selectedAnswer
+      }
+    }, {
+      upsert: true
+    });
+    
+    return true;
+  },
   createGroup: function (groupName) {
     MethodHelpers.checkUserLoggedIn();
     MethodHelpers.checkVerifiedUser();
@@ -284,6 +311,14 @@ MethodHelpers = {
       throw new Meteor.Error(ERROR_NOT_AUTHORIZED);
     }
   },
+  checkAnswerInRange: function (questionId, selectedAnswer) {
+    var question = Questions.findOne({ _id: questionId });
+    
+    if (selectedAnswer < 0 || selectedAnswer >= question.possibleAnswers.length)
+    {
+      throw new Meteor.Error(ERROR_ANSWER_OUT_OF_RANGE);
+    }
+  },
   checkCreatorPermissions: function () {
     if (!Roles.userIsInRole(Meteor.userId(), PROFESSOR_ROLE, Roles.GLOBAL_GROUP))
     {
@@ -302,6 +337,20 @@ MethodHelpers = {
     if (!(group.userId == Meteor.userId()))
     {
       throw new Meteor.Error(ERROR_NOT_AUTHORIZED);
+    }
+  },
+  checkQuestionExists: function (questionId) {
+    if (!Questions.findOne({ _id: questionId }))
+    {
+      throw new Meteor.Error(ERROR_QUESTION_DOES_NOT_EXIST);
+    }
+  },
+  checkQuestionIsActive: function (questionId) {
+    var question = Questions.findOne({ _id: questionId });
+    
+    if (!question.active)
+    {
+      throw new Meteor.Error(ERROR_QUESTION_INACTIVE);
     }
   },
   checkUserInGroup: function (groupId) {

@@ -2,6 +2,7 @@
 
 describe('MethodHelpers', function () {
   var user;
+  var question;
   
   // set up
   beforeEach(function () {
@@ -22,6 +23,16 @@ describe('MethodHelpers', function () {
       ]
     }
     
+    question = {
+      _id: 'testQuestion',
+      groupId: 'testGroup',
+      questionAsked: 'what is 2 + 2?',
+      possibleAnswers: ['11', '4', '5'],
+      answer: 1,
+      userId: 'testUser',
+      active: false
+    };
+    
     // spies that won't change between tests
     spyOn(Meteor, 'Error');
     spyOn(Meteor, 'user').and.returnValue(user);
@@ -40,6 +51,28 @@ describe('MethodHelpers', function () {
       catch(e) {}
       
       expect(Meteor.Error).toHaveBeenCalledWith(ERROR_NOT_AUTHORIZED);
+    });
+  });
+  
+  describe('checkAnswerInRange()', function () {
+    it('should throw a \'' + ERROR_ANSWER_OUT_OF_RANGE + '\' error if the specified answer is outside the range of possible answers', function () {
+      spyOn(Questions, 'findOne').and.returnValue(question);
+      
+      try
+      {
+        MethodHelpers.checkAnswerInRange('testQuestion', -1);
+      }
+      catch(e) {}
+      
+      expect(Meteor.Error).toHaveBeenCalledWith(ERROR_ANSWER_OUT_OF_RANGE);
+      
+      try
+      {
+        MethodHelpers.checkAnswerInRange('testQuestion', question.possibleAnswers.length);
+      }
+      catch(e) {}
+      
+      expect(Meteor.Error).toHaveBeenCalledWith(ERROR_ANSWER_OUT_OF_RANGE);
     });
   });
   
@@ -85,6 +118,32 @@ describe('MethodHelpers', function () {
       catch(e) {}
       
       expect(Meteor.Error).toHaveBeenCalledWith(ERROR_NOT_AUTHORIZED);
+    });
+  });
+  
+  describe('checkQuestionExists()', function () {
+    it('should throw a \'' + ERROR_QUESTION_DOES_NOT_EXIST + '\' error if a question with the given id does not exist', function () {
+      try
+      {
+        MethodHelpers.checkQuestionExists('nonExistentQuestion');
+      }
+      catch(e) {}
+      
+      expect(Meteor.Error).toHaveBeenCalledWith(ERROR_QUESTION_DOES_NOT_EXIST);
+    });
+  });
+  
+  describe('checkQuestionIsActive()', function () {
+    it('should throw a \'' + ERROR_QUESTION_INACTIVE + '\' error if the specified question is not active', function () {
+      spyOn(Questions, 'findOne').and.returnValue(question);
+      
+      try
+      {
+        MethodHelpers.checkQuestionIsActive('testQuestion');
+      }
+      catch(e) {}
+      
+      expect(Meteor.Error).toHaveBeenCalledWith(ERROR_QUESTION_INACTIVE);
     });
   });
   

@@ -22,3 +22,32 @@ Meteor.publish('groups', function () {
   }
   return Groups.find({});
 });
+
+Meteor.publish('ownedQuestions', function () {
+  if(!this.userId)
+  {
+    return null;
+  }
+  return Questions.find({
+    userId: this.userId
+  });
+});
+
+Meteor.publish('activeQuestions', function () {
+  if(!this.userId)
+  {
+    return null;
+  }
+  return Questions.find({
+    groupId: {
+      $in: Meteor.users.findOne({_id: this.userId}).groups
+    },
+    active: true
+  }, {
+    fields: {
+      answer: false,
+      userId: false,
+      groupId: false
+    }
+  });
+});

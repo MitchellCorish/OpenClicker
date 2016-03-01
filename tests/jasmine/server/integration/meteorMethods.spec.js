@@ -1,6 +1,7 @@
 'use strict';
 
 describe('Meteor.methods', function () {
+  var question;
   var user;
   var group;
   var answer;
@@ -24,6 +25,16 @@ describe('Meteor.methods', function () {
       ]
     }
     
+    question = {
+      _id: 'testQuestion',
+      groupId: 'testGroup',
+      questionAsked: 'what is 2 + 2?',
+      possibleAnswers: ['11', '4', '5'],
+      answer: 1,
+      userId: 'testUser',
+      active: false
+    };
+    
     group = {
       _id: 'testGroup',
       userId: 'testUser',
@@ -34,17 +45,41 @@ describe('Meteor.methods', function () {
     
     // spies that won't change between tests
     spyOn(MethodHelpers, 'checkAdminPermissions').and.returnValue(true);
+    spyOn(MethodHelpers, 'checkAnswerInRange').and.returnValue(true);
     spyOn(MethodHelpers, 'checkCreatorPermissions').and.returnValue(true);
     spyOn(MethodHelpers, 'checkGroupExists').and.returnValue(true);
     spyOn(MethodHelpers, 'checkGroupOwnership').and.returnValue(true);
+    spyOn(MethodHelpers, 'checkQuestionExists').and.returnValue(true);
+    spyOn(MethodHelpers, 'checkQuestionIsActive').and.returnValue(true);
     spyOn(MethodHelpers, 'checkUserInGroup').and.returnValue(true);
     spyOn(MethodHelpers, 'checkUserLoggedIn').and.returnValue(true);
     spyOn(MethodHelpers, 'checkUserNotInGroup').and.returnValue(true);
     spyOn(MethodHelpers, 'checkVerifiedUser').and.returnValue(true);
     spyOn(Meteor, 'userId').and.returnValue(user._id);
+    spyOn(Questions, 'findOne').and.returnValue(question);
   });
   
-  // test cases    
+  // test cases  
+  describe('answerQuestion()', function () {
+    it('should insert or update an answer to the specified question', function () {
+      spyOn(Answers, 'update').and.returnValue(true);
+      
+      Meteor.call('answerQuestion', question._id, answer);
+      
+      expect(Answers.update).toHaveBeenCalledWith({
+        questionId: question._id,
+        groupId: question.groupId,
+        userId: user._id
+      }, {
+        $set: {
+          answer: answer
+        }
+      }, {
+        upsert: true
+      });
+    });
+  });
+  
   describe('createGroup()', function () {
     it('should create a new group with the given name owned by the current user', function () {
       spyOn(Groups, 'insert').and.returnValue(true);
