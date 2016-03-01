@@ -109,7 +109,8 @@ Schema.Users = new SimpleSchema({
     },
     groups: {
         type: [String],
-        label: "Groups for this user"
+        label: "Groups for this user",
+        defaultValue: []
     }
 });
 
