@@ -108,67 +108,69 @@ Schema.Users = new SimpleSchema({
         optional: true
     },
     groups: {
-        type: Number,
-        label: "Groups for user",
-        min: 0,
-        optional: true
+        type: [String],
+        label: "Groups for this user"
     }
 });
 
 //Questions Schema
 Schema.Questions = new SimpleSchema({
+  userId: {
+		type: String,
+		label: "User ID"
+	},
+  groupId: {
+    type: String,
+    label: "Group ID"
+  },
 	questionAsked: {
 		type: String,
-		label: "Question",
-		optional: false
+		label: "Question"
 	},
 	possibleAnswers: {
-		type: String,
-		label: "Possible Question Answers",
-		optional: false
+		type: [String],
+		label: "Possible Answers",
+    minCount: 2
 	},
 	answer: {
-		type: String,
-		label: "Question Answer",
-		optional: false
-	}
+		type: Number,
+		label: "Correct Answer",
+    min: 0
+	},
+  active: {
+    type: Boolean
+  }
 });
 
 //Group Schema
 Schema.Groups = new SimpleSchema({
-	userID: {
-		type: Number,
-		label: "User Admin ID",
-		optional: false
-	},
-	groupName: {
+	userId: {
 		type: String,
-		label: "Group Name",
-		optional: false
+		label: "User Admin ID"
+	},
+	name: {
+		type: String,
+		label: "Group Name"
 	}
 });
 
 //Answers Schema
 Schema.Answers = new SimpleSchema({
-	questionID: {
-		type: Number,
-		label: "Question ID",
-		optional: false
+	questionId: {
+		type: String,
+		label: "Question ID"
 	},
-	groupID: {
-		type: Number,
-		label: "Group ID",
-		optional: false
-	},
-	userID: {
-		type: Number,
-		label: "User ID",
-		optional: false
+  groupId: {
+    type: String,
+    label: "Group ID"
+  },
+	userId: {
+		type: String,
+		label: "User ID"
 	},
 	answer: {
-		type: String,
-		label: "Question Answer",
-		optional: false
+		type: Number,
+		label: "Answer"
 	}
 });
 
@@ -178,4 +180,152 @@ Questions.attachSchema(Schema.Questions, {replace: true});
 Groups.attachSchema(Schema.Groups, {replace: true});
 Answers.attachSchema(Schema.Answers, {replace: true});
 
+Meteor.methods({
+  createGroup: function (groupName) {
+    MethodHelpers.checkUserLoggedIn();
+    MethodHelpers.checkVerifiedUser();
+    MethodHelpers.checkCreatorPermissions();
+    
+    Groups.insert({
+      userId: Meteor.userId(),
+      name: groupName
+    });
+    
+    return true;
+  },
+  deleteGroup: function (groupId) {
+    MethodHelpers.checkUserLoggedIn();
+    MethodHelpers.checkVerifiedUser();
+    MethodHelpers.checkCreatorPermissions();
+    MethodHelpers.checkGroupExists(groupId);
+    MethodHelpers.checkGroupOwnership(groupId);
+    
+    Groups.remove({
+      _id: groupId,
+      userId: Meteor.userId()
+    });
+    
+    //remove all users, questions, and answers from deleted group
+    Users.update({}, {
+      $pull: {
+        groups: groupId
+      }
+    }, {
+      multi: true
+    });
+    
+    Questions.remove({
+      groupId: groupId
+    });
+    
+    Answers.remove({
+      groupId: groupId
+    });
+    
+    return true;
+  },
+  joinGroup: function (groupId) {
+    MethodHelpers.checkUserLoggedIn();
+    MethodHelpers.checkVerifiedUser();
+    MethodHelpers.checkGroupExists(groupId);
+    MethodHelpers.checkUserNotInGroup(groupId);
+    
+    Users.update({
+      _id: Meteor.userId()
+    }, {
+      $push: {
+        groups: groupId
+      }
+    });
+    
+    return true;
+  },
+  leaveGroup: function (groupId) {
+    MethodHelpers.checkUserLoggedIn();
+    MethodHelpers.checkVerifiedUser();
+    MethodHelpers.checkGroupExists(groupId);
+    MethodHelpers.checkUserInGroup(groupId);
+    
+    Users.update({
+      _id: Meteor.userId()
+    }, {
+      $pull: {
+        groups: groupId
+      }
+    });
+    
+    return true;
+  },
+  updateGroup: function (group) {
+    MethodHelpers.checkUserLoggedIn();
+    MethodHelpers.checkVerifiedUser();
+    MethodHelpers.checkCreatorPermissions();
+    MethodHelpers.checkGroupExists(group._id);
+    MethodHelpers.checkGroupOwnership(group._id);
+    
+    Groups.update({
+      _id: group._id,
+      userId: Meteor.userId()
+    }, {
+      $set: {
+        name: group.name
+      }
+    });
+    
+    return true;
+  }
+});
 
+// define some functions for things we will have to check frequently
+MethodHelpers = {
+  checkAdminPermissions: function () {
+    if (!Roles.userIsInRole(Meteor.userId(), ADMIN_ROLE, Roles.GLOBAL_GROUP))
+    {
+      throw new Meteor.Error(ERROR_NOT_AUTHORIZED);
+    }
+  },
+  checkCreatorPermissions: function () {
+    if (!Roles.userIsInRole(Meteor.userId(), PROFESSOR_ROLE, Roles.GLOBAL_GROUP))
+    {
+      throw new Meteor.Error(ERROR_NOT_AUTHORIZED);
+    }
+  },
+  checkGroupExists: function (groupId) {
+    if (!Groups.findOne({ _id: groupId }))
+    {
+      throw new Meteor.Error(ERROR_GROUP_DOES_NOT_EXIST);
+    }
+  },
+  checkGroupOwnership: function (groupId) {
+    var group = Groups.findOne({ _id: groupId });
+
+    if (!(group.userId == Meteor.userId()))
+    {
+      throw new Meteor.Error(ERROR_NOT_AUTHORIZED);
+    }
+  },
+  checkUserInGroup: function (groupId) {
+    if (!(Meteor.user().groups) || !(Meteor.user().groups && Meteor.user().groups.indexOf(groupId) >= 0))
+    {
+      throw new Meteor.Error(ERROR_NOT_IN_GROUP);
+    }
+  },
+  checkUserLoggedIn: function () {
+    if (!Meteor.userId())
+    {
+      throw new Meteor.Error(ERROR_NOT_AUTHORIZED);
+    }
+  },
+  checkUserNotInGroup: function (groupId) {
+    if (Meteor.user().groups && Meteor.user().groups.indexOf(groupId) >= 0)
+    {
+      throw new Meteor.Error(ERROR_ALREADY_IN_GROUP);
+    }
+  },
+  checkVerifiedUser: function () {
+    if (!Meteor.user().emails[0].verified)
+    {
+      throw new Meteor.Error(ERROR_NOT_AUTHORIZED);
+    }
+  }
+}
