@@ -1,4 +1,4 @@
-/*'use strict';
+'use strict';
 
 describe('QuestionAnswerService', function () {
   beforeEach(module('openClicker'));
@@ -51,4 +51,4 @@ describe('QuestionAnswerService', function () {
       expect(window.alert).toHaveBeenCalled();
     });
   });
-});*/
+});

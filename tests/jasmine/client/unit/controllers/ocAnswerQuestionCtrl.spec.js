@@ -1,4 +1,4 @@
-/*'use strict';
+'use strict';
 
 describe('ocAnswerQuestionCtrl', function () {
   beforeEach(module('openClicker'));
@@ -74,4 +74,4 @@ describe('ocAnswerQuestionCtrl', function () {
       expect(window.alert).toHaveBeenCalled();
     });
   });
-});*/
+});
