@@ -18,7 +18,7 @@ describe('Meteor.methods', function () {
         verified: false
       }],
       roles: {
-        __global_roles__: []
+        [Roles.GLOBAL_GROUP]: []
       },
       groups: [
         'testGroup'

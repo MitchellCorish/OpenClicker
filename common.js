@@ -99,8 +99,12 @@ Schema.Users = new SimpleSchema({
     // you will fail validation in some cases.
     roles: {
         type: Object,
-        optional: true,
-        blackbox: true
+        blackbox: true,
+        defaultValue: {
+          [Roles.GLOBAL_GROUP]: [
+            STUDENT_ROLE
+          ]
+        }
     },
     // In order to avoid an 'Exception in setInterval callback' from Meteor
     heartbeat: {
