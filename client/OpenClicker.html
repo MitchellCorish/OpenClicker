@@ -1,12 +1,44 @@
 <head>
   <title>Open Clicker</title>
   <base href="/">
+  
+  <!-- Styles -->
+  <!-- Bootstrap CSS -->
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <!-- jQuery Datatables -->
+  <link href="css/jquery.dataTables.css" rel="stylesheet">
+  <!-- Font awesome CSS -->
+  <link href="css/font-awesome.min.css" rel="stylesheet">		
+  <!-- jQuery gritter -->
+  <link href="css/jquery.gritter.css" rel="stylesheet">
+  <!-- Custom Color CSS -->
+  <link href="css/less-style.css" rel="stylesheet">	
+  <!-- Custom CSS -->
+  <link href="css/style.css" rel="stylesheet">
+  <link href="css/OpenClicker.css" rel="stylesheet">
 </head>
 
 <body ng-app="openClicker" ng-strict-di="">
-  <h1>Welcome to Open Clicker!</h1>
- 
-  <login-buttons></login-buttons>
+  <div class="main-head">
+    <div class="header">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-3 col-sm-4 col-xs-6">
+            <h2><a href="#" class="pull-left"><img class="banner-img" src="img/banner2.png"></a> </h2>
+          </div>
+          <div class="col-md-3 col-sm-4 col-xs-6 pull-right">
+            <login-buttons class="head-user"></login-buttons>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   
-  <div ui-view=""></div>
+  <div class="main-content">
+    <div class="container">      
+      <div ui-view=""></div>
+    </div>
+  </div>
+  
+  <div class="clearfix"></div>
 </body>
