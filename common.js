@@ -256,6 +256,30 @@ Meteor.methods({
     
     return true;
   },
+  
+  editQuestion: function (questionId, groupId, questionAsked, possibleAnswers, answer) {
+      MethodHelpers.checkUserLoggedIn();
+      MethodHelpers.checkVerifiedUser();
+      MethodHelpers.checkCreatorPermissions();
+      MethodHelpers.checkQuestionExists(questionId);
+      MethodHelpers.checkGroupExists(groupId);
+      MethodHelpers.checkGroupOwnership(groupId);
+
+      Questions.update({
+          _id: questionId,
+          userId: Meteor.userId()
+      }, {
+          $set: {
+              groupId: groupId,
+              questionAsked: questionAsked,
+              possibleAnswers: possibleAnswers,
+              answer: answer
+          }
+      });
+
+      return true;
+  },
+  
   joinGroup: function (groupId) {
     MethodHelpers.checkUserLoggedIn();
     MethodHelpers.checkVerifiedUser();

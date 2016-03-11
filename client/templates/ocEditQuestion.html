@@ -1,0 +1,20 @@
+<form>
+    <div>
+        <label>Group:</label> <input type="text" placeholder="{{vm.question.groupId}}"/>
+    </div>
+    <div>
+        <label>Question:</label> <input type="text" placeholder="{{vm.question.questionAsked}}"
+                                        ng-model="vm.question.questionAsked"/>
+    </div>
+    <label>Possible Answers:</label>
+    <div ng-repeat="answer in vm.question.possibleAnswers">
+        <input type="text" ng-model="answer"/>
+        <input type="radio" ng-model="vm.question.answer" value="{{$index}}"/>
+        <button ng-click="vm.removeAnswer($index)">-</button>
+ 
+    </div>
+ 
+    <label>Active:</label><input type="checkbox" ng-model="vm.question.active"/>
+    <label> <button ng-click="vm.update()">Submit</button></label>
+ 
+</form>
