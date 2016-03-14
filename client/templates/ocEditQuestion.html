@@ -1,6 +1,6 @@
 <form>
     <div>
-        <label>Group:</label> <input type="text" placeholder="{{vm.question.groupId}}"/>
+        <label>Group: {{vm.question.groupId}}</label>
     </div>
     <div>
         <label>Question:</label> <input type="text" placeholder="{{vm.question.questionAsked}}"
@@ -13,8 +13,9 @@
         <button ng-click="vm.removeAnswer($index)">-</button>
  
     </div>
- 
-    <label>Active:</label><input type="checkbox" ng-model="vm.question.active"/>
+    <div><input type="text" placeholder ="Add an answer" ng-model="anAnswer"/>
+        <button ng-click="vm.addAnswer(anAnswer)">+</button></div>
+
     <label> <button ng-click="vm.update()">Submit</button></label>
  
 </form>

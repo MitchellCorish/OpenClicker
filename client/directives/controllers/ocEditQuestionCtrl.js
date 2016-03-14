@@ -15,6 +15,7 @@
  
         vm.update = update;
         vm.removeAnswer = removeAnswer;
+        vm.addAnswer = addAnswer;
         vm.helpers({
             question: () => Questions.findOne({
                 _id: vm.questionId
@@ -32,6 +33,11 @@
         {
             vm.question.possibleAnswers.splice(i,1);
  
+        }
+
+        function addAnswer(anAnswer)
+        {
+            vm.question.possibleAnswers.push(anAnswer);
         }
     }
 })();
