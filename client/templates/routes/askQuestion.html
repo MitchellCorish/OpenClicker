@@ -1,0 +1,17 @@
+<div class="page-content" ng-controller="askQuestionCtrl as vm">
+  <div class="single-head">
+    <h1 class="pull-left text-primary"><i class="fa fa-credit-card red"></i> Question</h1>
+    <div class="clearfix"></div>
+  </div>
+
+  <oc-question question-id="{{vm.questionId}}"></oc-question>
+  
+  <div class="form-horizontal">
+    <div class="form-group">
+      <div class="col-lg-offset-2 col-lg-10">
+        <button type="button" class="btn btn-success pull-left" ng-click="">Embed to PPT</button>
+        <button type="button" class="btn btn-success pull-right" ng-click="">Next</button>
+      </div>
+    </div>
+  </div>
+</div>
