@@ -22,19 +22,15 @@ describe('QuestionAnswerService', function () {
   // test cases  
   describe('answerQuestion()', function () {
     it('should call the answerQuestion Meteor method', function () {
-      spyOn(Meteor, 'call');
+      var answerQuestion = VelocityHelpers.spyOnMethod('answerQuestion');
       
       service.answerQuestion('testQuestion', 0);
       
-      expect(Meteor.call).toHaveBeenCalledWith('answerQuestion', 'testQuestion', 0, jasmine.any(Function));
+      expect(answerQuestion).toHaveBeenCalled();
     });
     
     it('should print errors to the console', function () {      
-      spyOn(Meteor, 'call').and.callFake(function (method, questionId, selectedAnswer, callback) {
-        callback({
-          message: errorMessage
-        }, null);
-      });
+      VelocityHelpers.stubMethod('answerQuestion', { message: errorMessage }, null);
 
       service.answerQuestion('testQuestion', 0);
 
@@ -42,9 +38,7 @@ describe('QuestionAnswerService', function () {
     });
     
     it('should alert the user if it is successful', function () {
-      spyOn(Meteor, 'call').and.callFake(function (method, questionId, selectedAnswer, callback) {
-        callback(null, true);
-      });
+      VelocityHelpers.stubMethod('answerQuestion', null, true);
             
       service.answerQuestion('testQuestion', 0);
 

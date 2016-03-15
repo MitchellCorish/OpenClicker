@@ -22,19 +22,15 @@ describe('GroupMembershipService', function () {
   // test cases  
   describe('joinGroup()', function () {
     it('should call the joinGroup Meteor method', function () {
-      spyOn(Meteor, 'call');
+      var joinGroup = VelocityHelpers.spyOnMethod('joinGroup');
       
       service.joinGroup('testGroup');
       
-      expect(Meteor.call).toHaveBeenCalledWith('joinGroup', 'testGroup', jasmine.any(Function));
+      expect(joinGroup).toHaveBeenCalled();
     });
     
     it('should print errors to the console', function () {      
-      spyOn(Meteor, 'call').and.callFake(function (method, groupName, callback) {
-        callback({
-          message: errorMessage
-        }, null);
-      });
+      VelocityHelpers.stubMethod('joinGroup', { message: errorMessage }, null);
 
       service.joinGroup('testGroup');
 
@@ -44,19 +40,15 @@ describe('GroupMembershipService', function () {
   
   describe('leaveGroup()', function () {
     it('should call the leaveGroup Meteor method', function () {
-      spyOn(Meteor, 'call');
+      var leaveGroup = VelocityHelpers.spyOnMethod('leaveGroup');
       
       service.leaveGroup('testGroup');
       
-      expect(Meteor.call).toHaveBeenCalledWith('leaveGroup', 'testGroup', jasmine.any(Function));
+      expect(leaveGroup).toHaveBeenCalled();
     });
     
     it('should print errors to the console', function () {      
-      spyOn(Meteor, 'call').and.callFake(function (method, groupName, callback) {
-        callback({
-          message: errorMessage
-        }, null);
-      });
+      VelocityHelpers.stubMethod('leaveGroup', { message: errorMessage }, null);
 
       service.leaveGroup('testGroup');
 
