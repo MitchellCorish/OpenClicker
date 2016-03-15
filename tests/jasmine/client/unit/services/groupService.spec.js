@@ -22,19 +22,15 @@ describe('GroupService', function () {
   // test cases  
   describe('createGroup()', function () {
     it('should call the createGroup Meteor method', function () {
-      spyOn(Meteor, 'call');
+      var createGroup = VelocityHelpers.spyOnMethod('createGroup');
       
       service.createGroup('testGroup');
       
-      expect(Meteor.call).toHaveBeenCalledWith('createGroup', 'testGroup', jasmine.any(Function));
+      expect(createGroup).toHaveBeenCalled();
     });
     
     it('should print errors to the console', function () {      
-      spyOn(Meteor, 'call').and.callFake(function (method, groupName, callback) {
-        callback({
-          message: errorMessage
-        }, null);
-      });
+      VelocityHelpers.stubMethod('createGroup', { message: errorMessage }, null);
 
       service.createGroup('testGroup');
 
@@ -44,19 +40,15 @@ describe('GroupService', function () {
   
   describe('updateGroup()', function () {
     it('should call the updateGroup Meteor method', function () {
-      spyOn(Meteor, 'call');
+      var updateGroup = VelocityHelpers.spyOnMethod('updateGroup');
       
       service.updateGroup('testGroup');
       
-      expect(Meteor.call).toHaveBeenCalledWith('updateGroup', 'testGroup', jasmine.any(Function));
+      expect(updateGroup).toHaveBeenCalled();
     });
     
     it('should print errors to the console', function () {      
-      spyOn(Meteor, 'call').and.callFake(function (method, groupName, callback) {
-        callback({
-          message: errorMessage
-        }, null);
-      });
+      VelocityHelpers.stubMethod('updateGroup', { message: errorMessage }, null);
 
       service.updateGroup('testGroup');
 
@@ -66,19 +58,15 @@ describe('GroupService', function () {
   
   describe('deleteGroup()', function () {
     it('should call the deleteGroup Meteor method', function () {
-      spyOn(Meteor, 'call');
+      var deleteGroup = VelocityHelpers.spyOnMethod('deleteGroup');
       
       service.deleteGroup('testGroup');
       
-      expect(Meteor.call).toHaveBeenCalledWith('deleteGroup', 'testGroup', jasmine.any(Function));
+      expect(deleteGroup).toHaveBeenCalled();
     });
     
     it('should print errors to the console', function () {      
-      spyOn(Meteor, 'call').and.callFake(function (method, groupName, callback) {
-        callback({
-          message: errorMessage
-        }, null);
-      });
+      VelocityHelpers.stubMethod('deleteGroup', { message: errorMessage }, null);
 
       service.deleteGroup('testGroup');
 
