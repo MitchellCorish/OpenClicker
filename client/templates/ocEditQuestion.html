@@ -11,11 +11,11 @@
         <input type="text" ng-model="vm.question.possibleAnswers[$index]"/>
         <input type="radio" ng-model="vm.question.answer" value="{{$index}}"/>
         <button ng-click="vm.removeAnswer($index)">-</button>
- 
+
     </div>
     <div><input type="text" placeholder ="Add an answer" ng-model="anAnswer"/>
         <button ng-click="vm.addAnswer(anAnswer)">+</button></div>
 
     <label> <button ng-click="vm.update()">Submit</button></label>
- 
+
 </form>
