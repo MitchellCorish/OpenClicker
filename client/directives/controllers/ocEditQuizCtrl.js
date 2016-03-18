@@ -26,24 +26,24 @@
 
         function update()
         {
-            QuizService.editQuiz(vm.quiz._id,vm.questions,vm.groupId,vm.name);
+            QuizService.editQuiz(vm.quiz._id, vm.quiz.questions, vm.quiz.userId, vm.quiz.name);
         }
 
         function up(i)
         {
             if(i > 0){
-                temp = vm.quiz.questions[i];
+                t = vm.quiz.questions[i];
                 vm.quiz.questions[i] = vm.quiz.questions[i-1];
-                vm.quiz.questions[i-1] = temp;
+                vm.quiz.questions[i-1] = t;
             }
         }
 
         function down(i)
         {
             if(i < vm.quiz.questions.length){
-                temp = vm.quiz.questions[i];
+                t = vm.quiz.questions[i];
                 vm.quiz.questions[i] = vm.quiz.questions[i+1];
-                vm.quiz.questions[i+1] = temp;
+                vm.quiz.questions[i+1] = t;
             }
         }
 

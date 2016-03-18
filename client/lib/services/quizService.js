@@ -14,8 +14,8 @@
 
         return service;
 
-        function editQuiz(quizId, questions, groupId, name) {
-            Meteor.call('editQuiz', quizId, questions, groupId, name, function (error, result) {
+        function editQuiz(quizId, questions, userId, name) {
+            Meteor.call('editQuiz', quizId, questions, userId, name, function (error, result) {
                 if (error)
                 {
                     console.log(error.message);

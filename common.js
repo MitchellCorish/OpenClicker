@@ -153,16 +153,20 @@ Schema.Quizes = new SimpleSchema({
     questions: {
         type: [String],
         label: "Questions in a Quiz",
-        min: 0
     },
     name: {
         type: String,
         label: "Quiz Name"
     },
+    userId: {
+        type: String,
+        label: "User ID"
+    },
     groupId: {
         type: String,
         label: "Group ID"
     }
+
 });
 
 //Group Schema
@@ -299,20 +303,18 @@ Meteor.methods({
         return true;
     },
 
-    editQuiz: function (quizId, questions, groupId, name) {
+    editQuiz: function (quizId, questions, userId, name) {
         MethodHelpers.checkUserLoggedIn();
         MethodHelpers.checkVerifiedUser();
         MethodHelpers.checkCreatorPermissions();
         MethodHelpers.checkQuizExists(quizId);
-        MethodHelpers.checkGroupExists(groupId);
-        MethodHelpers.checkGroupOwnership(groupId);
 
-        Questions.update({
+        Quizes.update({
             _id: quizId,
             userId: Meteor.userId()
         }, {
             $set: {
-                groupId: groupId,
+                userId: userId,
                 questions: questions,
                 name: name
             }
@@ -416,9 +418,9 @@ MethodHelpers = {
         }
     },
     checkQuizExists: function (quizId) {
-        if (!Questions.findOne({ _id: quizId }))
+        if (!Quizes.findOne({ _id: quizId }))
         {
-            throw new Meteor.Error(ERROR_QUESTION_DOES_NOT_EXIST);
+            throw new Meteor.Error(ERROR_QUIZ_DOES_NOT_EXIST);
         }
     },
     checkQuestionIsActive: function (questionId) {

@@ -34,12 +34,12 @@ Meteor.publish('ownedQuestions', function () {
 });
 
 Meteor.publish('ownedQuizes', function () {
-  if(!this.groupId)
+  if(!this.userId)
   {
     return null;
   }
   return Quizes.find({
-    groupId: this.groupId
+    userId: this.userId
   });
 });
 
