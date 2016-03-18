@@ -4,7 +4,8 @@ describe('QuestionAnswerService', function () {
   beforeEach(module('openClicker'));
   
   var service;
-  var errorMessage = 'error message';
+  var questionId;
+  var errorMessage;
   
   // inject dependencies
   beforeEach(inject(function (QuestionAnswerService) {
@@ -13,6 +14,9 @@ describe('QuestionAnswerService', function () {
   
   // set up
   beforeEach(function () {
+    
+    questionId = 'testQuestion';
+    errorMessage = 'error message';
     
     // spies that won't change between tests
     spyOn(console, 'log');
@@ -24,15 +28,15 @@ describe('QuestionAnswerService', function () {
     it('should call the answerQuestion Meteor method', function () {
       var answerQuestion = VelocityHelpers.spyOnMethod('answerQuestion');
       
-      service.answerQuestion('testQuestion', 0);
+      service.answerQuestion(questionId, 0);
       
-      expect(answerQuestion).toHaveBeenCalled();
+      expect(answerQuestion).toHaveBeenCalledWith(questionId, 0);
     });
     
     it('should print errors to the console', function () {      
       VelocityHelpers.stubMethod('answerQuestion', { message: errorMessage }, null);
 
-      service.answerQuestion('testQuestion', 0);
+      service.answerQuestion(questionId, 0);
 
       expect(console.log).toHaveBeenCalledWith(errorMessage);
     });
@@ -40,7 +44,7 @@ describe('QuestionAnswerService', function () {
     it('should alert the user if it is successful', function () {
       VelocityHelpers.stubMethod('answerQuestion', null, true);
             
-      service.answerQuestion('testQuestion', 0);
+      service.answerQuestion(questionId, 0);
 
       expect(window.alert).toHaveBeenCalled();
     });

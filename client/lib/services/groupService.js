@@ -16,20 +16,57 @@
     
     return service;
     
-    function createGroup(groupName) {
+    function createGroup(groupName, success, failure) {
       Meteor.call('createGroup', groupName, function (error, result) {
         if (error)
         {
           console.log(error.message);
+          if (failure && typeof(failure) == 'function')
+          {
+            failure();
+          }
+        }
+        else if (result)
+        {
+          if (success && typeof(success) == 'function')
+          {
+            success();
+          }
+        }
+        else
+        {
+          if (failure && typeof(failure) == 'function')
+          {
+            failure();
+          }
         }
       });
     }
     
-    function updateGroup(group) {
+    function updateGroup(group, success, failure) {
       Meteor.call('updateGroup', group, function (error, result) {
         if (error)
         {
           console.log(error.message);
+          
+          if (failure && typeof(failure) == 'function')
+          {
+            failure();
+          }
+        }
+        else if (result)
+        {
+          if (success && typeof(success) == 'function')
+          {
+            success();
+          }
+        }
+        else
+        {
+          if (failure && typeof(failure) == 'function')
+          {
+            failure();
+          }
         }
       });
     }
