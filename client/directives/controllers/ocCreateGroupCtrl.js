@@ -5,9 +5,9 @@
     .module('openClicker')
     .controller('ocCreateGroupCtrl', ocCreateGroupCtrl);
     
-  ocCreateGroupCtrl.$inject = ['GroupService'];
+  ocCreateGroupCtrl.$inject = ['GroupService', '$state'];
   
-  function ocCreateGroupCtrl(GroupService) {
+  function ocCreateGroupCtrl(GroupService, $state) {
     var vm = this;
     
     vm.groupName = '';
@@ -21,7 +21,11 @@
       }
       else
       {
-        GroupService.createGroup(vm.groupName);
+        GroupService.createGroup(vm.groupName, function () {
+          $state.go('home');
+        }, function () {
+          alert('Failed to create group.');
+        });
       }
     }
   }

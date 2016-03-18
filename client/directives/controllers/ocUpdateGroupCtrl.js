@@ -5,9 +5,9 @@
     .module('openClicker')
     .controller('ocUpdateGroupCtrl', ocUpdateGroupCtrl);
     
-  ocUpdateGroupCtrl.$inject = ['$scope', '$reactive', 'GroupService'];
+  ocUpdateGroupCtrl.$inject = ['$scope', '$reactive', 'GroupService', '$state'];
   
-  function ocUpdateGroupCtrl($scope, $reactive, GroupService) {
+  function ocUpdateGroupCtrl($scope, $reactive, GroupService, $state) {
     var vm = this;
     $reactive(vm).attach($scope);
     
@@ -23,7 +23,18 @@
     
     function update()
     {
-      GroupService.updateGroup(vm.group);
+      if (vm.group.name.trim().length == 0)
+      {
+        alert('Please enter a name for the group');
+      }
+      else
+      {
+        GroupService.updateGroup(vm.group, function () {
+          $state.go('home');
+        }, function () {
+          alert('Failed to update group.');
+        });
+      }
     }
   }
 })();
