@@ -4,7 +4,8 @@ describe('GroupMembershipService', function () {
   beforeEach(module('openClicker'));
   
   var service;
-  var errorMessage = 'error message';
+  var groupId;
+  var errorMessage;
   
   // inject dependencies
   beforeEach(inject(function (GroupMembershipService) {
@@ -13,6 +14,9 @@ describe('GroupMembershipService', function () {
   
   // set up
   beforeEach(function () {
+    
+    groupId = 'testGroup';
+    errorMessage = 'error message';
     
     // spies that won't change between tests
     spyOn(console, 'log');
@@ -24,15 +28,15 @@ describe('GroupMembershipService', function () {
     it('should call the joinGroup Meteor method', function () {
       var joinGroup = VelocityHelpers.spyOnMethod('joinGroup');
       
-      service.joinGroup('testGroup');
+      service.joinGroup(groupId);
       
-      expect(joinGroup).toHaveBeenCalled();
+      expect(joinGroup).toHaveBeenCalledWith(groupId);
     });
     
     it('should print errors to the console', function () {      
       VelocityHelpers.stubMethod('joinGroup', { message: errorMessage }, null);
 
-      service.joinGroup('testGroup');
+      service.joinGroup(groupId);
 
       expect(console.log).toHaveBeenCalledWith(errorMessage);
     });
@@ -42,15 +46,15 @@ describe('GroupMembershipService', function () {
     it('should call the leaveGroup Meteor method', function () {
       var leaveGroup = VelocityHelpers.spyOnMethod('leaveGroup');
       
-      service.leaveGroup('testGroup');
+      service.leaveGroup(groupId);
       
-      expect(leaveGroup).toHaveBeenCalled();
+      expect(leaveGroup).toHaveBeenCalledWith(groupId);
     });
     
     it('should print errors to the console', function () {      
       VelocityHelpers.stubMethod('leaveGroup', { message: errorMessage }, null);
 
-      service.leaveGroup('testGroup');
+      service.leaveGroup(groupId);
 
       expect(console.log).toHaveBeenCalledWith(errorMessage);
     });
