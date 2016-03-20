@@ -1,0 +1,8 @@
+<div ng-controller="welcomeCtrl as vm">
+  <h1>Welcome to Open Clicker!</h1>
+  <br/>
+  <p ng-if="!vm.isLoggedIn">Please create an account or sign in to continue.</p>
+  <p ng-if="vm.isLoggedIn && !vm.isVerified">Please verify your email address to continue.</p>
+  <a ng-if="vm.isLoggedIn && vm.isVerified" ui-sref="home"><button type="button" class="btn btn-success">Continue</button></a>
+  <br/>
+</div>
