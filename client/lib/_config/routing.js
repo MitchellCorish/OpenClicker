@@ -105,6 +105,22 @@
           }
         }
       })
+      .state('updateUser', {
+        url: '/update-user/:userId',
+        templateUrl: 'client/templates/routes/updateUser.html',
+        data: {
+          rule: function () {
+            if (!Meteor.userId() ||
+                !Meteor.user().emails[0].verified)
+            {
+              return {
+                to: 'home',
+                params: {}
+              }
+            }
+          }
+        }
+      })
       .state('welcome', {
         url: '/welcome',
         templateUrl: 'client/templates/routes/welcome.html'

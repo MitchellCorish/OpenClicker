@@ -20,7 +20,10 @@
         _id: {
           $in : Meteor.user().groups
         },
-      })
+      }),
+      userID: () => {
+          return Meteor.userId();
+      },
     });
   }
 })();
