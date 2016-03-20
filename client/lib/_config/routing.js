@@ -5,6 +5,23 @@
     $locationProvider.html5Mode(true);
     
     $stateProvider
+      .state('createQuestion', {
+        url: '/create-question',
+        templateUrl: 'client/templates/routes/createQuestion.html',
+        data: {
+          rule: function () {
+            if (!Meteor.userId() ||
+                !Meteor.user().emails[0].verified ||
+                !Roles.userIsInRole(Meteor.userId(), PROFESSOR_ROLE, Roles.GLOBAL_GROUP))
+            {
+              return {
+                to: 'home',
+                params: {}
+              }
+            }
+          }
+        }
+      })
       .state('home', {
         url: '/',
         templateUrl: 'client/templates/routes/home.html',
