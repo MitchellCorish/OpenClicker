@@ -3,7 +3,7 @@
     <p class="panel-title">{{vm.question.questionAsked}}</p>
   </div>
   <div class="panel-body">
-    <div class="radio" ng-repeat="answer in vm.question.possibleAnswers">
+    <div class="radio" ng-repeat="answer in vm.question.possibleAnswers track by $index">
       <label>
         <input type="radio" ng-model="vm.selectedAnswer" value="{{$index}}" />
         {{answer}}
