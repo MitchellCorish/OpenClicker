@@ -35,8 +35,7 @@
  
         }
 
-        function addAnswer(anAnswer)
-        {
+        function addAnswer(anAnswer) {
             vm.question.possibleAnswers.push(anAnswer);
         }
     }

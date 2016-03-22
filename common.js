@@ -133,6 +133,10 @@ Schema.Questions = new SimpleSchema({
         type: String,
         label: "Question"
     },
+    quizId: {
+        type: String,
+        label: "Quiz ID"
+    },
     possibleAnswers: {
         type: [String],
         label: "Possible Answers",
@@ -248,6 +252,18 @@ Meteor.methods({
 
         return true;
     },
+    createQuiz: function (quizName) {
+        MethodHelpers.checkUserLoggedIn();
+        MethodHelpers.checkVerifiedUser();
+        MethodHelpers.checkCreatorPermissions();
+
+        Quizes.insert({
+            userId: Meteor.userId(),
+            name: quizName
+        });
+
+        return true;
+    },
     deleteGroup: function (groupId) {
         MethodHelpers.checkUserLoggedIn();
         MethodHelpers.checkVerifiedUser();
@@ -278,6 +294,31 @@ Meteor.methods({
         });
 
         return true;
+    },
+    deleteQuiz: function(quizId) {
+        MethodHelpers.checkUserLoggedIn();
+        MethodHelpers.checkVerifiedUser();
+        MethodHelpers.checkCreatorPermissions();
+        MethodHelpers.checkQuizExists(quizId);
+
+        Quizes.remove({
+            _id: quizId
+        });
+
+        /*Questions.remove({
+            quizId: quizId
+        });*/
+
+        return true;
+    },
+
+    getQuestionName: function(questionId){
+        MethodHelpers.checkUserLoggedIn();
+        MethodHelpers.checkVerifiedUser();
+        MethodHelpers.checkCreatorPermissions();
+        MethodHelpers.checkQuestionExists(questionId);
+        var question = Questions.findOne({ _id: questionId });
+        return question.questionAsked;
     },
 
     editQuestion: function (questionId, groupId, questionAsked, possibleAnswers, answer) {

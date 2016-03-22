@@ -12,12 +12,14 @@
         $reactive(vm).attach($scope);
 
         vm.subscribe('ownedQuizes');
+        vm.subscribe('ownedQuestions');
 
         vm.update = update;
         vm.up = up;
         vm.down = down;
         vm.removeQuestion = removeQuestion;
         vm.addQuestion = addQuestion;
+        vm.questionName = questionName;
         vm.helpers({
                 quiz: () => Quizes.findOne({
                 _id: vm.quizId
@@ -29,6 +31,10 @@
             QuizService.editQuiz(vm.quiz._id, vm.quiz.questions, vm.quiz.userId, vm.quiz.name);
         }
 
+        function questionName(questionId){
+            QuizService.getQuestionName(questionId);
+        }
+
         function up(i)
         {
             if(i > 0){
@@ -38,9 +44,10 @@
             }
         }
 
+
         function down(i)
         {
-            if(i < vm.quiz.questions.length){
+            if(i < vm.quiz.questions.length-1){
                 t = vm.quiz.questions[i];
                 vm.quiz.questions[i] = vm.quiz.questions[i+1];
                 vm.quiz.questions[i+1] = t;
