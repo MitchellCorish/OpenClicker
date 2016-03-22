@@ -57,7 +57,7 @@ Schema.UserProfile = new SimpleSchema({
     institution: {
         type: String,
         optional: true,
-        defaultValue: 'UPEI',
+        defaultValue: '',
     },
     studentId: {
         type: String,

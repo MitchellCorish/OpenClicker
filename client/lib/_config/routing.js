@@ -7,7 +7,14 @@
     $stateProvider
       .state('answerQuestion', {
         url: '/answer-question/:questionId',
-        templateUrl: 'client/templates/routes/answerQuestion.html',
+        views: {
+          header: {
+            templateUrl: 'client/templates/header.html'
+          },
+          main: {
+            templateUrl: 'client/templates/routes/answerQuestion.html'
+          }    
+        },
         data: {
           rule: function () {
             if (!Meteor.userId() ||
@@ -23,7 +30,10 @@
       })
       .state('createGroup', {
         url: '/create-group',
-        templateUrl: 'client/templates/routes/createGroup.html',
+        views: {
+            header: { templateUrl: "client/templates/header.html" },
+            main: { templateUrl: "client/templates/routes/createGroup.html" },
+        },
         data: {
           rule: function () {
             if (!Meteor.userId() ||
@@ -40,7 +50,10 @@
       })
       .state('createQuestion', {
         url: '/create-question',
-        templateUrl: 'client/templates/routes/createQuestion.html',
+        views: {
+            header: { templateUrl: "client/templates/header.html" },
+            main: { templateUrl: "client/templates/routes/createQuestion.html" },
+        },
         data: {
           rule: function () {
             if (!Meteor.userId() ||
@@ -57,7 +70,10 @@
       })
       .state('home', {
         url: '/',
-        templateUrl: 'client/templates/routes/home.html',
+        views: {
+            header: { templateUrl: "client/templates/header2.html" },
+            main: { templateUrl: "client/templates/routes/home.html" },
+        },
         data: {
           rule: function () {
             if (!Meteor.userId() ||
@@ -73,7 +89,10 @@
       })
       .state('updateQuestion', {
         url: '/update-question/:questionId',
-        templateUrl: 'client/templates/routes/updateQuestion.html',
+        views: {
+            header: { templateUrl: "client/templates/header.html" },
+            main: { templateUrl: "client/templates/routes/updateQuestion.html" },
+        },
         data: {
           rule: function () {
             if (!Meteor.userId() ||
@@ -90,7 +109,10 @@
       })
       .state('updateGroup', {
         url: '/update-group/:groupId',
-        templateUrl: 'client/templates/routes/updateGroup.html',
+        views: {
+            header: { templateUrl: "client/templates/header.html" },
+            main: { templateUrl: "client/templates/routes/updateGroup.html" },
+        },
         data: {
           rule: function () {
             if (!Meteor.userId() ||
@@ -107,7 +129,10 @@
       })
       .state('updateUser', {
         url: '/update-user/:userId',
-        templateUrl: 'client/templates/routes/updateUser.html',
+        views: {
+            header: { templateUrl: "client/templates/header.html" },
+            main: { templateUrl: "client/templates/routes/updateUser.html" },
+        },
         data: {
           rule: function () {
             if (!Meteor.userId() ||
@@ -123,7 +148,10 @@
       })
       .state('welcome', {
         url: '/welcome',
-        templateUrl: 'client/templates/routes/welcome.html'
+        views: {
+            header: { templateUrl: "client/templates/header.html" },
+            main: { templateUrl: "client/templates/routes/welcome.html" },
+        },
       });
       
     $urlRouterProvider.otherwise('/');
