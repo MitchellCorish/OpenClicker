@@ -1,9 +1,18 @@
 <head>
   <title>Open Clicker</title>
+  <base href="/"> 
 </head>
 
-<body>
-  <h1>Welcome to Meteor!</h1>
-
-  {{> hello}}
+<body ng-app="openClicker" ng-strict-di="">
+  <div class="main-head">
+    <div ui-view="header"></div>
+  </div>
+  
+  <div class="main-content">
+    <div class="container">      
+      <div ui-view="main"></div>
+    </div>
+  </div>
+  
+  <div class="clearfix"></div>
 </body>
