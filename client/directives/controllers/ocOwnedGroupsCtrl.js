@@ -16,7 +16,10 @@
     vm.helpers({
       groups: () => Groups.find({
         userId: Meteor.userId()
-      })
+      }),
+      userID: () => {
+          return Meteor.userId();
+      }
     });
   }
 })();

@@ -53,6 +53,21 @@ Schema.UserProfile = new SimpleSchema({
     country: {
         type: Schema.UserCountry,
         optional: true
+    },
+    institution: {
+        type: String,
+        optional: true,
+        defaultValue: 'UPEI',
+    },
+    studentId: {
+        type: String,
+        optional: true,
+        defaultValue: '',
+    },
+    faculty: {
+        type: String,
+        optional: true,
+        defaultValue: '',
     }
 });
 
@@ -60,7 +75,8 @@ Schema.UserProfile = new SimpleSchema({
 Schema.Users = new SimpleSchema({
   username: {
         type: String,
-        optional: true
+        optional: true,
+        defaultValue: '',
     },
     emails: {
         type: Array,
@@ -305,7 +321,24 @@ Meteor.methods({
     });
     
     return true;
-  }
+  },
+    updateUser: function(user) {
+    MethodHelpers.checkUserLoggedIn();
+    MethodHelpers.checkVerifiedUser();
+
+    Users.update({
+        _id: user._id,
+    }, {
+       $set: {
+           username: user.username,
+           "profile.institution": user.profile.institution,
+           "profile.faculty": user.profile.faculty,
+           "profile.studentId": user.profile.studentId,
+       }
+    });
+
+    return true;
+  },
 });
 
 // define some functions for things we will have to check frequently
