@@ -30,7 +30,14 @@
       })
       .state('createQuestion', {
         url: '/create-question',
-        templateUrl: 'client/templates/routes/createQuestion.html',
+        views: {
+          header: {
+            templateUrl: 'client/templates/header.html'
+          },
+          main: {
+            templateUrl: 'client/templates/routes/createQuestion.html'
+          }    
+        },
         data: {
           rule: function () {
             if (!Meteor.userId() ||
