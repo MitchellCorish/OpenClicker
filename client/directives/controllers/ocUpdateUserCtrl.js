@@ -28,7 +28,7 @@
             UserService.updateUser(vm.user, function () {
                 $state.go('home');
             }, function () {
-                alert('Failed to update group.');
+                alert('Failed to update user.');
             });
         } 
     }
