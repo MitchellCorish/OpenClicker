@@ -305,6 +305,12 @@ Meteor.methods({
     });
     
     return true;
+  },
+  updateQuestionStartTime: function () {
+    return true;
+  },
+  updateQuestionEndTime: function () {
+    return true;
   }
 });
 
