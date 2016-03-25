@@ -22,7 +22,12 @@ describe('Meteor.methods', function () {
       },
       groups: [
         'testGroup'
-      ]
+      ],
+      profile: {
+        institution: 'UPEI',
+        faculty: 'Science',
+        studentId: '123456'
+      }
     }
     
     question = {
