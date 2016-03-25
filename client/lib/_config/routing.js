@@ -30,7 +30,14 @@
       })
       .state('editRoles', {
         url: '/edit-roles/:userId',
-        templateUrl: 'client/templates/routes/editRoles.html',
+        views: {
+          header: {
+            templateUrl: 'client/templates/header.html'
+          },
+          main: {
+            templateUrl: 'client/templates/routes/editRoles.html'
+          }    
+        },
         data: {
           rule: function () {
             if (!Meteor.userId() ||
