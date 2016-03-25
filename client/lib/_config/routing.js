@@ -5,6 +5,23 @@
     $locationProvider.html5Mode(true);
     
     $stateProvider
+      .state('editRoles', {
+        url: '/edit-roles/:userId',
+        templateUrl: 'client/templates/routes/editRoles.html',
+        data: {
+          rule: function () {
+            if (!Meteor.userId() ||
+                !Meteor.user().emails[0].verified ||
+                !Roles.userIsInRole(Meteor.userId(), ADMIN_ROLE, Roles.GLOBAL_GROUP))
+            {
+              return {
+                to: 'home',
+                params: {}
+              }
+            }
+          }
+        }
+      })
       .state('home', {
         url: '/',
         templateUrl: 'client/templates/routes/home.html',
