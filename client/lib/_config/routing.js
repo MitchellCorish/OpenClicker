@@ -5,6 +5,29 @@
     $locationProvider.html5Mode(true);
     
     $stateProvider
+      .state('answerQuestion', {
+        url: '/answer-question/:questionId',
+        views: {
+          header: {
+            templateUrl: 'client/templates/header.html'
+          },
+          main: {
+            templateUrl: 'client/templates/routes/answerQuestion.html'
+          }    
+        },
+        data: {
+          rule: function () {
+            if (!Meteor.userId() ||
+                !Meteor.user().emails[0].verified)
+            {
+              return {
+                to: 'home',
+                params: {}
+              }
+            }
+          }
+        }
+      })
       .state('editRoles', {
         url: '/edit-roles/:userId',
         templateUrl: 'client/templates/routes/editRoles.html',
@@ -24,7 +47,14 @@
       })
       .state('home', {
         url: '/',
-        templateUrl: 'client/templates/routes/home.html',
+        views: {
+          header: {
+            templateUrl: 'client/templates/header.html'
+          },
+          main: {
+            templateUrl: 'client/templates/routes/home.html'
+          }    
+        },
         data: {
           rule: function () {
             if (!Meteor.userId() ||
@@ -40,7 +70,14 @@
       })
       .state('welcome', {
         url: '/welcome',
-        templateUrl: 'client/templates/routes/welcome.html'
+        views: {
+          header: {
+            templateUrl: 'client/templates/header.html'
+          },
+          main: {
+            templateUrl: 'client/templates/routes/welcome.html'
+          }    
+        }
       });
       
     $urlRouterProvider.otherwise('/');

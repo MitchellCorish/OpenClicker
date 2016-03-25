@@ -1,14 +1,21 @@
-<div>
-  <p>{{vm.question.questionAsked}}</p>
-  <form>
-    <div ng-repeat="answer in vm.question.possibleAnswers">
+<div class="panel panel-primary" ng-if="vm.question">
+  <div class="panel-heading">
+    <p class="panel-title">{{vm.question.questionAsked}}</p>
+  </div>
+  <div class="panel-body">
+    <div class="radio" ng-repeat="answer in vm.question.possibleAnswers track by $index">
       <label>
         <input type="radio" ng-model="vm.selectedAnswer" value="{{$index}}" />
         {{answer}}
       </label>
     </div>
-    <div>
-      <button ng-click="vm.answer()">Submit</button>
-    </div>
-  </form>
+  </div>
+  <div class="panel-footer">
+    <button class="btn btn-primary" ng-click="vm.answer()">Confirm</button>
+  </div>
+</div>
+
+<div ng-if="!vm.question">
+  <p>Unable to display the specified question either because it does not exist, or because you have not joined the group it belongs to.</p>
+  <a ui-sref="home"><button type="button" class="btn btn-success">Home</button></a>
 </div>
