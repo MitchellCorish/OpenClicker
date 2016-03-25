@@ -32,7 +32,7 @@
         url: '/',
         views: {
           header: {
-            templateUrl: 'client/templates/header.html'
+            templateUrl: 'client/templates/header2.html'
           },
           main: {
             templateUrl: 'client/templates/routes/home.html'
@@ -45,6 +45,25 @@
             {
               return {
                 to: 'welcome',
+                params: {}
+              }
+            }
+          }
+        }
+      })
+      .state('updateUser', {
+        url: '/update-user/:userId',
+        views: {
+            header: { templateUrl: "client/templates/header.html" },
+            main: { templateUrl: "client/templates/routes/updateUser.html" },
+        },
+        data: {
+          rule: function () {
+            if (!Meteor.userId() ||
+                !Meteor.user().emails[0].verified)
+            {
+              return {
+                to: 'home',
                 params: {}
               }
             }
