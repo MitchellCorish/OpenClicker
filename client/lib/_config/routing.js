@@ -53,7 +53,10 @@
       })
       .state('updateUser', {
         url: '/update-user/:userId',
-        templateUrl: 'client/templates/routes/updateUser.html',
+        views: {
+            header: { templateUrl: "client/templates/header.html" },
+            main: { templateUrl: "client/templates/routes/updateUser.html" },
+        },
         data: {
           rule: function () {
             if (!Meteor.userId() ||
