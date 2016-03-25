@@ -13,9 +13,7 @@
       controllerAs: 'vm',
       templateUrl: 'client/templates/ocUpdateUser.html',
       restrict: 'E',
-      scope: {
-        userId: '@'
-      },
+      scope: {},
       bindToController: true
     };
     

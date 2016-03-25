@@ -5,25 +5,32 @@
     .module('openClicker')
     .controller('ocUpdateUserCtrl', ocUpdateUserCtrl);
     
-  ocUpdateUserCtrl.$inject = ['$scope', '$reactive', 'UserService'];
+  ocUpdateUserCtrl.$inject = ['$scope', '$reactive', 'UserService',  '$state'];
   
-  function ocUpdateUserCtrl($scope, $reactive, UserService) {
+  function ocUpdateUserCtrl($scope, $reactive, UserService, $state) {
     var vm = this;
     $reactive(vm).attach($scope);
-    
-    vm.subscribe('users');
     
     vm.update = update;
     
     vm.helpers({
-      user: () => Users.findOne({
-        _id: vm.userId
-      })
+      user: () => Meteor.user()
     });
     
     function update()
     {
-      UserService.updateUser(vm.user);
+        if (vm.user.username.trim().length == 0)
+        {
+            alert('Please enter a name for the user');
+        }
+        else
+        {
+            UserService.updateUser(vm.user, function () {
+                $state.go('home');
+            }, function () {
+                alert('Failed to update group.');
+            });
+        } 
     }
   }
 })();

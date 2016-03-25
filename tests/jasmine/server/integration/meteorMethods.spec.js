@@ -182,4 +182,23 @@ describe('Meteor.methods', function () {
       });
     });
   });
+  
+  describe('updateUser()', function () {
+    it('should update the name of the specified user', function () {
+      spyOn(Users, 'update').and.returnValue(true);
+      
+      Meteor.call('updateUser', user);
+      
+      expect(Users.update).toHaveBeenCalledWith({
+        _id: user._id,
+      }, {
+        $set: {
+          username: user.username,
+          "profile.institution": user.profile.institution,
+          "profile.faculty": user.profile.faculty,
+          "profile.studentId": user.profile.studentId,
+        }
+      });
+    });
+  });
 });

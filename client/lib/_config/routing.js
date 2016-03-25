@@ -32,7 +32,7 @@
         url: '/',
         views: {
           header: {
-            templateUrl: 'client/templates/header.html'
+            templateUrl: 'client/templates/header2.html'
           },
           main: {
             templateUrl: 'client/templates/routes/home.html'

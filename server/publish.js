@@ -15,14 +15,6 @@ Meteor.publish(null, function () {
   });
 });
 
-Meteor.publish('users', function () {
-  if(!this.userId)
-  {
-    return null;
-  }
-  return Users.find({});
-});
-
 Meteor.publish('groups', function () {
   if(!this.userId)
   {
