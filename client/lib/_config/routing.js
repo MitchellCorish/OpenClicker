@@ -104,6 +104,30 @@
             templateUrl: 'client/templates/routes/welcome.html'
           }    
         }
+      })
+      .state('updateGroup', {
+        url: '/update-group/:groupId',
+        views: {
+          header: {
+            templateUrl: 'client/templates/header.html'
+          },
+          main: {
+            templateUrl: 'client/templates/routes/updateGroup.html'
+          }    
+        },
+        data: {
+          rule: function () {
+            if (!Meteor.userId() ||
+                !Meteor.user().emails[0].verified ||
+                !Roles.userIsInRole(Meteor.userId(), PROFESSOR_ROLE, Roles.GLOBAL_GROUP))
+            {
+              return {
+                to: 'home',
+                params: {}
+              }
+            }
+          }
+        }
       });
       
     $urlRouterProvider.otherwise('/');
