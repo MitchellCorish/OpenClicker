@@ -147,6 +147,18 @@ describe('MethodHelpers', function () {
     });
   });
   
+  describe('checkUserExists()', function () {
+    it('should throw a \'' + ERROR_USER_DOES_NOT_EXIST + '\' error if a user with the given id does not exist', function () {
+      try
+      {
+        MethodHelpers.checkUserExists('nonExistentUser');
+      }
+      catch(e) {}
+      
+      expect(Meteor.Error).toHaveBeenCalledWith(ERROR_USER_DOES_NOT_EXIST);
+    });
+  });
+  
   describe('checkUserInGroup()', function () {
     it('should throw a \'' + ERROR_NOT_IN_GROUP + '\' error if the current user does not belong to the specified group', function () {
       try

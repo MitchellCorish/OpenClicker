@@ -52,6 +52,30 @@
           }
         }
       })
+      .state('editRoles', {
+        url: '/edit-roles/:userId',
+        views: {
+          header: {
+            templateUrl: 'client/templates/header.html'
+          },
+          main: {
+            templateUrl: 'client/templates/routes/editRoles.html'
+          }    
+        },
+        data: {
+          rule: function () {
+            if (!Meteor.userId() ||
+                !Meteor.user().emails[0].verified ||
+                !Roles.userIsInRole(Meteor.userId(), ADMIN_ROLE, Roles.GLOBAL_GROUP))
+            {
+              return {
+                to: 'home',
+                params: {}
+              }
+            }
+          }
+        }
+      })
       .state('home', {
         url: '/',
         views: {

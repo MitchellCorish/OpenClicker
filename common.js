@@ -322,7 +322,34 @@ Meteor.methods({
     
     return true;
   },
-    updateUser: function(user) {
+  updateRoles: function (userId, student, professor, admin) {
+    MethodHelpers.checkUserLoggedIn();
+    MethodHelpers.checkVerifiedUser();
+    MethodHelpers.checkAdminPermissions();
+    MethodHelpers.checkUserExists(userId);
+    
+    var newRoles = [];
+    
+    if (student)
+    {
+      newRoles.push(STUDENT_ROLE);
+    }
+    
+    if (professor)
+    {
+      newRoles.push(PROFESSOR_ROLE);
+    }
+    
+    if (admin)
+    {
+      newRoles.push(ADMIN_ROLE);
+    }
+    
+    Roles.setUserRoles(userId, newRoles, Roles.GLOBAL_GROUP);
+    
+    return true;
+  },
+  updateUser: function(user) {
     MethodHelpers.checkUserLoggedIn();
     MethodHelpers.checkVerifiedUser();
 
@@ -389,6 +416,12 @@ MethodHelpers = {
     if (!question.active)
     {
       throw new Meteor.Error(ERROR_QUESTION_INACTIVE);
+    }
+  },
+  checkUserExists: function (userId) {
+    if (!Users.findOne({ _id: userId }))
+    {
+      throw new Meteor.Error(ERROR_USER_DOES_NOT_EXIST);
     }
   },
   checkUserInGroup: function (groupId) {
