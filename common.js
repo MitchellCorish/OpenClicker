@@ -348,9 +348,8 @@ Meteor.methods({
     Roles.setUserRoles(userId, newRoles, Roles.GLOBAL_GROUP);
     
     return true;
-  }
   },
-    updateUser: function(user) {
+  updateUser: function(user) {
     MethodHelpers.checkUserLoggedIn();
     MethodHelpers.checkVerifiedUser();
 
