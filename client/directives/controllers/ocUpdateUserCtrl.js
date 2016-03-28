@@ -14,7 +14,10 @@
     vm.update = update;
     
     vm.helpers({
-      user: () => Meteor.user()
+      user: () => Meteor.user(),
+	  isStudent: () => {
+        return Roles.userIsInRole(Meteor.userId(), STUDENT_ROLE, Roles.GLOBAL_GROUP);
+      }
     });
     
     function update()
