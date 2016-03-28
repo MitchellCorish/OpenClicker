@@ -76,7 +76,7 @@
         }
       })
       .state('updateUser', {
-        url: '/update-user/:userId',
+        url: '/update-user',
         views: {
             header: { templateUrl: "client/templates/header.html" },
             main: { templateUrl: "client/templates/routes/updateUser.html" },
