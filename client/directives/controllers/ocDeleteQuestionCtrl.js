@@ -15,7 +15,7 @@
     
     vm.delete = deleteQuestion;
     
-    vm.questionId = "LYRR4uG6RErGMRQRZ";
+    vm.questionId = "CrNpt7ZifhwnCwJLi";
     
     
     vm.helpers({

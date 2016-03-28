@@ -218,7 +218,7 @@ Groups.attachSchema(Schema.Groups, {replace: true});
 Answers.attachSchema(Schema.Answers, {replace: true});
 
 Meteor.methods({
-  answerQuestion: function (questionId, selectedAnswer) {
+  answerQuestion: function (questionId, selectedAnswer, timestamp) {
     MethodHelpers.checkUserLoggedIn();
     MethodHelpers.checkVerifiedUser();
     MethodHelpers.checkQuestionExists(questionId);
@@ -236,10 +236,10 @@ Meteor.methods({
       questionId: question._id,
       groupId: question.groupId,
       userId: Meteor.userId(),
-      timestamp: timestamp
     }, {
       $set: {
-        answer: selectedAnswer
+        answer: selectedAnswer,
+        timestamp: timestamp
       }
     }, {
       upsert: true
@@ -401,7 +401,25 @@ Meteor.methods({
     });
     
     return true;
-  }
+  },
+  
+  updateUser: function(user) {
+    MethodHelpers.checkUserLoggedIn();
+    MethodHelpers.checkVerifiedUser();
+
+    Users.update({
+        _id: user._id,
+    }, {
+       $set: {
+           username: user.username,
+           "profile.institution": user.profile.institution,
+           "profile.faculty": user.profile.faculty,
+           "profile.studentId": user.profile.studentId,
+       }
+    });
+
+    return true;
+  },
 });
 
 // define some functions for things we will have to check frequently
@@ -415,9 +433,9 @@ MethodHelpers = {
   checkAnswerInTime: function (questionId, answerTimestamp) {
     var question = Questions.findOne({ _id: questionId });
     
-    if (answerTimestamp >= question.startTime)
+    if (answerTimestamp < question.startTime)
     {
-        if(question.endTime == 0 || answerTimestamp <= question.endTime)
+        if(question.endTime != 0 || answerTimestamp > question.endTime)
         {
             throw new Meteor.Error(ERROR_ANSWER_OUT_OF_TIME);
         }

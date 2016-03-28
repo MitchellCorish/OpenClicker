@@ -5,6 +5,7 @@ describe('Meteor.methods', function () {
   var user;
   var group;
   var answer;
+  var timestamp;
   
   // set up
   beforeEach(function () {
@@ -37,7 +38,9 @@ describe('Meteor.methods', function () {
       possibleAnswers: ['11', '4', '5'],
       answer: 1,
       userId: 'testUser',
-      active: false
+      active: false,
+      startTime: Math.floor(Date.now() / 1000),
+      endTime: (Math.floor(Date.now() / 1000)+ 30),
     };
     
     group = {
@@ -47,6 +50,7 @@ describe('Meteor.methods', function () {
     };
     
     answer = 0;
+    timestamp = (Math.floor(Date.now() / 1000) + 10);
     
     // spies that won't change between tests
     spyOn(MethodHelpers, 'checkAdminPermissions').and.returnValue(true);
@@ -69,7 +73,7 @@ describe('Meteor.methods', function () {
     it('should insert or update an answer to the specified question', function () {
       spyOn(Answers, 'update').and.returnValue(true);
       
-      Meteor.call('answerQuestion', question._id, answer);
+      Meteor.call('answerQuestion', question._id, answer, timestamp);
       
       expect(Answers.update).toHaveBeenCalledWith({
         questionId: question._id,
@@ -77,7 +81,8 @@ describe('Meteor.methods', function () {
         userId: user._id
       }, {
         $set: {
-          answer: answer
+          answer: answer,
+          timestamp: timestamp
         }
       }, {
         upsert: true

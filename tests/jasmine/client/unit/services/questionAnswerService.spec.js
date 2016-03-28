@@ -5,6 +5,7 @@ describe('QuestionAnswerService', function () {
   
   var service;
   var questionId;
+  var timestamp;
   var errorMessage;
   
   // inject dependencies
@@ -16,6 +17,7 @@ describe('QuestionAnswerService', function () {
   beforeEach(function () {
     
     questionId = 'testQuestion';
+    timestamp = (Math.floor(Date.now() / 1000)+ 15);
     errorMessage = 'error message';
     
     // spies that won't change between tests
@@ -28,9 +30,9 @@ describe('QuestionAnswerService', function () {
     it('should call the answerQuestion Meteor method', function () {
       var answerQuestion = VelocityHelpers.spyOnMethod('answerQuestion');
       
-      service.answerQuestion(questionId, 0);
+      service.answerQuestion(questionId, 0, timestamp);
       
-      expect(answerQuestion).toHaveBeenCalledWith(questionId, 0);
+      expect(answerQuestion).toHaveBeenCalledWith(questionId, 0, timestamp);
     });
     
     it('should print errors to the console', function () {      

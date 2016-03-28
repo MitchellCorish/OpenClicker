@@ -17,8 +17,7 @@
     
     vm.subscribe('ownedQuestions');
     
-       
-    vm.questionId = "JJ3LiiuzRq8Myoj4i";
+    
     vm.counter = 30;
     
     var mytimeout = null; 

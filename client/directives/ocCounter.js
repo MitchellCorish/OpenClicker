@@ -13,7 +13,9 @@
       controllerAs: 'vm',
       templateUrl: 'client/templates/ocCounter.html',
       restrict: 'E',
-      scope: {},
+      scope: {
+          questionId: '@'
+      },
       bindToController: true
     };
     

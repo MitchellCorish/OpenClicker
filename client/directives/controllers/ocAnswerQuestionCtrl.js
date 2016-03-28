@@ -28,7 +28,8 @@
     {
       if (vm.selectedAnswer && vm.selectedAnswer >= 0 && vm.selectedAnswer < vm.question.possibleAnswers.length)
       {
-        QuestionAnswerService.answerQuestion(vm.question._id, vm.selectedAnswer, timestamp);
+        vm.timestamp = Math.floor(Date.now() / 1000);
+        QuestionAnswerService.answerQuestion(vm.question._id, vm.selectedAnswer, vm.timestamp);
       }
       else
       {
