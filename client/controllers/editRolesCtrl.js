@@ -3,11 +3,11 @@
   
   angular
     .module('openClicker')
-    .controller('updateUserCtrl', updateUserCtrl);
+    .controller('editRolesCtrl', editRolesCtrl);
     
-  updateUserCtrl.$inject = ['$stateParams'];
+  editRolesCtrl.$inject = ['$stateParams'];
   
-  function updateUserCtrl($stateParams) {
+  function editRolesCtrl($stateParams) {
     var vm = this;
     
     vm.userId = $stateParams.userId;

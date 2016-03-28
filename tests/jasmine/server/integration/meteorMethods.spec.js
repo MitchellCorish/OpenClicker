@@ -60,6 +60,7 @@ describe('Meteor.methods', function () {
     spyOn(MethodHelpers, 'checkGroupOwnership').and.returnValue(true);
     spyOn(MethodHelpers, 'checkQuestionExists').and.returnValue(true);
     spyOn(MethodHelpers, 'checkQuestionIsActive').and.returnValue(true);
+    spyOn(MethodHelpers, 'checkUserExists').and.returnValue(true);
     spyOn(MethodHelpers, 'checkUserInGroup').and.returnValue(true);
     spyOn(MethodHelpers, 'checkUserLoggedIn').and.returnValue(true);
     spyOn(MethodHelpers, 'checkUserNotInGroup').and.returnValue(true);
@@ -190,6 +191,16 @@ describe('Meteor.methods', function () {
           name: group.name
         }
       });
+    });
+  });
+  
+  describe('updateRoles()', function () {
+    it('should update the roles of the specified user to those given', function () {
+      spyOn(Roles, 'setUserRoles');
+      
+      Meteor.call('updateRoles', user._id, true, true, true);
+      
+      expect(Roles.setUserRoles).toHaveBeenCalledWith(user._id, [STUDENT_ROLE, PROFESSOR_ROLE, ADMIN_ROLE], Roles.GLOBAL_GROUP);
     });
   });
   
