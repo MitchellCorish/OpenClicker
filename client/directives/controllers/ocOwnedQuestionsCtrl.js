@@ -13,14 +13,6 @@
     
     vm.subscribe('ownedQuestions');
     
-    /*
-    vm.helpers({
-      questions: () => function() {
-         return Questions.find({
-        userId: Meteor.userId()
-      })}
-    });*/
-    
     vm.helpers({
       questions: () => Questions.find({
         userId: Meteor.userId()
