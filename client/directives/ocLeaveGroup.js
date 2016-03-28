@@ -11,7 +11,7 @@
     var directive = {
       controller: 'ocLeaveGroupCtrl',
       controllerAs: 'vm',
-      templateUrl: 'client/templates/ocLeaveGroup.html',
+      templateUrl: 'client/templates/directives/ocLeaveGroup.html',
       restrict: 'E',
       scope: {
         groupId: '@'

@@ -11,7 +11,7 @@
     var directive = {
       controller: 'ocDeleteGroupCtrl',
       controllerAs: 'vm',
-      templateUrl: 'client/templates/ocDeleteGroup.html',
+      templateUrl: 'client/templates/directives/ocDeleteGroup.html',
       restrict: 'E',
       scope: {
         groupId: '@'
