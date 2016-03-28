@@ -160,7 +160,19 @@ Schema.Questions = new SimpleSchema({
   },
   active: {
     type: Boolean
-  }
+  },
+  startTime: {
+      type: Number,
+      label: "Question Start Time",
+      optional: true
+  },
+  endTime: {
+      type: Number,
+      label: "Question End Time",
+      optional: true
+  },
+  
+  
 });
 
 //Group Schema
@@ -192,6 +204,10 @@ Schema.Answers = new SimpleSchema({
   answer: {
     type: Number,
     label: "Answer"
+  },
+  timestamp: {
+    type: Number,
+    label: "Answer Timestamp"
   }
 });
 
@@ -214,11 +230,13 @@ Meteor.methods({
     
     MethodHelpers.checkUserInGroup(question.groupId);
     MethodHelpers.checkAnswerInRange(questionId, selectedAnswer);
+    MethodHelpers.checkAnswerInTime(questionId, timestamp);
     
     Answers.update({
       questionId: question._id,
       groupId: question.groupId,
-      userId: Meteor.userId()
+      userId: Meteor.userId(),
+      timestamp: timestamp
     }, {
       $set: {
         answer: selectedAnswer
@@ -237,6 +255,22 @@ Meteor.methods({
     Groups.insert({
       userId: Meteor.userId(),
       name: groupName
+    });
+    
+    return true;
+  },
+   createQuestion: function (groupid, question, answers, correctAnswer) {
+    MethodHelpers.checkUserLoggedIn();
+    MethodHelpers.checkVerifiedUser();
+    MethodHelpers.checkCreatorPermissions();
+    
+    Questions.insert({
+      userId: Meteor.userId(),
+      groupId: groupid,
+      questionAsked: question,
+      possibleAnswers: answers,
+      answer: correctAnswer,
+      active: false
     });
     
     return true;
@@ -270,6 +304,18 @@ Meteor.methods({
       groupId: groupId
     });
     
+    return true;
+  },
+  deleteQuestion: function (questionId) {
+    MethodHelpers.checkUserLoggedIn();
+    MethodHelpers.checkVerifiedUser();
+    MethodHelpers.checkCreatorPermissions();
+    
+    Questions.remove({
+      _id: questionId,
+      userId: Meteor.userId()
+    });
+       
     return true;
   },
   joinGroup: function (groupId) {
@@ -322,23 +368,40 @@ Meteor.methods({
     
     return true;
   },
-    updateUser: function(user) {
+  
+  updateQuestionStartTime: function (questionId, startTime) {
     MethodHelpers.checkUserLoggedIn();
     MethodHelpers.checkVerifiedUser();
-
-    Users.update({
-        _id: user._id,
+    MethodHelpers.checkCreatorPermissions();
+    
+    Questions.update({
+      _id: questionId,
+      userId: Meteor.userId()
     }, {
-       $set: {
-           username: user.username,
-           "profile.institution": user.profile.institution,
-           "profile.faculty": user.profile.faculty,
-           "profile.studentId": user.profile.studentId,
-       }
+      $set: {
+        startTime: startTime
+      }
     });
-
+    
     return true;
   },
+  
+  updateQuestionEndTime: function (questionId, endTime) {
+    MethodHelpers.checkUserLoggedIn();
+    MethodHelpers.checkVerifiedUser();
+    MethodHelpers.checkCreatorPermissions();
+    
+    Questions.update({
+      _id: questionId,
+      userId: Meteor.userId()
+    }, {
+      $set: {
+        endTime: endTime
+      }
+    });
+    
+    return true;
+  }
 });
 
 // define some functions for things we will have to check frequently
@@ -347,6 +410,17 @@ MethodHelpers = {
     if (!Roles.userIsInRole(Meteor.userId(), ADMIN_ROLE, Roles.GLOBAL_GROUP))
     {
       throw new Meteor.Error(ERROR_NOT_AUTHORIZED);
+    }
+  },
+  checkAnswerInTime: function (questionId, answerTimestamp) {
+    var question = Questions.findOne({ _id: questionId });
+    
+    if (answerTimestamp >= question.startTime)
+    {
+        if(question.endTime == 0 || answerTimestamp <= question.endTime)
+        {
+            throw new Meteor.Error(ERROR_ANSWER_OUT_OF_TIME);
+        }
     }
   },
   checkAnswerInRange: function (questionId, selectedAnswer) {

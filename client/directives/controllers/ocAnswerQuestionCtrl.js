@@ -16,6 +16,8 @@
     vm.answer = answer;
     vm.selectedAnswer = null;
     
+    
+    
     vm.helpers({
       question: () => Questions.findOne({
         _id: vm.questionId
@@ -26,7 +28,7 @@
     {
       if (vm.selectedAnswer && vm.selectedAnswer >= 0 && vm.selectedAnswer < vm.question.possibleAnswers.length)
       {
-        QuestionAnswerService.answerQuestion(vm.question._id, vm.selectedAnswer);
+        QuestionAnswerService.answerQuestion(vm.question._id, vm.selectedAnswer, timestamp);
       }
       else
       {
