@@ -25,3 +25,4 @@ velocity:html-reporter
 angular:angular-mocks
 angularui:angular-ui-router
 velocity:helpers
+meteorhacks:fast-render
