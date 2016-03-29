@@ -28,6 +28,30 @@
           }
         }
       })
+      .state('askQuestion', {
+        url: '/ask-question/:questionId',
+        views: {
+          header: {
+            templateUrl: 'client/templates/header.html'
+          },
+          main: {
+            templateUrl: 'client/templates/routes/askQuestion.html'
+          }    
+        },
+        data: {
+          rule: function () {
+            if (!Meteor.userId() ||
+                !Meteor.user().emails[0].verified ||
+                !Roles.userIsInRole(Meteor.userId(), PROFESSOR_ROLE, Roles.GLOBAL_GROUP))
+            {
+              return {
+                to: 'home',
+                params: {}
+              }
+            }
+          }
+        }
+      })
       .state('createGroup', {
         url: '/create-group',
         views: {
@@ -43,6 +67,30 @@
             if (!Meteor.userId() ||
                 !Meteor.user().emails[0].verified ||
                 !Roles.userIsInRole(Meteor.userId(), PROFESSOR_ROLE, Roles.GLOBAL_GROUP))
+            {
+              return {
+                to: 'home',
+                params: {}
+              }
+            }
+          }
+        }
+      })
+      .state('editRoles', {
+        url: '/edit-roles/:userId',
+        views: {
+          header: {
+            templateUrl: 'client/templates/header.html'
+          },
+          main: {
+            templateUrl: 'client/templates/routes/editRoles.html'
+          }    
+        },
+        data: {
+          rule: function () {
+            if (!Meteor.userId() ||
+                !Meteor.user().emails[0].verified ||
+                !Roles.userIsInRole(Meteor.userId(), ADMIN_ROLE, Roles.GLOBAL_GROUP))
             {
               return {
                 to: 'home',
@@ -76,7 +124,7 @@
         }
       })
       .state('updateUser', {
-        url: '/update-user/:userId',
+        url: '/update-user',
         views: {
             header: { templateUrl: "client/templates/header.html" },
             main: { templateUrl: "client/templates/routes/updateUser.html" },
