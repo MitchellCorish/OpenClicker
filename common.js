@@ -160,7 +160,19 @@ Schema.Questions = new SimpleSchema({
   },
   active: {
     type: Boolean
-  }
+  },
+  startTime: {
+      type: Number,
+      label: "Question Start Time",
+      optional: true
+  },
+  endTime: {
+      type: Number,
+      label: "Question End Time",
+      optional: true
+  },
+  
+  
 });
 
 //Group Schema
@@ -192,6 +204,10 @@ Schema.Answers = new SimpleSchema({
   answer: {
     type: Number,
     label: "Answer"
+  },
+  timestamp: {
+    type: Number,
+    label: "Answer Timestamp"
   }
 });
 
@@ -202,7 +218,7 @@ Groups.attachSchema(Schema.Groups, {replace: true});
 Answers.attachSchema(Schema.Answers, {replace: true});
 
 Meteor.methods({
-  answerQuestion: function (questionId, selectedAnswer) {
+  answerQuestion: function (questionId, selectedAnswer, timestamp) {
     MethodHelpers.checkUserLoggedIn();
     MethodHelpers.checkVerifiedUser();
     MethodHelpers.checkQuestionExists(questionId);
@@ -214,14 +230,16 @@ Meteor.methods({
     
     MethodHelpers.checkUserInGroup(question.groupId);
     MethodHelpers.checkAnswerInRange(questionId, selectedAnswer);
+    MethodHelpers.checkAnswerInTime(questionId, timestamp);
     
     Answers.update({
       questionId: question._id,
       groupId: question.groupId,
-      userId: Meteor.userId()
+      userId: Meteor.userId(),
     }, {
       $set: {
-        answer: selectedAnswer
+        answer: selectedAnswer,
+        timestamp: timestamp
       }
     }, {
       upsert: true
@@ -237,6 +255,23 @@ Meteor.methods({
     Groups.insert({
       userId: Meteor.userId(),
       name: groupName
+    });
+    
+    return true;
+  },
+  createQuestion: function (groupid, question, answers, correctAnswer) {
+    MethodHelpers.checkUserLoggedIn();
+    MethodHelpers.checkVerifiedUser();
+    MethodHelpers.checkCreatorPermissions();
+    MethodHelpers.checkGroupOwnership(groupid);
+    
+    Questions.insert({
+      userId: Meteor.userId(),
+      groupId: groupid,
+      questionAsked: question,
+      possibleAnswers: answers,
+      answer: correctAnswer,
+      active: false
     });
     
     return true;
@@ -270,6 +305,19 @@ Meteor.methods({
       groupId: groupId
     });
     
+    return true;
+  },
+  deleteQuestion: function (questionId) {
+    MethodHelpers.checkUserLoggedIn();
+    MethodHelpers.checkVerifiedUser();
+    MethodHelpers.checkCreatorPermissions();
+    MethodHelpers.checkQuestionOwnership(questionId);
+    
+    Questions.remove({
+      _id: questionId,
+      userId: Meteor.userId()
+    });
+       
     return true;
   },
   joinGroup: function (groupId) {
@@ -322,6 +370,44 @@ Meteor.methods({
     
     return true;
   },
+  
+  updateQuestionStartTime: function (questionId, startTime) {
+    MethodHelpers.checkUserLoggedIn();
+    MethodHelpers.checkVerifiedUser();
+    MethodHelpers.checkCreatorPermissions();
+    MethodHelpers.checkQuestionOwnership(questionId);
+    
+    Questions.update({
+      _id: questionId,
+      userId: Meteor.userId()
+    }, {
+      $set: {
+        startTime: startTime
+      }
+    });
+    
+    return true;
+  },
+  
+  updateQuestionEndTime: function (questionId, endTime) {
+    MethodHelpers.checkUserLoggedIn();
+    MethodHelpers.checkVerifiedUser();
+    MethodHelpers.checkCreatorPermissions();
+    MethodHelpers.checkQuestionOwnership(questionId);
+    
+    Questions.update({
+      _id: questionId,
+      userId: Meteor.userId()
+    }, {
+      $set: {
+        endTime: endTime
+      }
+    });
+    
+    return true;
+  },
+  
+
   updateRoles: function (userId, student, professor, admin) {
     MethodHelpers.checkUserLoggedIn();
     MethodHelpers.checkVerifiedUser();
@@ -376,6 +462,17 @@ MethodHelpers = {
       throw new Meteor.Error(ERROR_NOT_AUTHORIZED);
     }
   },
+  checkAnswerInTime: function (questionId, answerTimestamp) {
+    var question = Questions.findOne({ _id: questionId });
+    
+    if (answerTimestamp < question.startTime)
+    {
+        if(question.endTime != 0 || answerTimestamp > question.endTime)
+        {
+            throw new Meteor.Error(ERROR_ANSWER_OUT_OF_TIME);
+        }
+    }
+  },
   checkAnswerInRange: function (questionId, selectedAnswer) {
     var question = Questions.findOne({ _id: questionId });
     
@@ -416,6 +513,15 @@ MethodHelpers = {
     if (!question.active)
     {
       throw new Meteor.Error(ERROR_QUESTION_INACTIVE);
+    }
+  },
+  checkQuestionOwnership: function (questionId)
+  {
+    var question = Questions.findOne({ _id: questionId });
+    
+    if (!(question.userId == Meteor.userId()))
+    {
+      throw new Meteor.Error(ERROR_NOT_AUTHORIZED);
     }
   },
   checkUserExists: function (userId) {
