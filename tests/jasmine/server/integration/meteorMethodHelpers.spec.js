@@ -147,6 +147,29 @@ describe('MethodHelpers', function () {
     });
   });
   
+  describe('checkQuestionOwnership()', function () {
+    it('should throw a \'' + ERROR_NOT_AUTHORIZED + '\' error if the current user does not own the specified question', function () {
+      spyOn(Meteor, 'userId').and.returnValue(user._id);
+      spyOn(Questions, 'findOne').and.returnValue({
+        _id: 'unownedTestQuestion',
+        groupId: 'testGroup',
+        questionAsked: 'what is 2 + 2?',
+        possibleAnswers: ['11', '4', '5'],
+        answer: 1,
+        userId: 'testUser2',
+        active: false
+      });
+      
+      try
+      {
+        MethodHelpers.checkQuestionOwnership('unownedTestQuestion');
+      }
+      catch(e) {}
+      
+      expect(Meteor.Error).toHaveBeenCalledWith(ERROR_NOT_AUTHORIZED);
+    });
+  });
+  
   describe('checkUserExists()', function () {
     it('should throw a \'' + ERROR_USER_DOES_NOT_EXIST + '\' error if a user with the given id does not exist', function () {
       try

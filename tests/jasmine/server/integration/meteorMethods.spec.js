@@ -60,6 +60,7 @@ describe('Meteor.methods', function () {
     spyOn(MethodHelpers, 'checkGroupOwnership').and.returnValue(true);
     spyOn(MethodHelpers, 'checkQuestionExists').and.returnValue(true);
     spyOn(MethodHelpers, 'checkQuestionIsActive').and.returnValue(true);
+    spyOn(MethodHelpers, 'checkQuestionOwnership').and.returnValue(true);
     spyOn(MethodHelpers, 'checkUserExists').and.returnValue(true);
     spyOn(MethodHelpers, 'checkUserInGroup').and.returnValue(true);
     spyOn(MethodHelpers, 'checkUserLoggedIn').and.returnValue(true);

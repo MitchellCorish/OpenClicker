@@ -259,10 +259,11 @@ Meteor.methods({
     
     return true;
   },
-   createQuestion: function (groupid, question, answers, correctAnswer) {
+  createQuestion: function (groupid, question, answers, correctAnswer) {
     MethodHelpers.checkUserLoggedIn();
     MethodHelpers.checkVerifiedUser();
     MethodHelpers.checkCreatorPermissions();
+    MethodHelpers.checkGroupOwnership(groupid);
     
     Questions.insert({
       userId: Meteor.userId(),
@@ -310,6 +311,7 @@ Meteor.methods({
     MethodHelpers.checkUserLoggedIn();
     MethodHelpers.checkVerifiedUser();
     MethodHelpers.checkCreatorPermissions();
+    MethodHelpers.checkQuestionOwnership(questionId);
     
     Questions.remove({
       _id: questionId,
@@ -373,6 +375,7 @@ Meteor.methods({
     MethodHelpers.checkUserLoggedIn();
     MethodHelpers.checkVerifiedUser();
     MethodHelpers.checkCreatorPermissions();
+    MethodHelpers.checkQuestionOwnership(questionId);
     
     Questions.update({
       _id: questionId,
@@ -390,6 +393,7 @@ Meteor.methods({
     MethodHelpers.checkUserLoggedIn();
     MethodHelpers.checkVerifiedUser();
     MethodHelpers.checkCreatorPermissions();
+    MethodHelpers.checkQuestionOwnership(questionId);
     
     Questions.update({
       _id: questionId,
@@ -509,6 +513,15 @@ MethodHelpers = {
     if (!question.active)
     {
       throw new Meteor.Error(ERROR_QUESTION_INACTIVE);
+    }
+  },
+  checkQuestionOwnership: function (questionId)
+  {
+    var question = Questions.findOne({ _id: questionId });
+    
+    if (!(question.userId == Meteor.userId()))
+    {
+      throw new Meteor.Error(ERROR_NOT_AUTHORIZED);
     }
   },
   checkUserExists: function (userId) {
