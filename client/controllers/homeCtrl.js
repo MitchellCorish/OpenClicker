@@ -12,6 +12,9 @@
     $reactive(vm).attach($scope);
     
     vm.helpers({
+      isAdmin: () => {
+        return Roles.userIsInRole(Meteor.userId(), ADMIN_ROLE, Roles.GLOBAL_GROUP);
+      },
       isProfessor: () => {
         return Roles.userIsInRole(Meteor.userId(), PROFESSOR_ROLE, Roles.GLOBAL_GROUP);
       },

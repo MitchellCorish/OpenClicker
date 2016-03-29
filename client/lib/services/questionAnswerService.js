@@ -14,8 +14,8 @@
     
     return service;
     
-    function answerQuestion(questionId, selectedAnswer) {
-      Meteor.call('answerQuestion', questionId, selectedAnswer, function (error, result) {
+    function answerQuestion(questionId, selectedAnswer, timestamp) {
+      Meteor.call('answerQuestion', questionId, selectedAnswer, timestamp, function (error, result) {
         if (error)
         {
           console.log(error.message);

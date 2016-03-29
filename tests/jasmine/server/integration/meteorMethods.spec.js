@@ -5,6 +5,7 @@ describe('Meteor.methods', function () {
   var user;
   var group;
   var answer;
+  var timestamp;
   
   // set up
   beforeEach(function () {
@@ -22,7 +23,12 @@ describe('Meteor.methods', function () {
       },
       groups: [
         'testGroup'
-      ]
+      ],
+      profile: {
+        institution: 'UPEI',
+        faculty: 'Science',
+        studentId: '123456'
+      }
     }
     
     question = {
@@ -32,7 +38,9 @@ describe('Meteor.methods', function () {
       possibleAnswers: ['11', '4', '5'],
       answer: 1,
       userId: 'testUser',
-      active: false
+      active: false,
+      startTime: Math.floor(Date.now() / 1000),
+      endTime: (Math.floor(Date.now() / 1000)+ 30),
     };
     
     group = {
@@ -42,6 +50,7 @@ describe('Meteor.methods', function () {
     };
     
     answer = 0;
+    timestamp = (Math.floor(Date.now() / 1000) + 10);
     
     // spies that won't change between tests
     spyOn(MethodHelpers, 'checkAdminPermissions').and.returnValue(true);
@@ -51,6 +60,8 @@ describe('Meteor.methods', function () {
     spyOn(MethodHelpers, 'checkGroupOwnership').and.returnValue(true);
     spyOn(MethodHelpers, 'checkQuestionExists').and.returnValue(true);
     spyOn(MethodHelpers, 'checkQuestionIsActive').and.returnValue(true);
+    spyOn(MethodHelpers, 'checkQuestionOwnership').and.returnValue(true);
+    spyOn(MethodHelpers, 'checkUserExists').and.returnValue(true);
     spyOn(MethodHelpers, 'checkUserInGroup').and.returnValue(true);
     spyOn(MethodHelpers, 'checkUserLoggedIn').and.returnValue(true);
     spyOn(MethodHelpers, 'checkUserNotInGroup').and.returnValue(true);
@@ -64,7 +75,7 @@ describe('Meteor.methods', function () {
     it('should insert or update an answer to the specified question', function () {
       spyOn(Answers, 'update').and.returnValue(true);
       
-      Meteor.call('answerQuestion', question._id, answer);
+      Meteor.call('answerQuestion', question._id, answer, timestamp);
       
       expect(Answers.update).toHaveBeenCalledWith({
         questionId: question._id,
@@ -72,7 +83,8 @@ describe('Meteor.methods', function () {
         userId: user._id
       }, {
         $set: {
-          answer: answer
+          answer: answer,
+          timestamp: timestamp
         }
       }, {
         upsert: true
@@ -178,6 +190,35 @@ describe('Meteor.methods', function () {
       }, {
         $set: {
           name: group.name
+        }
+      });
+    });
+  });
+  
+  describe('updateRoles()', function () {
+    it('should update the roles of the specified user to those given', function () {
+      spyOn(Roles, 'setUserRoles');
+      
+      Meteor.call('updateRoles', user._id, true, true, true);
+      
+      expect(Roles.setUserRoles).toHaveBeenCalledWith(user._id, [STUDENT_ROLE, PROFESSOR_ROLE, ADMIN_ROLE], Roles.GLOBAL_GROUP);
+    });
+  });
+  
+  describe('updateUser()', function () {
+    it('should update the name of the specified user', function () {
+      spyOn(Users, 'update').and.returnValue(true);
+      
+      Meteor.call('updateUser', user);
+      
+      expect(Users.update).toHaveBeenCalledWith({
+        _id: user._id,
+      }, {
+        $set: {
+          username: user.username,
+          "profile.institution": user.profile.institution,
+          "profile.faculty": user.profile.faculty,
+          "profile.studentId": user.profile.studentId,
         }
       });
     });
