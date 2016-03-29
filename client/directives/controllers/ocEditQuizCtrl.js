@@ -20,11 +20,13 @@
         vm.removeQuestion = removeQuestion;
         vm.addQuestion = addQuestion;
         vm.questionName = questionName;
+        vm.test = test;
         vm.helpers({
-                quiz: () => Quizes.findOne({
+            quiz: () => Quizes.findOne({
                 _id: vm.quizId
-            })
-    });
+            }),
+            questions: () => Questions.find({})
+        });
 
         function update()
         {
@@ -33,6 +35,10 @@
 
         function questionName(questionId){
             QuizService.getQuestionName(questionId);
+        }
+
+        function test(){
+            console.log(vm.questions);
         }
 
         function up(i)
@@ -56,6 +62,8 @@
 
         function removeQuestion(i)
         {
+            console.log(vm.quiz.questions[i]);
+
             vm.quiz.questions.splice(i,1);
 
         }

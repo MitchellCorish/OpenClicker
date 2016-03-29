@@ -33,6 +33,16 @@ Meteor.publish('ownedQuestions', function () {
   });
 });
 
+Meteor.publish('users', function () {
+  if(!this.userId)
+  {
+    return null;
+  }
+  return Users.find({
+    groupId: this.groupId
+  });
+});
+
 Meteor.publish('ownedQuizes', function () {
   if(!this.userId)
   {

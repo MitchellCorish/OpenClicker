@@ -3,15 +3,15 @@
 
     angular
         .module('openClicker')
-        .directive('ocCreateQuiz', ocCreateQuiz);
+        .directive('ocGroupSummary', ocGroupSummary);
 
-    ocCreateQuiz.$inject = [];
+    ocGroupSummary.$inject = [];
 
-    function ocCreateQuiz() {
+    function ocGroupSummary() {
         var directive = {
-            controller: 'ocCreateQuizCtrl',
+            controller: 'ocGroupSummaryCtrl',
             controllerAs: 'vm',
-            templateUrl: 'client/templates/ocCreateQuiz.html',
+            templateUrl: 'client/templates/ocGroupSummary.html',
             restrict: 'E',
             scope: {
                 groupId: '@'

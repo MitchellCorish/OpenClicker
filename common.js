@@ -252,14 +252,16 @@ Meteor.methods({
 
         return true;
     },
-    createQuiz: function (quizName) {
+    createQuiz: function (quizName, groupId) {
         MethodHelpers.checkUserLoggedIn();
         MethodHelpers.checkVerifiedUser();
         MethodHelpers.checkCreatorPermissions();
 
         Quizes.insert({
             userId: Meteor.userId(),
-            name: quizName
+            name: quizName,
+            groupId: groupId,
+            questions: []
         });
 
         return true;
@@ -304,11 +306,6 @@ Meteor.methods({
         Quizes.remove({
             _id: quizId
         });
-
-        /*Questions.remove({
-            quizId: quizId
-        });*/
-
         return true;
     },
 
@@ -318,6 +315,7 @@ Meteor.methods({
         MethodHelpers.checkCreatorPermissions();
         MethodHelpers.checkQuestionExists(questionId);
         var question = Questions.findOne({ _id: questionId });
+        console.log(question.questionAsked);
         return question.questionAsked;
     },
 

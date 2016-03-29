@@ -30,8 +30,8 @@
             });
         }
 
-        function createQuiz(quizName, success, failure) {
-            Meteor.call('createQuiz', quizName, function (error, result) {
+        function createQuiz(quizName, groupId, success, failure) {
+            Meteor.call('createQuiz', quizName, groupId, function (error, result) {
                 if (error)
                 {
                     console.log(error.message);
@@ -70,6 +70,13 @@
                 if (error)
                 {
                     console.log(error.message);
+                }
+                else if(result){
+                    console.log(result);
+                    if (success && typeof(success) == 'function')
+                    {
+                        success(result);
+                    }
                 }
             });
         }
