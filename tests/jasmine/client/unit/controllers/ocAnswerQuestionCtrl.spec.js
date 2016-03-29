@@ -36,7 +36,9 @@ describe('ocAnswerQuestionCtrl', function () {
       possibleAnswers: ['11', '4', '5'],
       answer: 1,
       userId: 'testUser',
-      active: true
+      active: true,
+      startTime: Math.floor(Date.now() / 1000),
+      endTime: (Math.floor(Date.now() / 1000)+ 30),
     };
     
     // spies that won't change between tests
@@ -49,9 +51,10 @@ describe('ocAnswerQuestionCtrl', function () {
     it('should call the QuestionAnswerService if a valid answer is selected', function() {
       controller.selectedAnswer = controller.question.answer;
       
+      
       controller.answer();
       
-      expect(QuestionAnswerService.answerQuestion).toHaveBeenCalledWith('testQuestion', 1);
+      expect(QuestionAnswerService.answerQuestion).toHaveBeenCalledWith('testQuestion', 1, controller.timestamp);
     });
     
     it('should prompt the user to select an answer if no answer or an invalid answer is selected', function() {

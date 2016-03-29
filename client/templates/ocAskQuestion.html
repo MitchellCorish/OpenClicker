@@ -1,0 +1,29 @@
+<div class="panel panel-primary" ng-if="vm.question">
+  <div class="panel-heading">
+    <p class="panel-title">{{vm.question.questionAsked}}</p>
+  </div>
+  <div class="panel-body">
+    <div ng-repeat="answer in vm.question.possibleAnswers">
+      {{answer}}
+    </div>
+  </div>
+  <div class="panel-footer">
+    <button class="btn btn-success" ng-click="vm.start()" ng-if="!vm.active && !vm.usingTimer">Start</button>
+    <button class="btn btn-danger" ng-click="vm.stop()" ng-if="vm.active && !vm.usingTimer">Stop</button>
+    <button class="btn btn-primary" ng-click='vm.startTimer()' ng-if="!vm.active || vm.usingTimer">{{ !vm.active ? 'Start Timer' : vm.counter }}</button>
+  </div>
+</div>
+
+<div ng-if="!vm.question">
+  <p>Unable to display the specified question either because it does not exist, or because you are not the owner.</p>
+  <a ui-sref="home"><button type="button" class="btn btn-success">Home</button></a>
+</div>
+
+<!--<div class="form-horizontal">
+  <div class="form-group">
+    <div class="col-lg-offset-2 col-lg-10">
+      <button type="button" class="btn btn-success pull-left" ng-click="">Embed to PPT</button>
+      <button type="button" class="btn btn-success pull-right" ng-click="">Next</button>
+    </div>
+  </div>
+</div>-->
