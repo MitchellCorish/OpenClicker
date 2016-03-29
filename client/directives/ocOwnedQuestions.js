@@ -11,7 +11,7 @@
     var directive = {
       controller: 'ocOwnedQuestionsCtrl',
       controllerAs: 'vm',
-      templateUrl: 'client/templates/ocOwnedQuestions.html',
+      templateUrl: 'client/templates/directives/ocOwnedQuestions.html',
       restrict: 'E',
       scope: {},
       bindToController: true

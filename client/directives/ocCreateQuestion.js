@@ -11,7 +11,7 @@
     var directive = {
       controller: 'ocCreateQuestionCtrl',
       controllerAs: 'vm',
-      templateUrl: 'client/templates/ocCreateQuestion.html',
+      templateUrl: 'client/templates/directives/ocCreateQuestion.html',
       restrict: 'E',
       scope: {
         questionId: '@'
