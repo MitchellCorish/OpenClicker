@@ -315,6 +315,7 @@ Meteor.methods({
     MethodHelpers.checkUserLoggedIn();
     MethodHelpers.checkVerifiedUser();
     MethodHelpers.checkCreatorPermissions();
+    MethodHelpers.checkQuestionExists(questionId);
     MethodHelpers.checkQuestionOwnership(questionId);
     
     Questions.remove({
@@ -379,6 +380,7 @@ Meteor.methods({
     MethodHelpers.checkUserLoggedIn();
     MethodHelpers.checkVerifiedUser();
     MethodHelpers.checkCreatorPermissions();
+    MethodHelpers.checkQuestionExists(questionId);
     MethodHelpers.checkQuestionOwnership(questionId);
     
     Questions.update({
@@ -397,6 +399,7 @@ Meteor.methods({
     MethodHelpers.checkUserLoggedIn();
     MethodHelpers.checkVerifiedUser();
     MethodHelpers.checkCreatorPermissions();
+    MethodHelpers.checkQuestionExists(questionId);
     MethodHelpers.checkQuestionOwnership(questionId);
     
     Questions.update({
