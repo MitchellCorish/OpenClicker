@@ -84,7 +84,8 @@ describe('Meteor.methods', function () {
       }, {
         $set: {
           answer: answer,
-          timestamp: timestamp
+          timestamp: timestamp,
+          correct: answer == question.answer
         }
       }, {
         upsert: true

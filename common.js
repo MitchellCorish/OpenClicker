@@ -208,6 +208,9 @@ Schema.Answers = new SimpleSchema({
   timestamp: {
     type: Number,
     label: "Answer Timestamp"
+  },
+  correct: {
+    type: Boolean
   }
 });
 
@@ -239,7 +242,8 @@ Meteor.methods({
     }, {
       $set: {
         answer: selectedAnswer,
-        timestamp: timestamp
+        timestamp: timestamp,
+        correct: selectedAnswer == question.answer
       }
     }, {
       upsert: true
