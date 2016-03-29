@@ -3,18 +3,18 @@
   
   angular
     .module('openClicker')
-    .directive('ocCounter', ocCounter);
+    .directive('ocAskQuestion', ocAskQuestion);
     
-  ocCounter.$inject = [];
+  ocAskQuestion.$inject = [];
   
-  function ocCounter() {
+  function ocAskQuestion() {
     var directive = {
-      controller: 'ocCounterCtrl',
+      controller: 'ocAskQuestionCtrl',
       controllerAs: 'vm',
-      templateUrl: 'client/templates/ocCounter.html',
+      templateUrl: 'client/templates/ocAskQuestion.html',
       restrict: 'E',
       scope: {
-          questionId: '@'
+        questionId: '@'
       },
       bindToController: true
     };
