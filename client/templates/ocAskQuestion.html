@@ -8,8 +8,8 @@
     </div>
   </div>
   <div class="panel-footer">
-    <button class="btn btn-success" ng-click="vm.start()">Start</button>
-    <button class="btn btn-danger" ng-click="vm.stop()">Stop</button>
+    <button class="btn btn-success" ng-click="vm.start()" ng-if="!vm.active">Start</button>
+    <button class="btn btn-danger" ng-click="vm.stop()" ng-if="vm.active">Stop</button>
   </div>
 </div>
 

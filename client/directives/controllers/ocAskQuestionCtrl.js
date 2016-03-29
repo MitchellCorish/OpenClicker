@@ -28,8 +28,8 @@
       if (!vm.active)
       {
         vm.active = true;
-        console.log('start');
-        QuestionService.updateQuestionStartTime(vm.questionId);
+        QuestionService.updateQuestionStartTime(vm.questionId, Math.floor(Date.now() / 1000));
+        QuestionService.updateQuestionEndTime(vm.questionId, 0);
       }
     }
     
@@ -38,8 +38,7 @@
       if (vm.active)
       {
         vm.active = false;
-        console.log('stop');
-        QuestionService.updateQuestionEndTime(vm.questionId);
+        QuestionService.updateQuestionEndTime(vm.questionId, Math.floor(Date.now() / 1000));
       }
     }
   }
