@@ -11,7 +11,7 @@
     var directive = {
       controller: 'ocJoinGroupCtrl',
       controllerAs: 'vm',
-      templateUrl: 'client/templates/ocJoinGroup.html',
+      templateUrl: 'client/templates/directives/ocJoinGroup.html',
       restrict: 'E',
       scope: {},
       bindToController: true

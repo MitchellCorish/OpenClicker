@@ -11,7 +11,7 @@
     var directive = {
       controller: 'ocOwnedGroupsCtrl',
       controllerAs: 'vm',
-      templateUrl: 'client/templates/ocOwnedGroups.html',
+      templateUrl: 'client/templates/directives/ocOwnedGroups.html',
       restrict: 'E',
       scope: {},
       bindToController: true

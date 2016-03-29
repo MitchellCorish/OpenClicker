@@ -11,7 +11,7 @@
     var directive = {
       controller: 'ocEditRolesCtrl',
       controllerAs: 'vm',
-      templateUrl: 'client/templates/ocEditRoles.html',
+      templateUrl: 'client/templates/directives/ocEditRoles.html',
       restrict: 'E',
       scope: {
         userId: '@'

@@ -11,7 +11,7 @@
     var directive = {
       controller: 'ocDeleteQuestionCtrl',
       controllerAs: 'vm',
-      templateUrl: 'client/templates/ocDeleteQuestion.html',
+      templateUrl: 'client/templates/directives/ocDeleteQuestion.html',
       restrict: 'E',
       scope: {
         questionId: '@'

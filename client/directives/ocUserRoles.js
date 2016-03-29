@@ -11,7 +11,7 @@
     var directive = {
       controller: 'ocUserRolesCtrl',
       controllerAs: 'vm',
-      templateUrl: 'client/templates/ocUserRoles.html',
+      templateUrl: 'client/templates/directives/ocUserRoles.html',
       restrict: 'E',
       scope: {},
       bindToController: true
