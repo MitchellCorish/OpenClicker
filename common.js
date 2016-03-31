@@ -322,7 +322,7 @@ Meteor.methods({
     
     return true;
   },
-    updateUser: function(user) {
+  updateUser: function(user) {
     MethodHelpers.checkUserLoggedIn();
     MethodHelpers.checkVerifiedUser();
 
@@ -337,6 +337,22 @@ Meteor.methods({
        }
     });
 
+    return true;
+  },
+  deleteUserFromGroup: function (userId, groupId) {
+    MethodHelpers.checkUserLoggedIn();
+    MethodHelpers.checkVerifiedUser();
+    MethodHelpers.checkGroupExists(groupId);
+    //MethodHelpers.checkUserInGroup(groupId);
+    
+    Users.update({
+      _id: userId
+    }, {
+      $pull: {
+        groups: groupId
+      }
+    });
+    
     return true;
   },
 });
