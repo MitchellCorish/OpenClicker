@@ -1,6 +1,7 @@
 //Collection creation
 Users = Meteor.users;
 Questions = new Mongo.Collection("questions");
+Quizes = new Mongo.Collection("quizes");
 Groups = new Mongo.Collection("groups");
 Answers = new Mongo.Collection("answers");
 
@@ -171,20 +172,43 @@ Schema.Questions = new SimpleSchema({
       label: "Question End Time",
       optional: true
   },
-  
-  
+    quizId: {
+        type: String,
+        label: "Quiz ID"
+    }
+});
+
+//Quiz Schema
+Schema.Quizes = new SimpleSchema({
+    questions: {
+        type: [String],
+        label: "Questions in a Quiz",
+    },
+    name: {
+        type: String,
+        label: "Quiz Name"
+    },
+    userId: {
+        type: String,
+        label: "User ID"
+    },
+    groupId: {
+        type: String,
+        label: "Group ID"
+    }
+
 });
 
 //Group Schema
 Schema.Groups = new SimpleSchema({
-  userId: {
-    type: String,
-    label: "User Admin ID"
-  },
-  name: {
-    type: String,
-    label: "Group Name"
-  }
+    userId: {
+        type: String,
+        label: "User Admin ID"
+    },
+    name: {
+        type: String,
+        label: "Group Name"
+    }
 });
 
 //Answers Schema
@@ -217,6 +241,7 @@ Schema.Answers = new SimpleSchema({
 //Attaching collections to schemas created
 Users.attachSchema(Schema.Users, {replace: true});
 Questions.attachSchema(Schema.Questions, {replace: true});
+Quizes.attachSchema(Schema.Quizes, {replace: true});
 Groups.attachSchema(Schema.Groups, {replace: true});
 Answers.attachSchema(Schema.Answers, {replace: true});
 
@@ -226,15 +251,15 @@ Meteor.methods({
     MethodHelpers.checkVerifiedUser();
     MethodHelpers.checkQuestionExists(questionId);
     MethodHelpers.checkQuestionIsActive(questionId);
-    
+
     var question = Questions.findOne({
       _id: questionId
     });
-    
+
     MethodHelpers.checkUserInGroup(question.groupId);
     MethodHelpers.checkAnswerInRange(questionId, selectedAnswer);
     MethodHelpers.checkAnswerInTime(questionId, timestamp);
-    
+
     Answers.update({
       questionId: question._id,
       groupId: question.groupId,
@@ -248,19 +273,19 @@ Meteor.methods({
     }, {
       upsert: true
     });
-    
+
     return true;
   },
   createGroup: function (groupName) {
     MethodHelpers.checkUserLoggedIn();
     MethodHelpers.checkVerifiedUser();
     MethodHelpers.checkCreatorPermissions();
-    
+
     Groups.insert({
       userId: Meteor.userId(),
       name: groupName
     });
-    
+
     return true;
   },
   createQuestion: function (groupid, question, answers, correctAnswer) {
@@ -268,7 +293,7 @@ Meteor.methods({
     MethodHelpers.checkVerifiedUser();
     MethodHelpers.checkCreatorPermissions();
     MethodHelpers.checkGroupOwnership(groupid);
-    
+
     Questions.insert({
       userId: Meteor.userId(),
       groupId: groupid,
@@ -277,21 +302,35 @@ Meteor.methods({
       answer: correctAnswer,
       active: false
     });
-    
+
     return true;
   },
+    createQuiz: function (quizName, groupId) {
+        MethodHelpers.checkUserLoggedIn();
+        MethodHelpers.checkVerifiedUser();
+        MethodHelpers.checkCreatorPermissions();
+
+        Quizes.insert({
+            userId: Meteor.userId(),
+            name: quizName,
+            groupId: groupId,
+            questions: []
+        });
+
+        return true;
+    },
   deleteGroup: function (groupId) {
     MethodHelpers.checkUserLoggedIn();
     MethodHelpers.checkVerifiedUser();
     MethodHelpers.checkCreatorPermissions();
     MethodHelpers.checkGroupExists(groupId);
     MethodHelpers.checkGroupOwnership(groupId);
-    
+
     Groups.remove({
       _id: groupId,
       userId: Meteor.userId()
     });
-    
+
     //remove all users, questions, and answers from deleted group
     Users.update({}, {
       $pull: {
@@ -300,15 +339,15 @@ Meteor.methods({
     }, {
       multi: true
     });
-    
+
     Questions.remove({
       groupId: groupId
     });
-    
+
     Answers.remove({
       groupId: groupId
     });
-    
+
     return true;
   },
   deleteQuestion: function (questionId) {
@@ -317,20 +356,84 @@ Meteor.methods({
     MethodHelpers.checkCreatorPermissions();
     MethodHelpers.checkQuestionExists(questionId);
     MethodHelpers.checkQuestionOwnership(questionId);
-    
+
     Questions.remove({
       _id: questionId,
       userId: Meteor.userId()
     });
-       
+
     return true;
   },
+    deleteQuiz: function(quizId) {
+        MethodHelpers.checkUserLoggedIn();
+        MethodHelpers.checkVerifiedUser();
+        MethodHelpers.checkCreatorPermissions();
+        MethodHelpers.checkQuizExists(quizId);
+
+        Quizes.remove({
+            _id: quizId
+        });
+        return true;
+    },
+
+    getQuestionName: function(questionId){
+        MethodHelpers.checkUserLoggedIn();
+        MethodHelpers.checkVerifiedUser();
+        MethodHelpers.checkCreatorPermissions();
+        MethodHelpers.checkQuestionExists(questionId);
+        var question = Questions.findOne({ _id: questionId });
+        console.log(question.questionAsked);
+        return question.questionAsked;
+    },
+
+    editQuestion: function (questionId, groupId, questionAsked, possibleAnswers, answer) {
+        MethodHelpers.checkUserLoggedIn();
+        MethodHelpers.checkVerifiedUser();
+        MethodHelpers.checkCreatorPermissions();
+        MethodHelpers.checkQuestionExists(questionId);
+        MethodHelpers.checkGroupExists(groupId);
+        MethodHelpers.checkGroupOwnership(groupId);
+
+        Questions.update({
+            _id: questionId,
+            userId: Meteor.userId()
+        }, {
+            $set: {
+                groupId: groupId,
+                questionAsked: questionAsked,
+                possibleAnswers: possibleAnswers,
+                answer: answer
+            }
+        });
+
+        return true;
+    },
+
+    editQuiz: function (quizId, questions, userId, name) {
+        MethodHelpers.checkUserLoggedIn();
+        MethodHelpers.checkVerifiedUser();
+        MethodHelpers.checkCreatorPermissions();
+        MethodHelpers.checkQuizExists(quizId);
+
+        Quizes.update({
+            _id: quizId,
+            userId: Meteor.userId()
+        }, {
+            $set: {
+                userId: userId,
+                questions: questions,
+                name: name
+            }
+        });
+
+        return true;
+    },
   joinGroup: function (groupId) {
     MethodHelpers.checkUserLoggedIn();
     MethodHelpers.checkVerifiedUser();
     MethodHelpers.checkGroupExists(groupId);
     MethodHelpers.checkUserNotInGroup(groupId);
-    
+
     Users.update({
       _id: Meteor.userId()
     }, {
@@ -338,7 +441,7 @@ Meteor.methods({
         groups: groupId
       }
     });
-    
+
     return true;
   },
   leaveGroup: function (groupId) {
@@ -346,7 +449,7 @@ Meteor.methods({
     MethodHelpers.checkVerifiedUser();
     MethodHelpers.checkGroupExists(groupId);
     MethodHelpers.checkUserInGroup(groupId);
-    
+
     Users.update({
       _id: Meteor.userId()
     }, {
@@ -354,7 +457,7 @@ Meteor.methods({
         groups: groupId
       }
     });
-    
+
     return true;
   },
   updateGroup: function (group) {
@@ -363,7 +466,7 @@ Meteor.methods({
     MethodHelpers.checkCreatorPermissions();
     MethodHelpers.checkGroupExists(group._id);
     MethodHelpers.checkGroupOwnership(group._id);
-    
+
     Groups.update({
       _id: group._id,
       userId: Meteor.userId()
@@ -372,17 +475,17 @@ Meteor.methods({
         name: group.name
       }
     });
-    
+
     return true;
   },
-  
+
   updateQuestionStartTime: function (questionId, startTime) {
     MethodHelpers.checkUserLoggedIn();
     MethodHelpers.checkVerifiedUser();
     MethodHelpers.checkCreatorPermissions();
     MethodHelpers.checkQuestionExists(questionId);
     MethodHelpers.checkQuestionOwnership(questionId);
-    
+
     Questions.update({
       _id: questionId,
       userId: Meteor.userId()
@@ -391,17 +494,17 @@ Meteor.methods({
         startTime: startTime
       }
     });
-    
+
     return true;
   },
-  
+
   updateQuestionEndTime: function (questionId, endTime) {
     MethodHelpers.checkUserLoggedIn();
     MethodHelpers.checkVerifiedUser();
     MethodHelpers.checkCreatorPermissions();
     MethodHelpers.checkQuestionExists(questionId);
     MethodHelpers.checkQuestionOwnership(questionId);
-    
+
     Questions.update({
       _id: questionId,
       userId: Meteor.userId()
@@ -410,36 +513,36 @@ Meteor.methods({
         endTime: endTime
       }
     });
-    
+
     return true;
   },
-  
+
 
   updateRoles: function (userId, student, professor, admin) {
     MethodHelpers.checkUserLoggedIn();
     MethodHelpers.checkVerifiedUser();
     MethodHelpers.checkAdminPermissions();
     MethodHelpers.checkUserExists(userId);
-    
+
     var newRoles = [];
-    
+
     if (student)
     {
       newRoles.push(STUDENT_ROLE);
     }
-    
+
     if (professor)
     {
       newRoles.push(PROFESSOR_ROLE);
     }
-    
+
     if (admin)
     {
       newRoles.push(ADMIN_ROLE);
     }
-    
+
     Roles.setUserRoles(userId, newRoles, Roles.GLOBAL_GROUP);
-    
+
     return true;
   },
   updateUser: function(user) {
@@ -471,7 +574,7 @@ MethodHelpers = {
   },
   checkAnswerInTime: function (questionId, answerTimestamp) {
     var question = Questions.findOne({ _id: questionId });
-    
+
     if (answerTimestamp < question.startTime)
     {
         if(question.endTime != 0 || answerTimestamp > question.endTime)
@@ -514,6 +617,12 @@ MethodHelpers = {
       throw new Meteor.Error(ERROR_QUESTION_DOES_NOT_EXIST);
     }
   },
+    checkQuizExists: function (quizId) {
+        if (!Quizes.findOne({ _id: quizId }))
+        {
+            throw new Meteor.Error(ERROR_QUIZ_DOES_NOT_EXIST);
+        }
+    },
   checkQuestionIsActive: function (questionId) {
     var question = Questions.findOne({ _id: questionId });
     
@@ -525,7 +634,7 @@ MethodHelpers = {
   checkQuestionOwnership: function (questionId)
   {
     var question = Questions.findOne({ _id: questionId });
-    
+
     if (!(question.userId == Meteor.userId()))
     {
       throw new Meteor.Error(ERROR_NOT_AUTHORIZED);

@@ -53,6 +53,34 @@ Meteor.publish('ownedQuestions', function () {
   });
 });
 
+Meteor.publish('users', function () {
+  if(!this.userId)
+  {
+    return null;
+  }
+  return Users.find({
+    groupId: this.groupId
+  });
+});
+
+Meteor.publish('ownedQuizes', function () {
+  if(!this.userId)
+  {
+    return null;
+  }
+  return Quizes.find({
+    userId: this.userId
+  });
+});
+
+Meteor.publish('questions', function (quizId) {
+  check(quizId, String);
+  return
+    Questions.find({
+      quizId: quizId});
+
+});
+
 Meteor.publish('activeQuestions', function () {
   if(!this.userId)
   {
