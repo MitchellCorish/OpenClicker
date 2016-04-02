@@ -13,6 +13,10 @@
   * [Johnpapa Angular 1 Style Guide](https://github.com/johnpapa/angular-styleguide/blob/master/a1/README.md)
   * [Git branching model](http://nvie.com/posts/a-successful-git-branching-model/)
   
+### Notes:
+
+  * See #50.
+
 ## Packages
 
   A current list of all Meteor packages in the project can be found in /meteor/packages.  Version numbers of all packages and dependencies can be found in /meteor/versions.
