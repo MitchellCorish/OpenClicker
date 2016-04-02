@@ -402,6 +402,54 @@ describe('Meteor.methods', function () {
     });
   });
   
+    describe('deleteUserFromGroup()', function () {
+    it('should check that the user is logged in', function () {
+      Meteor.call('deleteUserFromGroup', user._id, group._id);
+      
+      expect(MethodHelpers.checkUserLoggedIn).toHaveBeenCalled();
+    });
+    
+    it('should check that the user\'s email is verified', function () {
+      Meteor.call('deleteUserFromGroup', user._id, group._id);
+      
+      expect(MethodHelpers.checkVerifiedUser).toHaveBeenCalled();
+    });
+    
+    it('should check that the group exists', function () {
+      Meteor.call('deleteUserFromGroup', user._id, group._id);
+      
+      expect(MethodHelpers.checkGroupExists).toHaveBeenCalledWith(group._id);
+    });
+    
+    it('should check that the student is in the group', function () {
+      Meteor.call('deleteUserFromGroup', user._id, group._id);
+      
+      expect(MethodHelpers.checkStudentInGroup).toHaveBeenCalledWith(user._id, group._id);
+    });
+    
+    it('should check that the current user owns the specified group', function () {
+      Meteor.call('deleteUserFromGroup', user._id, group._id);
+      
+      expect(MethodHelpers.checkGroupOwnership).toHaveBeenCalledWith(group._id);
+    });
+    
+    it('should remove the specified group from the current user\'s joined groups', function () {
+      spyOn(Users, 'update').and.returnValue(true);
+      
+      Meteor.call('deleteUserFromGroup', user._id, group._id);
+      
+      expect(Users.update).toHaveBeenCalledWith({
+        _id: user._id
+      }, {
+        $pull: {
+          groups: group._id
+        }
+      });
+    });
+  });
+  
+  
+  
   describe('updateGroup()', function () {
     it('should check that the user is logged in', function () {
       Meteor.call('updateGroup', group);
