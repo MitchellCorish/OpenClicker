@@ -191,6 +191,21 @@ describe('Meteor.methods', function () {
       
       expect(MethodHelpers.checkGroupOwnership).toHaveBeenCalledWith(group._id);
     });
+    
+    it('should create a new question with the given name and possible answers owned by the current user', function () {
+      spyOn(Questions, 'insert').and.returnValue(true);
+      
+      Meteor.call('createQuestion', group._id, question.questionAsked, question.possibleAnswers, question.answer);
+      
+      expect(Questions.insert).toHaveBeenCalledWith({
+        userId: user._id,
+        groupId: group._id,
+        questionAsked: question.questionAsked,
+        possibleAnswers: question.possibleAnswers,
+        answer: question.answer,
+        active: false,
+      });
+    });
   });
   
   describe('deleteGroup()', function () {
@@ -293,6 +308,17 @@ describe('Meteor.methods', function () {
       Meteor.call('deleteQuestion', question._id);
       
       expect(MethodHelpers.checkQuestionOwnership).toHaveBeenCalledWith(question._id);
+    });
+    
+    it('should delete the specified question', function () {
+      spyOn(Questions, 'remove').and.returnValue(true);
+      
+      Meteor.call('deleteQuestion', question._id);
+      
+      expect(Questions.remove).toHaveBeenCalledWith({
+        _id: question._id,
+        userId: user._id
+      });
     });
   });
   
@@ -425,65 +451,95 @@ describe('Meteor.methods', function () {
   
   describe('updateQuestionStartTime()', function () {
     it('should check that the user is logged in', function () {
-      Meteor.call('updateQuestionStartTime', question._id, timestamp);
+      Meteor.call('updateQuestionStartTime', question._id, question.startTime);
       
       expect(MethodHelpers.checkUserLoggedIn).toHaveBeenCalled();
     });
     
     it('should check that the user\'s email is verified', function () {
-      Meteor.call('updateQuestionStartTime', question._id, timestamp);
+      Meteor.call('updateQuestionStartTime', question._id, question.startTime);
       
       expect(MethodHelpers.checkVerifiedUser).toHaveBeenCalled();
     });
     
     it('should check that the user has creator permissions', function () {
-      Meteor.call('updateQuestionStartTime', question._id, timestamp);
+      Meteor.call('updateQuestionStartTime', question._id, question.startTime);
       
       expect(MethodHelpers.checkCreatorPermissions).toHaveBeenCalled();
     });
     
     it('should check that the question exists', function () {
-      Meteor.call('updateQuestionStartTime', question._id, timestamp);
+      Meteor.call('updateQuestionStartTime', question._id, question.startTime);
       
       expect(MethodHelpers.checkQuestionExists).toHaveBeenCalledWith(question._id);
     });
     
     it('should check that the current user owns the specified question', function () {
-      Meteor.call('updateQuestionStartTime', question._id, timestamp);
+      Meteor.call('updateQuestionStartTime', question._id, question.startTime);
       
       expect(MethodHelpers.checkQuestionOwnership).toHaveBeenCalledWith(question._id);
+     });
+     
+    it('should update the startTime of the specified question', function () {
+      spyOn(Questions, 'update').and.returnValue(true);
+      
+      Meteor.call('updateQuestionStartTime', question._id, question.startTime);
+      
+      expect(Questions.update).toHaveBeenCalledWith({
+        _id: question._id,
+        userId: user._id
+      }, {
+        $set: {
+          startTime: question.startTime
+        }
+      });
     });
   });
   
   describe('updateQuestionEndTime()', function () {
     it('should check that the user is logged in', function () {
-      Meteor.call('updateQuestionEndTime', question._id, timestamp);
+      Meteor.call('updateQuestionEndTime', question._id, question.endTime);
       
       expect(MethodHelpers.checkUserLoggedIn).toHaveBeenCalled();
     });
     
     it('should check that the user\'s email is verified', function () {
-      Meteor.call('updateQuestionEndTime', question._id, timestamp);
+      Meteor.call('updateQuestionEndTime', question._id, question.endTime);
       
       expect(MethodHelpers.checkVerifiedUser).toHaveBeenCalled();
     });
     
     it('should check that the user has creator permissions', function () {
-      Meteor.call('updateQuestionEndTime', question._id, timestamp);
+      Meteor.call('updateQuestionEndTime', question._id, question.endTime);
       
       expect(MethodHelpers.checkCreatorPermissions).toHaveBeenCalled();
     });
     
     it('should check that the question exists', function () {
-      Meteor.call('updateQuestionEndTime', question._id, timestamp);
+      Meteor.call('updateQuestionEndTime', question._id, question.endTime);
       
       expect(MethodHelpers.checkQuestionExists).toHaveBeenCalledWith(question._id);
     });
     
     it('should check that the current user owns the specified question', function () {
-      Meteor.call('updateQuestionEndTime', question._id, timestamp);
+      Meteor.call('updateQuestionEndTime', question._id, question.endTime);
       
       expect(MethodHelpers.checkQuestionOwnership).toHaveBeenCalledWith(question._id);
+    });
+    
+    it('should update the endTime of the specified question', function () {
+      spyOn(Questions, 'update').and.returnValue(true);
+      
+      Meteor.call('updateQuestionEndTime', question._id, question.endTime);
+      
+      expect(Questions.update).toHaveBeenCalledWith({
+        _id: question._id,
+        userId: user._id
+      }, {
+        $set: {
+         endTime: question.endTime
+        }
+      });
     });
   });
   
