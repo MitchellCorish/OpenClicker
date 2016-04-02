@@ -11,7 +11,7 @@
     var directive = {
       controller: 'ocGroupSummaryCtrl',
       controllerAs: 'vm',
-      templateUrl: 'client/templates/ocGroupSummary.html',
+      templateUrl: 'client/templates/directives/ocGroupSummary.html',
       restrict: 'E',
       scope: {
           groupId: '@'

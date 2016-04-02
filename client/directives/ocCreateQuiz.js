@@ -11,7 +11,7 @@
         var directive = {
             controller: 'ocCreateQuizCtrl',
             controllerAs: 'vm',
-            templateUrl: 'client/templates/ocCreateQuiz.html',
+            templateUrl: 'client/templates/directives/ocCreateQuiz.html',
             restrict: 'E',
             scope: {
                 groupId: '@'

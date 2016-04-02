@@ -11,7 +11,7 @@
         var directive = {
             controller: 'ocEditQuizCtrl',
             controllerAs: 'vm',
-            templateUrl: 'client/templates/ocEditQuiz.html',
+            templateUrl: 'client/templates/directives/ocEditQuiz.html',
             restrict: 'E',
             scope: {
                 quizId: '@'

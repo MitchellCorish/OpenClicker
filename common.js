@@ -562,6 +562,22 @@ Meteor.methods({
 
     return true;
   },
+    deleteUserFromGroup: function (userId, groupId) {
+        MethodHelpers.checkUserLoggedIn();
+        MethodHelpers.checkVerifiedUser();
+        MethodHelpers.checkGroupExists(groupId);
+        //MethodHelpers.checkUserInGroup(groupId);
+
+        Users.update({
+            _id: userId
+        }, {
+            $pull: {
+                groups: groupId
+            }
+        });
+
+        return true;
+    },
 });
 
 // define some functions for things we will have to check frequently
