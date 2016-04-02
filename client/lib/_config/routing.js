@@ -76,6 +76,30 @@
           }
         }
       })
+      .state('createQuestion', {
+        url: '/create-question',
+        views: {
+          header: {
+            templateUrl: 'client/templates/header.html'
+          },
+          main: {
+            templateUrl: 'client/templates/routes/createQuestion.html'
+          }    
+        },
+        data: {
+          rule: function () {
+            if (!Meteor.userId() ||
+                !Meteor.user().emails[0].verified ||
+                !Roles.userIsInRole(Meteor.userId(), PROFESSOR_ROLE, Roles.GLOBAL_GROUP))
+            {
+              return {
+                to: 'home',
+                params: {}
+              }
+            }
+          }
+        }
+      })
       .state('editRoles', {
         url: '/edit-roles/:userId',
         views: {
