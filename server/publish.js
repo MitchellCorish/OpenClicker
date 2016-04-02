@@ -77,5 +77,13 @@ Meteor.publish('activeQuestions', function () {
   {
     return null;
   }
-  return Users.find({"groups": {$in:  [groupId]}});
+  else if (Roles.userIsInRole(this.userId, PROFESSOR_ROLE, Roles.GLOBAL_GROUP)){
+    return Users.find({"groups": {$in:  [groupId]}}, {
+        $fields: {
+            username: true,
+            roles: true,
+            studentId: true,
+            emails: true
+      }});
+  }
 });

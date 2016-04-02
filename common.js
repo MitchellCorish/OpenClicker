@@ -463,7 +463,7 @@ Meteor.methods({
     MethodHelpers.checkUserLoggedIn();
     MethodHelpers.checkVerifiedUser();
     MethodHelpers.checkGroupExists(groupId);
-    //MethodHelpers.checkUserInGroup(groupId);
+    MethodHelpers.checkStudentInGroup(userId, groupId);
     
     Users.update({
       _id: userId
@@ -555,6 +555,12 @@ MethodHelpers = {
   },
   checkUserInGroup: function (groupId) {
     if (!(Meteor.user().groups) || !(Meteor.user().groups && Meteor.user().groups.indexOf(groupId) >= 0))
+    {
+      throw new Meteor.Error(ERROR_NOT_IN_GROUP);
+    }
+  },
+  checkStudentInGroup: function (userId, groupId) {
+    if (!(Users.findOne({ _id: userId }).groups) || !(Users.findOne({ _id: userId }).groups && Users.findOne({ _id: userId }).groups.indexOf(groupId) >= 0))
     {
       throw new Meteor.Error(ERROR_NOT_IN_GROUP);
     }
