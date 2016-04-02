@@ -86,4 +86,7 @@ Meteor.publish('activeQuestions', function () {
             emails: true
       }});
   }
+  else{
+      return null;
+  }
 });
