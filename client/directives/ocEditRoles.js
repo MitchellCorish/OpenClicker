@@ -3,18 +3,18 @@
   
   angular
     .module('openClicker')
-    .directive('ocUpdateGroup', ocUpdateGroup);
+    .directive('ocEditRoles', ocEditRoles);
     
-  ocUpdateGroup.$inject = [];
+  ocEditRoles.$inject = [];
   
-  function ocUpdateGroup() {
+  function ocEditRoles() {
     var directive = {
-      controller: 'ocUpdateGroupCtrl',
+      controller: 'ocEditRolesCtrl',
       controllerAs: 'vm',
-      templateUrl: 'client/templates/directives/ocUpdateGroup.html',
+      templateUrl: 'client/templates/directives/ocEditRoles.html',
       restrict: 'E',
       scope: {
-        groupId: '@'
+        userId: '@'
       },
       bindToController: true
     };

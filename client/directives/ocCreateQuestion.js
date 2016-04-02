@@ -3,15 +3,15 @@
   
   angular
     .module('openClicker')
-    .directive('ocAnswerQuestion', ocAnswerQuestion);
+    .directive('ocCreateQuestion', ocCreateQuestion);
     
-  ocAnswerQuestion.$inject = [];
+  ocCreateQuestion.$inject = [];
   
-  function ocAnswerQuestion() {
+  function ocCreateQuestion($scope) {
     var directive = {
-      controller: 'ocAnswerQuestionCtrl',
+      controller: 'ocCreateQuestionCtrl',
       controllerAs: 'vm',
-      templateUrl: 'client/templates/directives/ocAnswerQuestion.html',
+      templateUrl: 'client/templates/directives/ocCreateQuestion.html',
       restrict: 'E',
       scope: {
         questionId: '@'

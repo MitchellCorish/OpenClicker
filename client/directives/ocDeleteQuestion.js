@@ -3,18 +3,19 @@
   
   angular
     .module('openClicker')
-    .directive('ocAnswerQuestion', ocAnswerQuestion);
+    .directive('ocDeleteQuestion', ocDeleteQuestion);
     
-  ocAnswerQuestion.$inject = [];
+  ocDeleteQuestion.$inject = [];
   
-  function ocAnswerQuestion() {
+  function ocDeleteQuestion() {
     var directive = {
-      controller: 'ocAnswerQuestionCtrl',
+      controller: 'ocDeleteQuestionCtrl',
       controllerAs: 'vm',
-      templateUrl: 'client/templates/directives/ocAnswerQuestion.html',
+      templateUrl: 'client/templates/directives/ocDeleteQuestion.html',
       restrict: 'E',
       scope: {
         questionId: '@'
+        
       },
       bindToController: true
     };

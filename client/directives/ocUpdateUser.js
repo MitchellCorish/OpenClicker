@@ -11,7 +11,7 @@
     var directive = {
       controller: 'ocUpdateUserCtrl',
       controllerAs: 'vm',
-      templateUrl: 'client/templates/ocUpdateUser.html',
+      templateUrl: 'client/templates/directives/ocUpdateUser.html',
       restrict: 'E',
       scope: {},
       bindToController: true

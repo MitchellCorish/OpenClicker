@@ -3,15 +3,15 @@
   
   angular
     .module('openClicker')
-    .directive('ocOwnedGroups', ocOwnedGroups);
+    .directive('ocOwnedQuestions', ocOwnedQuestions);
     
-  ocOwnedGroups.$inject = [];
+  ocOwnedQuestions.$inject = [];
   
-  function ocOwnedGroups() {
+  function ocOwnedQuestions() {
     var directive = {
-      controller: 'ocOwnedGroupsCtrl',
+      controller: 'ocOwnedQuestionsCtrl',
       controllerAs: 'vm',
-      templateUrl: 'client/templates/directives/ocOwnedGroups.html',
+      templateUrl: 'client/templates/directives/ocOwnedQuestions.html',
       restrict: 'E',
       scope: {},
       bindToController: true
