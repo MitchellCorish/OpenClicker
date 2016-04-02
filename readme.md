@@ -25,6 +25,8 @@
   
   * We are using [AngularUI Router](https://github.com/angular-ui/ui-router) to handle routing
   
+  * Testing uses [Velocity](https://github.com/xolvio/meteor-jasmine).  Debugging info, etc. can be found [here](https://meteor-testing.readme.io/docs/getting-started).
+  
 ## Setup
 
 ### Root user:
