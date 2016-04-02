@@ -464,6 +464,7 @@ Meteor.methods({
     MethodHelpers.checkVerifiedUser();
     MethodHelpers.checkGroupExists(groupId);
     MethodHelpers.checkStudentInGroup(userId, groupId);
+    MethodHelpers.checkGroupOwnership(groupId);
     
     Users.update({
       _id: userId
