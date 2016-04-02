@@ -99,3 +99,11 @@ Meteor.publish('activeQuestions', function () {
     }
   });
 });
+  
+ Meteor.publish('usersInGroup', function (groupId) {
+   if(!this.userId)
+  {
+    return null;
+  }
+  return Users.find({"groups": {$in:  [groupId]}});
+});

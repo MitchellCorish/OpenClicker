@@ -24,6 +24,8 @@
               <div class="pull-right">
                 <a ui-sref="home"><button type="button" class="btn btn-primary">Add a Quiz</button></a>
                 <a ui-sref="updateGroup({ groupId: group._id })"><button type="button" class="btn btn-primary">Update</button></a>
+                <a ui-sref="groupSummary({ groupId: group._id })"><button type="button" class="btn btn-primary">Summary</button></a>
+                
                 <oc-delete-group group-id="{{group._id}}"></oc-delete-group>
               </div>
             </td>
