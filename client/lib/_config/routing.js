@@ -28,6 +28,54 @@
           }
         }
       })
+      .state('askQuestion', {
+        url: '/ask-question/:questionId',
+        views: {
+          header: {
+            templateUrl: 'client/templates/header.html'
+          },
+          main: {
+            templateUrl: 'client/templates/routes/askQuestion.html'
+          }    
+        },
+        data: {
+          rule: function () {
+            if (!Meteor.userId() ||
+                !Meteor.user().emails[0].verified ||
+                !Roles.userIsInRole(Meteor.userId(), PROFESSOR_ROLE, Roles.GLOBAL_GROUP))
+            {
+              return {
+                to: 'home',
+                params: {}
+              }
+            }
+          }
+        }
+      })
+      .state('createGroup', {
+        url: '/create-group',
+        views: {
+          header: {
+            templateUrl: 'client/templates/header.html'
+          },
+          main: {
+            templateUrl: 'client/templates/routes/createGroup.html'
+          }    
+        },
+        data: {
+          rule: function () {
+            if (!Meteor.userId() ||
+                !Meteor.user().emails[0].verified ||
+                !Roles.userIsInRole(Meteor.userId(), PROFESSOR_ROLE, Roles.GLOBAL_GROUP))
+            {
+              return {
+                to: 'home',
+                params: {}
+              }
+            }
+          }
+        }
+      })
       .state('createQuestion', {
         url: '/create-question',
         views: {
@@ -52,11 +100,35 @@
           }
         }
       })
+      .state('editRoles', {
+        url: '/edit-roles/:userId',
+        views: {
+          header: {
+            templateUrl: 'client/templates/header.html'
+          },
+          main: {
+            templateUrl: 'client/templates/routes/editRoles.html'
+          }    
+        },
+        data: {
+          rule: function () {
+            if (!Meteor.userId() ||
+                !Meteor.user().emails[0].verified ||
+                !Roles.userIsInRole(Meteor.userId(), ADMIN_ROLE, Roles.GLOBAL_GROUP))
+            {
+              return {
+                to: 'home',
+                params: {}
+              }
+            }
+          }
+        }
+      })
       .state('home', {
         url: '/',
         views: {
           header: {
-            templateUrl: 'client/templates/header.html'
+            templateUrl: 'client/templates/header2.html'
           },
           main: {
             templateUrl: 'client/templates/routes/home.html'
@@ -75,6 +147,25 @@
           }
         }
       })
+      .state('updateUser', {
+        url: '/update-user',
+        views: {
+            header: { templateUrl: "client/templates/header.html" },
+            main: { templateUrl: "client/templates/routes/updateUser.html" },
+        },
+        data: {
+          rule: function () {
+            if (!Meteor.userId() ||
+                !Meteor.user().emails[0].verified)
+            {
+              return {
+                to: 'home',
+                params: {}
+              }
+            }
+          }
+        }
+      })
       .state('welcome', {
         url: '/welcome',
         views: {
@@ -84,6 +175,30 @@
           main: {
             templateUrl: 'client/templates/routes/welcome.html'
           }    
+        }
+      })
+      .state('updateGroup', {
+        url: '/update-group/:groupId',
+        views: {
+          header: {
+            templateUrl: 'client/templates/header.html'
+          },
+          main: {
+            templateUrl: 'client/templates/routes/updateGroup.html'
+          }    
+        },
+        data: {
+          rule: function () {
+            if (!Meteor.userId() ||
+                !Meteor.user().emails[0].verified ||
+                !Roles.userIsInRole(Meteor.userId(), PROFESSOR_ROLE, Roles.GLOBAL_GROUP))
+            {
+              return {
+                to: 'home',
+                params: {}
+              }
+            }
+          }
         }
       });
       

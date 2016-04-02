@@ -11,7 +11,7 @@
     var directive = {
       controller: 'ocCreateGroupCtrl',
       controllerAs: 'vm',
-      templateUrl: 'client/templates/ocCreateGroup.html',
+      templateUrl: 'client/templates/directives/ocCreateGroup.html',
       restrict: 'E',
       scope: {},
       bindToController: true

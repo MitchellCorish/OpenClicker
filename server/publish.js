@@ -15,6 +15,26 @@ Meteor.publish(null, function () {
   });
 });
 
+Meteor.publish('userRoles', function () {
+  if (!this.userId)
+  {
+    return null;
+  }
+  else if (Roles.userIsInRole(this.userId, ADMIN_ROLE, Roles.GLOBAL_GROUP))
+  {
+    return Users.find({}, {
+      $fields: {
+        emails: true,
+        roles: true
+      }
+    });
+  }
+  else
+  {
+    return null;
+  }
+});
+
 Meteor.publish('groups', function () {
   if(!this.userId)
   {

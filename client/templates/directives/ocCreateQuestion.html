@@ -1,0 +1,14 @@
+<label>
+    Question:  
+    <input type="text" ng-model="vm.question" />
+</label>
+
+<fieldset  data-ng-repeat="answer in vm.answers">
+    <form action="">
+        <input type="radio" name="" value="{{$index}}" ng-model="vm.correctAnswer"> Correct
+    </form>
+    <input type="text" ng-model="vm.answers[$index].answer" name="" placeholder="Enter possible answer">
+   <button class="remove" ng-show="$last" ng-click="vm.removeAnswer()">-</button>
+</fieldset>
+<button class="addfields" ng-click="vm.addNewAnswer()">Add fields</button>
+<button class="submit" ng-click="vm.create()">Submit</button>
