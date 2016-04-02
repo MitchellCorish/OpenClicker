@@ -13,10 +13,23 @@
   * [Johnpapa Angular 1 Style Guide](https://github.com/johnpapa/angular-styleguide/blob/master/a1/README.md)
   * [Git branching model](http://nvie.com/posts/a-successful-git-branching-model/)
   
-### Packages:
+## Packages
 
   A current list of all Meteor packages in the project can be found in /meteor/packages.  Version numbers of all packages and dependencies can be found in /meteor/versions.
   
 ### Notes:
 
   * The project uses the [meteorhacks:fast-render](https://github.com/kadirahq/fast-render) package, which has some [security issues](https://github.com/kadirahq/fast-render#security).  These shouldn't be a problem in the application's current state, but should be kept in mind to avoid issues in the future.
+  
+  * We are using [AngularUI Router](https://github.com/angular-ui/ui-router) to handle routing
+  
+## Setup
+
+### Root user:
+
+  When the server is run, a user with the following info is created as the default admin user:
+  
+    email: 'root@openclicker.com'
+    password: 'password'
+    
+  The password for this user should be updated immediately.  This user cannot be deleted, and cannot have their permissions changed, so there will always be a user account with administrator access.
