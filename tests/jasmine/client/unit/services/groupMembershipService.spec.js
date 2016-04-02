@@ -4,6 +4,7 @@ describe('GroupMembershipService', function () {
   beforeEach(module('openClicker'));
   
   var service;
+  var userId;
   var groupId;
   var errorMessage;
   
@@ -15,6 +16,7 @@ describe('GroupMembershipService', function () {
   // set up
   beforeEach(function () {
     
+    userId = 'testUser'
     groupId = 'testGroup';
     errorMessage = 'error message';
     
@@ -55,6 +57,24 @@ describe('GroupMembershipService', function () {
       VelocityHelpers.stubMethod('leaveGroup', { message: errorMessage }, null);
 
       service.leaveGroup(groupId);
+
+      expect(console.log).toHaveBeenCalledWith(errorMessage);
+    });
+  });
+  
+  describe('deleteUserFromGroup()', function () {
+    it('should call the deleteUserFromGroup Meteor method', function () {
+      var deleteUserFromGroup = VelocityHelpers.spyOnMethod('deleteUserFromGroup');
+      
+      service.deleteUserFromGroup(userId, groupId);
+      
+      expect(deleteUserFromGroup).toHaveBeenCalledWith(userId, groupId);
+    });
+    
+    it('should print errors to the console', function () {      
+      VelocityHelpers.stubMethod('deleteUserFromGroup', { message: errorMessage }, null);
+
+      service.deleteUserFromGroup(userId, groupId);
 
       expect(console.log).toHaveBeenCalledWith(errorMessage);
     });

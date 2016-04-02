@@ -10,7 +10,8 @@
   function GroupMembershipService() {
     var service = {
       joinGroup: joinGroup,
-      leaveGroup: leaveGroup
+      leaveGroup: leaveGroup,
+      deleteUserFromGroup: deleteUserFromGroup
     }
     
     return service;
@@ -26,6 +27,15 @@
     
     function leaveGroup(groupId) {
       Meteor.call('leaveGroup', groupId, function (error, result) {
+        if (error)
+        {
+          console.log(error.message);
+        }
+      });
+    }
+    
+    function deleteUserFromGroup(userId, groupId) {
+      Meteor.call('deleteUserFromGroup', userId, groupId, function (error, result) {
         if (error)
         {
           console.log(error.message);
