@@ -9,7 +9,6 @@
   
   function ocGroupSummaryCtrl($scope, $reactive, $state) {
     var vm = this;
-    var name = '8DJTLLQBn6LNjGCTY';
     $reactive(vm).attach($scope);
     
     vm.subscribe('usersInGroup', () => [vm.groupId]);
