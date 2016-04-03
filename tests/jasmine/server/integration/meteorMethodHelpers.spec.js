@@ -194,6 +194,20 @@ describe('MethodHelpers', function () {
     });
   });
   
+  describe('checkStudentInGroup()', function () {
+    it('should throw a \'' + ERROR_NOT_IN_GROUP + '\' error if the student does not belong to the specified group', function () {
+      spyOn(Users, 'findOne').and.returnValue(user);
+      
+      try
+      {
+        MethodHelpers.checkStudentInGroup('testUser', 'testGroup2');
+      }
+      catch(e) {}
+      
+      expect(Meteor.Error).toHaveBeenCalledWith(ERROR_NOT_IN_GROUP);
+    });
+  });
+  
   describe('checkUserLoggedIn()', function () {
     it('should throw a \'' + ERROR_NOT_AUTHORIZED + '\' error if the current user is not logged in', function () {
       spyOn(Meteor, 'userId').and.returnValue(null);

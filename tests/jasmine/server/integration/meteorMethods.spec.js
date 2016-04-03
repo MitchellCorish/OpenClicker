@@ -66,6 +66,7 @@ describe('Meteor.methods', function () {
     spyOn(MethodHelpers, 'checkUserInGroup').and.returnValue(true);
     spyOn(MethodHelpers, 'checkUserLoggedIn').and.returnValue(true);
     spyOn(MethodHelpers, 'checkUserNotInGroup').and.returnValue(true);
+    spyOn(MethodHelpers, 'checkStudentInGroup').and.returnValue(true);
     spyOn(MethodHelpers, 'checkVerifiedUser').and.returnValue(true);
     spyOn(Meteor, 'userId').and.returnValue(user._id);
     spyOn(Questions, 'findOne').and.returnValue(question);
@@ -402,6 +403,54 @@ describe('Meteor.methods', function () {
     });
   });
   
+  describe('deleteUserFromGroup()', function () {
+    it('should check that the user is logged in', function () {
+      Meteor.call('deleteUserFromGroup', user._id, group._id);
+      
+      expect(MethodHelpers.checkUserLoggedIn).toHaveBeenCalled();
+    });
+    
+    it('should check that the user\'s email is verified', function () {
+      Meteor.call('deleteUserFromGroup', user._id, group._id);
+      
+      expect(MethodHelpers.checkVerifiedUser).toHaveBeenCalled();
+    });
+    
+    it('should check that the group exists', function () {
+      Meteor.call('deleteUserFromGroup', user._id, group._id);
+      
+      expect(MethodHelpers.checkGroupExists).toHaveBeenCalledWith(group._id);
+    });
+    
+    it('should check that the student is in the group', function () {
+      Meteor.call('deleteUserFromGroup', user._id, group._id);
+      
+      expect(MethodHelpers.checkStudentInGroup).toHaveBeenCalledWith(user._id, group._id);
+    });
+    
+    it('should check that the current user owns the specified group', function () {
+      Meteor.call('deleteUserFromGroup', user._id, group._id);
+      
+      expect(MethodHelpers.checkGroupOwnership).toHaveBeenCalledWith(group._id);
+    });
+    
+    it('should remove the specified group from the current user\'s joined groups', function () {
+      spyOn(Users, 'update').and.returnValue(true);
+      
+      Meteor.call('deleteUserFromGroup', user._id, group._id);
+      
+      expect(Users.update).toHaveBeenCalledWith({
+        _id: user._id
+      }, {
+        $pull: {
+          groups: group._id
+        }
+      });
+    });
+  });
+  
+  
+  
   describe('updateGroup()', function () {
     it('should check that the user is logged in', function () {
       Meteor.call('updateGroup', group);
@@ -480,7 +529,7 @@ describe('Meteor.methods', function () {
       expect(MethodHelpers.checkQuestionOwnership).toHaveBeenCalledWith(question._id);
      });
      
-    it('should update the startTime of the specified question', function () {
+    it('should update the startTime of the specified question and set the question to active', function () {
       spyOn(Questions, 'update').and.returnValue(true);
       
       Meteor.call('updateQuestionStartTime', question._id, question.startTime);
@@ -490,7 +539,8 @@ describe('Meteor.methods', function () {
         userId: user._id
       }, {
         $set: {
-          startTime: question.startTime
+          startTime: question.startTime,
+          active: true
         }
       });
     });
@@ -538,6 +588,21 @@ describe('Meteor.methods', function () {
       }, {
         $set: {
          endTime: question.endTime
+        }
+      });
+    });
+    
+    it('should update the question to inactive if the end time is not 0', function () {
+      spyOn(Questions, 'update').and.returnValue(true);
+      
+      Meteor.call('updateQuestionEndTime', question._id, question.endTime);
+      
+      expect(Questions.update).toHaveBeenCalledWith({
+        _id: question._id,
+        userId: user._id
+      }, {
+        $set: {
+         active: false
         }
       });
     });

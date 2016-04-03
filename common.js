@@ -392,7 +392,8 @@ Meteor.methods({
       userId: Meteor.userId()
     }, {
       $set: {
-        startTime: startTime
+        startTime: startTime,
+        active: true
       }
     });
     
@@ -413,6 +414,18 @@ Meteor.methods({
         endTime: endTime
       }
     });
+    
+    if (endTime !== 0)
+    {
+      Questions.update({
+      _id: questionId,
+      userId: Meteor.userId()
+      }, {
+        $set: {
+          active: false
+        }
+      });
+    }
     
     return true;
   },
@@ -460,6 +473,23 @@ Meteor.methods({
 
     return true;
   }
+  deleteUserFromGroup: function (userId, groupId) {
+    MethodHelpers.checkUserLoggedIn();
+    MethodHelpers.checkVerifiedUser();
+    MethodHelpers.checkGroupExists(groupId);
+    MethodHelpers.checkStudentInGroup(userId, groupId);
+    MethodHelpers.checkGroupOwnership(groupId);
+    
+    Users.update({
+      _id: userId
+    }, {
+      $pull: {
+        groups: groupId
+      }
+    });
+    
+    return true;
+  },
 });
 
 // define some functions for things we will have to check frequently
@@ -540,6 +570,14 @@ MethodHelpers = {
   },
   checkUserInGroup: function (groupId) {
     if (!(Meteor.user().groups) || !(Meteor.user().groups && Meteor.user().groups.indexOf(groupId) >= 0))
+    {
+      throw new Meteor.Error(ERROR_NOT_IN_GROUP);
+    }
+  },
+  checkStudentInGroup: function (userId, groupId) {
+    var user = Users.findOne({ _id: userId });
+    
+    if (!(user.groups) || !(user.groups && user.groups.indexOf(groupId) >= 0))
     {
       throw new Meteor.Error(ERROR_NOT_IN_GROUP);
     }

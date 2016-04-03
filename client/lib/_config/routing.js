@@ -201,6 +201,30 @@
             }
           }
         }
+      })
+      .state('groupSummary', {
+        url: '/group-summary/:groupId',
+        views: {
+          header: {
+            templateUrl: 'client/templates/header.html'
+          },
+          main: {
+            templateUrl: 'client/templates/routes/groupSummary.html'
+          }    
+        },
+        data: {
+          rule: function () {
+            if (!Meteor.userId() ||
+                !Meteor.user().emails[0].verified ||
+                !Roles.userIsInRole(Meteor.userId(), PROFESSOR_ROLE, Roles.GLOBAL_GROUP))
+            {
+              return {
+                to: 'home',
+                params: {}
+              }
+            }
+          }
+        }
       });
       
     // Set default route for unknown urls
