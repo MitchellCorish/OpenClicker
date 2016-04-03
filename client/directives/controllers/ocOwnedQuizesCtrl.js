@@ -17,7 +17,7 @@
         vm.helpers({
                 quizes: () => Quizes.find({
                 userId: Meteor.userId()
-            })
+                })
     });
     }
 })();

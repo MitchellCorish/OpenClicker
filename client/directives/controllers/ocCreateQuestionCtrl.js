@@ -13,8 +13,7 @@
     $reactive(vm).attach($scope);
        
        
-       
-    vm.groupId = "0";   
+         
     vm.question = '';    
     vm.answers = [{answer: ''},{answer: ''}];
     vm.correctAnswer = '';
@@ -48,7 +47,7 @@
       }  
       else
       {
-          QuestionService.createQuestion(vm.groupId, vm.question, stringAnswers, vm.correctAnswer);   
+          QuestionService.createQuestion(vm.quizId, vm.groupId, vm.question, stringAnswers, vm.correctAnswer);   
       }
     }
   }

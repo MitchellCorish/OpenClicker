@@ -13,7 +13,9 @@
             controllerAs: 'vm',
             templateUrl: 'client/templates/directives/ocOwnedQuizes.html',
             restrict: 'E',
-            scope: {},
+            scope: {
+                groupId: '@'
+            },
             bindToController: true
         };
 

@@ -5,7 +5,7 @@
   </div>
 
   <div class="page-form">
-   <a ui-sref="createQuiz({ groupId: group._id })"><button type="button" class="btn btn-success">Add Quiz</button></a>
+   <a ui-sref="createQuiz({ groupId: vm.groupId })"><button type="button" class="btn btn-success">Add Quiz</button></a>
     <div class="clearfix"></div>
   </div>
   
@@ -22,7 +22,7 @@
             <td><a class="text-primary">{{quiz.name}}</a></td>
             <td>
               <div class="pull-right">
-                <a ui-sref="createQuiz({ groupId: group._id })"><button type="button" class="btn btn-primary">Add a Quiz</button></a>
+                <a ui-sref="createQuestion({ quizId: quiz._id, groupId: vm.groupId })"><button type="button" class="btn btn-primary">Add a Question</button></a>
                 
                 <oc-delete-quiz quiz-id="{{quiz._id}}"></oc-delete-quiz>
               </div>

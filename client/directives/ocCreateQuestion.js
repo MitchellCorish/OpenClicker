@@ -14,7 +14,8 @@
       templateUrl: 'client/templates/directives/ocCreateQuestion.html',
       restrict: 'E',
       scope: {
-        questionId: '@'
+        quizId: '@',
+        groupId: '@'
       },
       bindToController: true
     };

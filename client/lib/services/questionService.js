@@ -18,8 +18,8 @@
     
     return service;
     
-    function createQuestion(groupId, question, answers, correctAnswer) {
-      Meteor.call('createQuestion', groupId, question, answers, correctAnswer, function (error, result) {
+    function createQuestion(quizId, groupId, question, answers, correctAnswer) {
+      Meteor.call('createQuestion', quizId, groupId, question, answers, correctAnswer, function (error, result) {
         if (error)
         {
           console.log(error.message);

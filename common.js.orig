@@ -288,7 +288,7 @@ Meteor.methods({
 
     return true;
   },
-  createQuestion: function (quizid, groupid, question, answers, correctAnswer) {
+  createQuestion: function (groupid, question, answers, correctAnswer) {
     MethodHelpers.checkUserLoggedIn();
     MethodHelpers.checkVerifiedUser();
     MethodHelpers.checkCreatorPermissions();
@@ -297,7 +297,6 @@ Meteor.methods({
     Questions.insert({
       userId: Meteor.userId(),
       groupId: groupid,
-      quizId: quizid,
       questionAsked: question,
       possibleAnswers: answers,
       answer: correctAnswer,
@@ -479,7 +478,11 @@ Meteor.methods({
 
     return true;
   },
+<<<<<<< HEAD
+
+=======
   
+>>>>>>> origin/dev
   updateQuestionStartTime: function (questionId, startTime) {
     MethodHelpers.checkUserLoggedIn();
     MethodHelpers.checkVerifiedUser();
@@ -563,6 +566,24 @@ Meteor.methods({
 
     return true;
   },
+<<<<<<< HEAD
+    deleteUserFromGroup: function (userId, groupId) {
+        MethodHelpers.checkUserLoggedIn();
+        MethodHelpers.checkVerifiedUser();
+        MethodHelpers.checkGroupExists(groupId);
+        //MethodHelpers.checkUserInGroup(groupId);
+
+        Users.update({
+            _id: userId
+        }, {
+            $pull: {
+                groups: groupId
+            }
+        });
+
+        return true;
+    },
+=======
   deleteUserFromGroup: function (userId, groupId) {
     MethodHelpers.checkUserLoggedIn();
     MethodHelpers.checkVerifiedUser();
@@ -580,6 +601,7 @@ Meteor.methods({
     
     return true;
   },
+>>>>>>> origin/dev
 });
 
 // define some functions for things we will have to check frequently

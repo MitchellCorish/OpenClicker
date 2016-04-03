@@ -76,40 +76,25 @@
           }
         }
       })
-      .state('createQuestion', {
-        url: '/create-question/:groupId/:quizId',
-        views: {
-          header: {
-            templateUrl: 'client/templates/header.html'
-          },
-          main: {
-            templateUrl: 'client/templates/routes/createQuestion.html'
-          }    
-        },
-        data: {
-          rule: function () {
-            if (!Meteor.userId() ||
-                !Meteor.user().emails[0].verified ||
-                !Roles.userIsInRole(Meteor.userId(), PROFESSOR_ROLE, Roles.GLOBAL_GROUP))
-            {
-              return {
-                to: 'home',
-                params: {}
-              }
-            }
-          }
-        }
-      })
+<<<<<<< HEAD
       
       
       .state('createQuiz', {
         url: '/create-quiz/:groupId',
+=======
+      .state('createQuestion', {
+        url: '/create-question',
+>>>>>>> origin/dev
         views: {
           header: {
             templateUrl: 'client/templates/header.html'
           },
           main: {
+<<<<<<< HEAD
             templateUrl: 'client/templates/routes/createQuiz.html'
+=======
+            templateUrl: 'client/templates/routes/createQuestion.html'
+>>>>>>> origin/dev
           }    
         },
         data: {
@@ -126,32 +111,10 @@
           }
         }
       })
+<<<<<<< HEAD
       
-      .state('ownedQuizes', {
-        url: '/owned-quizes/:groupId',
-        views: {
-          header: {
-            templateUrl: 'client/templates/header.html'
-          },
-          main: {
-            templateUrl: 'client/templates/routes/ownedQuizes.html'
-          }    
-        },
-        data: {
-          rule: function () {
-            if (!Meteor.userId() ||
-                !Meteor.user().emails[0].verified ||
-                !Roles.userIsInRole(Meteor.userId(), PROFESSOR_ROLE, Roles.GLOBAL_GROUP))
-            {
-              return {
-                to: 'home',
-                params: {}
-              }
-            }
-          }
-        }
-      })
-      
+=======
+>>>>>>> origin/dev
       .state('editRoles', {
         url: '/edit-roles/:userId',
         views: {
