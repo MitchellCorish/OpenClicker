@@ -27,10 +27,12 @@
 
   * The project uses the [meteorhacks:fast-render](https://github.com/kadirahq/fast-render) package, which has some [security issues](https://github.com/kadirahq/fast-render#security).  These shouldn't be a problem in the application's current state, but should be kept in mind to avoid issues in the future.
   
-  * We are using [AngularUI Router](https://github.com/angular-ui/ui-router) to handle routing
+  * We are using [AngularUI Router](https://github.com/angular-ui/ui-router) to handle routing.
   
   * Testing uses [Velocity](https://github.com/xolvio/meteor-jasmine).  Debugging info, etc. can be found [here](https://meteor-testing.readme.io/docs/getting-started).
   
+  * We are using [aldeed:collection2](https://github.com/aldeed/meteor-collection2) to handle schemas for the collections.
+    
 ## Setup
 
 ### Root user:
