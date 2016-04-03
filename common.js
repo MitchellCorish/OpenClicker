@@ -472,7 +472,7 @@ Meteor.methods({
     });
 
     return true;
-  }
+  },
   deleteUserFromGroup: function (userId, groupId) {
     MethodHelpers.checkUserLoggedIn();
     MethodHelpers.checkVerifiedUser();
