@@ -79,4 +79,33 @@ describe('ocCreateQuestionCtrl', function () {
       expect(window.alert).toHaveBeenCalled();
     });    
   });
+  
+  describe('addNewAnswer()', function () {
+    it('should push a new answer to the list of possible answers', function () {
+      var count = controller.answers.length;
+      
+      controller.addNewAnswer();
+      
+      expect(controller.answers.length).toEqual(count + 1);
+    });
+  });
+  
+  describe('removeAnswer()', function () {
+    it('should remove the last answer from the list', function () {
+      spyOn(controller.answers, 'splice');
+      var lastItem = controller.answers.length - 1;
+      
+      controller.removeAnswer();
+      
+      expect(controller.answers.splice).toHaveBeenCalledWith(lastItem);
+    });
+    
+    it('should reset correct answer to null if the correct answer was removed', function () {
+      controller.correctAnswer = controller.answers.length - 1;
+      
+      controller.removeAnswer();
+      
+      expect(controller.correctAnswer).toEqual(null);
+    });
+  });
 });

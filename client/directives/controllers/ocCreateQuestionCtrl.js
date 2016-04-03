@@ -14,10 +14,10 @@
        
        
        
-    vm.groupId = "0";   
-    vm.question = '';    
+    vm.groupId = "0";
+    vm.question = '';
     vm.answers = [{answer: ''},{answer: ''}];
-    vm.correctAnswer = '';
+    vm.correctAnswer = null;
         
     vm.addNewAnswer = function() {
         var newItemNo = vm.answers.length+1;
@@ -27,6 +27,10 @@
     vm.removeAnswer = function() {
         var lastItem = vm.answers.length-1;
         vm.answers.splice(lastItem);
+        if (vm.correctAnswer && vm.correctAnswer == lastItem)
+        {
+          vm.correctAnswer = null;
+        }
     };
     
          
