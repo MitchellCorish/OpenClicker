@@ -11,128 +11,128 @@ var Schema ={};
 
 // User Country Schema
 Schema.UserCountry = new SimpleSchema({
-    name: {
-        type: String
-    },
-    code: {
-        type: String,
-        regEx: /^[A-Z]{2}$/
-    }
+  name: {
+    type: String
+  },
+  code: {
+    type: String,
+    regEx: /^[A-Z]{2}$/
+  }
 });
 
 // User Profile Schema
 Schema.UserProfile = new SimpleSchema({
-    firstName: {
-        type: String,
-        optional: true
-    },
-    lastName: {
-        type: String,
-        optional: true
-    },
-    birthday: {
-        type: Date,
-        optional: true
-    },
-    gender: {
-        type: String,
-        allowedValues: ['Male', 'Female'],
-        optional: true
-    },
-    organization : {
-        type: String,
-        optional: true
-    },
-    website: {
-        type: String,
-        regEx: SimpleSchema.RegEx.Url,
-        optional: true
-    },
-    bio: {
-        type: String,
-        optional: true
-    },
-    country: {
-        type: Schema.UserCountry,
-        optional: true
-    },
-    institution: {
-        type: String,
-        optional: true,
-        defaultValue: '',
-    },
-    studentId: {
-        type: String,
-        optional: true,
-        defaultValue: '',
-    },
-    faculty: {
-        type: String,
-        optional: true,
-        defaultValue: '',
-    }
+  firstName: {
+    type: String,
+    optional: true
+  },
+  lastName: {
+    type: String,
+    optional: true
+  },
+  birthday: {
+    type: Date,
+    optional: true
+  },
+  gender: {
+    type: String,
+    allowedValues: ['Male', 'Female'],
+    optional: true
+  },
+  organization : {
+    type: String,
+    optional: true
+  },
+  website: {
+    type: String,
+    regEx: SimpleSchema.RegEx.Url,
+    optional: true
+  },
+  bio: {
+    type: String,
+    optional: true
+  },
+  country: {
+    type: Schema.UserCountry,
+    optional: true
+  },
+  institution: {
+    type: String,
+    optional: true,
+    defaultValue: '',
+  },
+  studentId: {
+    type: String,
+    optional: true,
+    defaultValue: '',
+  },
+  faculty: {
+    type: String,
+    optional: true,
+    defaultValue: '',
+  }
 });
 
 // Users Schema
 Schema.Users = new SimpleSchema({
   username: {
-        type: String,
-        optional: true
-    },
-    emails: {
-        type: Array,
-        optional: true
-    },
-    "emails.$": {
-        type: Object
-    },
-    "emails.$.address": {
-        type: String,
-        regEx: SimpleSchema.RegEx.Email
-    },
-    "emails.$.verified": {
-        type: Boolean
-    },
-    createdAt: {
-        type: Date
-    },
-    profile: {
-        type: Schema.UserProfile,
-        optional: true
-    },
-    // Make sure this services field is in your schema if you're using any of the accounts packages
-    services: {
-        type: Object,
-        optional: true,
-        blackbox: true
-    },
-    // Add `roles` to your schema if you use the meteor-roles package.
-    // Option 1: Object type
-    // If you specify that type as Object, you must also specify the
-    // `Roles.GLOBAL_GROUP` group whenever you add a user to a role.
-    // Example:
-    // Roles.addUsersToRoles(userId, ["admin"], Roles.GLOBAL_GROUP);
-    // You can't mix and match adding with and without a group since
-    // you will fail validation in some cases.
-    roles: {
-        type: Object,
-        blackbox: true,
-        defaultValue: {
-          [Roles.GLOBAL_GROUP]: [
-            STUDENT_ROLE
-          ]
-        }
-    },
-    // In order to avoid an 'Exception in setInterval callback' from Meteor
-    heartbeat: {
-        type: Date,
-        optional: true
-    },
-    groups: {
-        type: [String],
-        label: "Groups for this user",
-        defaultValue: []
+    type: String,
+    optional: true
+  },
+  emails: {
+    type: Array,
+    optional: true
+  },
+  "emails.$": {
+    type: Object
+  },
+  "emails.$.address": {
+    type: String,
+    regEx: SimpleSchema.RegEx.Email
+  },
+  "emails.$.verified": {
+    type: Boolean
+  },
+  createdAt: {
+    type: Date
+  },
+  profile: {
+    type: Schema.UserProfile,
+    optional: true
+  },
+  // Make sure this services field is in your schema if you're using any of the accounts packages
+  services: {
+    type: Object,
+    optional: true,
+    blackbox: true
+  },
+  // Add `roles` to your schema if you use the meteor-roles package.
+  // Option 1: Object type
+  // If you specify that type as Object, you must also specify the
+  // `Roles.GLOBAL_GROUP` group whenever you add a user to a role.
+  // Example:
+  // Roles.addUsersToRoles(userId, ["admin"], Roles.GLOBAL_GROUP);
+  // You can't mix and match adding with and without a group since
+  // you will fail validation in some cases.
+  roles: {
+    type: Object,
+    blackbox: true,
+    defaultValue: {
+      [Roles.GLOBAL_GROUP]: [
+        STUDENT_ROLE
+      ]
     }
+  },
+  // In order to avoid an 'Exception in setInterval callback' from Meteor
+  heartbeat: {
+    type: Date,
+    optional: true
+  },
+  groups: {
+    type: [String],
+    label: "Groups for this user",
+    defaultValue: []
+  }
 });
 
 // Questions Schema
@@ -163,17 +163,15 @@ Schema.Questions = new SimpleSchema({
     type: Boolean
   },
   startTime: {
-      type: Number,
-      label: "Question Start Time",
-      optional: true
+    type: Number,
+    label: "Question Start Time",
+    optional: true
   },
   endTime: {
-      type: Number,
-      label: "Question End Time",
-      optional: true
-  },
-  
-  
+    type: Number,
+    label: "Question End Time",
+    optional: true
+  }
 });
 
 // Group Schema
@@ -450,14 +448,14 @@ Meteor.methods({
     MethodHelpers.checkVerifiedUser();
 
     Users.update({
-        _id: user._id,
+      _id: user._id,
     }, {
-       $set: {
-           username: user.username,
-           "profile.institution": user.profile.institution,
-           "profile.faculty": user.profile.faculty,
-           "profile.studentId": user.profile.studentId,
-       }
+      $set: {
+        username: user.username,
+        "profile.institution": user.profile.institution,
+        "profile.faculty": user.profile.faculty,
+        "profile.studentId": user.profile.studentId,
+      }
     });
 
     return true;
@@ -477,10 +475,10 @@ MethodHelpers = {
     
     if (answerTimestamp < question.startTime)
     {
-        if(question.endTime != 0 || answerTimestamp > question.endTime)
-        {
-            throw new Meteor.Error(ERROR_ANSWER_OUT_OF_TIME);
-        }
+      if(question.endTime != 0 || answerTimestamp > question.endTime)
+      {
+        throw new Meteor.Error(ERROR_ANSWER_OUT_OF_TIME);
+      }
     }
   },
   checkAnswerInRange: function (questionId, selectedAnswer) {

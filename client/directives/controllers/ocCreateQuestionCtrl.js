@@ -11,9 +11,7 @@
     var vm = this;
     vm.create = create;
     $reactive(vm).attach($scope);
-       
-       
-       
+    
     vm.groupId = "0";   
     vm.question = '';    
     vm.answers = [{answer: ''},{answer: ''}];
@@ -28,7 +26,6 @@
         var lastItem = vm.answers.length-1;
         vm.answers.splice(lastItem);
     };
-    
          
     function create()
     {
