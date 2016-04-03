@@ -66,6 +66,7 @@ describe('Meteor.methods', function () {
     spyOn(MethodHelpers, 'checkUserInGroup').and.returnValue(true);
     spyOn(MethodHelpers, 'checkUserLoggedIn').and.returnValue(true);
     spyOn(MethodHelpers, 'checkUserNotInGroup').and.returnValue(true);
+    spyOn(MethodHelpers, 'checkStudentInGroup').and.returnValue(true);
     spyOn(MethodHelpers, 'checkVerifiedUser').and.returnValue(true);
     spyOn(Meteor, 'userId').and.returnValue(user._id);
     spyOn(Questions, 'findOne').and.returnValue(question);
@@ -402,7 +403,7 @@ describe('Meteor.methods', function () {
     });
   });
   
-    describe('deleteUserFromGroup()', function () {
+  describe('deleteUserFromGroup()', function () {
     it('should check that the user is logged in', function () {
       Meteor.call('deleteUserFromGroup', user._id, group._id);
       
