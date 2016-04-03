@@ -3,8 +3,8 @@
 
   angular
     .module('openClicker', [
-        'angular-meteor',
-        'accounts.ui',
-        'ui.router'
-      ]);
+      'angular-meteor',
+      'accounts.ui',
+      'ui.router'
+    ]);
 })();

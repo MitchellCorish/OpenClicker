@@ -14,7 +14,7 @@
     
     vm.groupId = "0";
     vm.question = '';
-    vm.answers = [{answer: ''},{answer: ''}];
+    vm.answers = [{answer: ''},{answer: ''}]; // start with minimum number of answers
     vm.correctAnswer = null;
         
     vm.addNewAnswer = function() {

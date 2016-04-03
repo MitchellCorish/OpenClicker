@@ -16,7 +16,7 @@
     
     vm.helpers({
       users: () => Users.find({
-          _id: {$ne: Meteor.userId()}
+        _id: {$ne: Meteor.userId()}
       }),
       group: () => Groups.findOne({
         _id: vm.groupId

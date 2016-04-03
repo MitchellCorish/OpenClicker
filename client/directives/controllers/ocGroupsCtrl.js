@@ -22,7 +22,7 @@
         },
       }),
       userID: () => {
-          return Meteor.userId();
+        return Meteor.userId();
       },
     });
   }
