@@ -25,7 +25,7 @@
 
   * Github pages and information on specific packages can usually be found [here](https://atmospherejs.com/).
 
-  * The project uses the [meteorhacks:fast-render](https://github.com/kadirahq/fast-render) package, which has some [security issues](https://github.com/kadirahq/fast-render#security).  These shouldn't be a problem in the application's current state, but should be kept in mind to avoid issues in the future.
+  * The project uses the [meteorhacks:fast-render](https://github.com/kadirahq/fast-render) package, which has some [security issues](https://github.com/kadirahq/fast-render#security).  These shouldn't be a problem in the application's current state (someone with more web application security experience should verify this), but should be kept in mind to avoid issues in the future.
   
   * We are using [AngularUI Router](https://github.com/angular-ui/ui-router) to handle routing.
   
