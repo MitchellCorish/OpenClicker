@@ -40,6 +40,8 @@ describe('ocDeleteUserFromGroupCtrl', function () {
         username: 'testUserName',
     }
     
+    controller.groupId = controller.group._id;
+    
     // spies that won't change between tests
     spyOn(GroupMembershipService, 'deleteUserFromGroup');
     spyOn(window, 'confirm').and.returnValue(true);

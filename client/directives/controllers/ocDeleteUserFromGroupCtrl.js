@@ -14,7 +14,7 @@
     vm.subscribe('usersInGroup', () => [vm.groupId]);
     vm.subscribe('groups');
     
-    vm.delete = deleteUser;
+    vm.deleteUser = deleteUser;
     
     vm.helpers({
       group: () => Groups.findOne({

@@ -561,7 +561,9 @@ MethodHelpers = {
     }
   },
   checkStudentInGroup: function (userId, groupId) {
-    if (!(Users.findOne({ _id: userId }).groups) || !(Users.findOne({ _id: userId }).groups && Users.findOne({ _id: userId }).groups.indexOf(groupId) >= 0))
+    var user = Users.findOne({ _id: userId });
+    
+    if (!(user.groups) || !(user.groups && user.groups.indexOf(groupId) >= 0))
     {
       throw new Meteor.Error(ERROR_NOT_IN_GROUP);
     }
