@@ -74,11 +74,10 @@ Meteor.publish('ownedQuizes', function () {
 });
 
 Meteor.publish('questions', function (quizId) {
-  check(quizId, String);
-  return
-    Questions.find({
-      quizId: quizId});
-
+  //check(quizId, String);
+  return Questions.find({
+      quizId: quizId
+  });
 });
 
 Meteor.publish('activeQuestions', function () {

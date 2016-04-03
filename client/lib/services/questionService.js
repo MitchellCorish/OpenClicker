@@ -18,11 +18,29 @@
     
     return service;
     
-    function createQuestion(quizId, groupId, question, answers, correctAnswer) {
-      Meteor.call('createQuestion', quizId, groupId, question, answers, correctAnswer, function (error, result) {
+    function createQuestion(quizId, groupId, question, answers, correctAnswer, success, failure) {
+      Meteor.call('createQuestion', quizId, groupId, question, answers, correctAnswer, function (error, result)  {
         if (error)
         {
           console.log(error.message);
+          if (failure && typeof(failure) == 'function')
+          {
+            failure();
+          }
+        }
+        else if (result)
+        {
+          if (success && typeof(success) == 'function')
+          {
+            success();
+          }
+        }
+        else
+        {
+          if (failure && typeof(failure) == 'function')
+          {
+            failure();
+          }
         }
       });
     }

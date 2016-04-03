@@ -5,9 +5,9 @@
     .module('openClicker')
     .controller('ocCreateQuestionCtrl', ocCreateQuestionCtrl);
     
-  ocCreateQuestionCtrl.$inject = ['$scope', '$reactive', 'QuestionService'];
+  ocCreateQuestionCtrl.$inject = ['$scope', '$reactive', 'QuestionService', '$state'];
   
-  function ocCreateQuestionCtrl($scope, $reactive, QuestionService) {
+  function ocCreateQuestionCtrl($scope, $reactive, QuestionService, $state) {
     var vm = this;
     vm.create = create;
     $reactive(vm).attach($scope);
@@ -47,7 +47,11 @@
       }  
       else
       {
-          QuestionService.createQuestion(vm.quizId, vm.groupId, vm.question, stringAnswers, vm.correctAnswer);   
+          QuestionService.createQuestion(vm.quizId, vm.groupId, vm.question, stringAnswers, vm.correctAnswer, function () {
+          $state.go('home');
+        }, function () {
+          alert('Failed to create question.');
+        });   
       }
     }
   }
