@@ -18,13 +18,13 @@
     vm.correctAnswer = '';
         
     vm.addNewAnswer = function() {
-        var newItemNo = vm.answers.length+1;
-        vm.answers.push({'answer': ''});
+      var newItemNo = vm.answers.length+1;
+      vm.answers.push({'answer': ''});
     };
         
     vm.removeAnswer = function() {
-        var lastItem = vm.answers.length-1;
-        vm.answers.splice(lastItem);
+      var lastItem = vm.answers.length-1;
+      vm.answers.splice(lastItem);
     };
          
     function create()
@@ -37,15 +37,15 @@
       
       if(vm.correctAnswer == null)
       {
-          alert("Please select the correct answer");
+        alert("Please select the correct answer");
       }
       else if (vm.answers.length == 0 || vm.answers.length == 1) 
       {
-          alert("You need at least 2 answers")
+        alert("You need at least 2 answers")
       }  
       else
       {
-          QuestionService.createQuestion(vm.groupId, vm.question, stringAnswers, vm.correctAnswer);   
+        QuestionService.createQuestion(vm.groupId, vm.question, stringAnswers, vm.correctAnswer);   
       }
     }
   }
