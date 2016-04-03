@@ -388,7 +388,8 @@ Meteor.methods({
       userId: Meteor.userId()
     }, {
       $set: {
-        startTime: startTime
+        startTime: startTime,
+        active: true
       }
     });
     
@@ -410,6 +411,18 @@ Meteor.methods({
         endTime: endTime
       }
     });
+    
+    if (endTime !== 0)
+    {
+      Questions.update({
+      _id: questionId,
+      userId: Meteor.userId()
+      }, {
+        $set: {
+          active: false
+        }
+      });
+    }
     
     return true;
   },

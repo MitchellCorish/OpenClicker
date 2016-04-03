@@ -528,7 +528,7 @@ describe('Meteor.methods', function () {
       expect(MethodHelpers.checkQuestionOwnership).toHaveBeenCalledWith(question._id);
      });
      
-    it('should update the startTime of the specified question', function () {
+    it('should update the startTime of the specified question and set the question to active', function () {
       spyOn(Questions, 'update').and.returnValue(true);
       
       Meteor.call('updateQuestionStartTime', question._id, question.startTime);
@@ -538,7 +538,8 @@ describe('Meteor.methods', function () {
         userId: user._id
       }, {
         $set: {
-          startTime: question.startTime
+          startTime: question.startTime,
+          active: true
         }
       });
     });
@@ -586,6 +587,21 @@ describe('Meteor.methods', function () {
       }, {
         $set: {
          endTime: question.endTime
+        }
+      });
+    });
+    
+    it('should update the question to inactive if the end time is not 0', function () {
+      spyOn(Questions, 'update').and.returnValue(true);
+      
+      Meteor.call('updateQuestionEndTime', question._id, question.endTime);
+      
+      expect(Questions.update).toHaveBeenCalledWith({
+        _id: question._id,
+        userId: user._id
+      }, {
+        $set: {
+         active: false
         }
       });
     });
