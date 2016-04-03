@@ -1,4 +1,6 @@
-//Collection creation
+// Collection creation
+// These are available to the entire application, so use them any time you need a
+// reference to a collection
 Users = Meteor.users;
 Questions = new Mongo.Collection("questions");
 Groups = new Mongo.Collection("groups");
@@ -7,7 +9,7 @@ Answers = new Mongo.Collection("answers");
 // *****Collection Schemas*****
 var Schema ={};
 
-//User Country Schema
+// User Country Schema
 Schema.UserCountry = new SimpleSchema({
     name: {
         type: String
@@ -18,7 +20,7 @@ Schema.UserCountry = new SimpleSchema({
     }
 });
 
-//User Profile Schema
+// User Profile Schema
 Schema.UserProfile = new SimpleSchema({
     firstName: {
         type: String,
@@ -71,12 +73,11 @@ Schema.UserProfile = new SimpleSchema({
     }
 });
 
-//Users Schema
+// Users Schema
 Schema.Users = new SimpleSchema({
   username: {
         type: String,
-        optional: true,
-        defaultValue: '',
+        optional: true
     },
     emails: {
         type: Array,
@@ -134,7 +135,7 @@ Schema.Users = new SimpleSchema({
     }
 });
 
-//Questions Schema
+// Questions Schema
 Schema.Questions = new SimpleSchema({
   userId: {
     type: String,
@@ -175,7 +176,7 @@ Schema.Questions = new SimpleSchema({
   
 });
 
-//Group Schema
+// Group Schema
 Schema.Groups = new SimpleSchema({
   userId: {
     type: String,
@@ -187,7 +188,7 @@ Schema.Groups = new SimpleSchema({
   }
 });
 
-//Answers Schema
+// Answers Schema
 Schema.Answers = new SimpleSchema({
   questionId: {
     type: String,
@@ -214,12 +215,16 @@ Schema.Answers = new SimpleSchema({
   }
 });
 
-//Attaching collections to schemas created
+// Attaching collections to schemas created
 Users.attachSchema(Schema.Users, {replace: true});
 Questions.attachSchema(Schema.Questions, {replace: true});
 Groups.attachSchema(Schema.Groups, {replace: true});
 Answers.attachSchema(Schema.Answers, {replace: true});
 
+// Define Meteor methods
+// All methods start by performing checks to ensure that the user is doing something they
+// are permitted to do, then doing any necessary database operations, then returning true
+// on success so we can have callbacks that run depending on success or failure
 Meteor.methods({
   answerQuestion: function (questionId, selectedAnswer, timestamp) {
     MethodHelpers.checkUserLoggedIn();
@@ -227,6 +232,7 @@ Meteor.methods({
     MethodHelpers.checkQuestionExists(questionId);
     MethodHelpers.checkQuestionIsActive(questionId);
     
+    // grab the relevant question to do remaining checks
     var question = Questions.findOne({
       _id: questionId
     });
@@ -235,6 +241,7 @@ Meteor.methods({
     MethodHelpers.checkAnswerInRange(questionId, selectedAnswer);
     MethodHelpers.checkAnswerInTime(questionId, timestamp);
     
+    // insert or update the answer
     Answers.update({
       questionId: question._id,
       groupId: question.groupId,
@@ -375,7 +382,6 @@ Meteor.methods({
     
     return true;
   },
-  
   updateQuestionStartTime: function (questionId, startTime) {
     MethodHelpers.checkUserLoggedIn();
     MethodHelpers.checkVerifiedUser();
@@ -394,7 +400,6 @@ Meteor.methods({
     
     return true;
   },
-  
   updateQuestionEndTime: function (questionId, endTime) {
     MethodHelpers.checkUserLoggedIn();
     MethodHelpers.checkVerifiedUser();
@@ -413,8 +418,6 @@ Meteor.methods({
     
     return true;
   },
-  
-
   updateRoles: function (userId, student, professor, admin) {
     MethodHelpers.checkUserLoggedIn();
     MethodHelpers.checkVerifiedUser();
@@ -458,7 +461,7 @@ Meteor.methods({
     });
 
     return true;
-  },
+  }
 });
 
 // define some functions for things we will have to check frequently
