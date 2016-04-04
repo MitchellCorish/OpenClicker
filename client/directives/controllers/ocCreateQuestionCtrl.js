@@ -48,7 +48,7 @@
       else
       {
           QuestionService.createQuestion(vm.quizId, vm.groupId, vm.question, stringAnswers, vm.correctAnswer, function () {
-          $state.go('home');
+          $state.go('ownedQuestions', {quizId: vm.quizId, groupId: vm.groupId});
         }, function () {
           alert('Failed to create question.');
         });   

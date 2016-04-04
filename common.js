@@ -374,6 +374,9 @@ Meteor.methods({
         Quizes.remove({
             _id: quizId
         });
+        Questions.remove({
+            quizId: quizId
+        });
         return true;
     },
 
@@ -392,8 +395,6 @@ Meteor.methods({
         MethodHelpers.checkVerifiedUser();
         MethodHelpers.checkCreatorPermissions();
         MethodHelpers.checkQuestionExists(questionId);
-        MethodHelpers.checkGroupExists(groupId);
-        MethodHelpers.checkGroupOwnership(groupId);
 
         Questions.update({
             _id: questionId,

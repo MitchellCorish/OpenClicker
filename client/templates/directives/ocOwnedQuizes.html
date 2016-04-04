@@ -18,8 +18,8 @@
           <tr ng-if="vm.quizes.length==0">
             <td>You have not created any quizes.</td>
           </tr>
-          <tr ng-repeat="quiz in vm.quizes">
-            <td><a class="text-primary">{{quiz.name}}</a></td>
+          <tr ng-repeat="quiz in vm.quizes  | filter:{groupId:vm.groupId}">
+            <td><a ui-sref="ownedQuestions({ quizId: quiz._id, groupId: vm.groupId })">{{quiz.name}}</a></td>
             <td>
               <div class="pull-right">
                 <a ui-sref="createQuestion({ quizId: quiz._id, groupId: vm.groupId })"><button type="button" class="btn btn-primary">Add a Question</button></a>

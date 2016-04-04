@@ -1,0 +1,13 @@
+<div class="page-content" ng-controller="ownedQuestionsCtrl as vm">
+  <div class="single-head">
+    <h1 class="pull-left text-primary"><i class="fa fa-credit-card red"></i>Questions in Quiz ID: {{vm.quizId}}</h1>
+    <div class="clearfix"></div>
+  </div>
+  
+  <div class="page-tables">
+    <div class="table-responsive">
+      <oc-owned-questions quiz-id="{{vm.quizId}}" group-id="{{vm.groupId}}"></oc-owned-questions>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</div>

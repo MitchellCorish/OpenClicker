@@ -5,9 +5,9 @@
         .module('openClicker')
         .controller('ocEditQuestionCtrl', ocEditQuestionCtrl);
  
-    ocEditQuestionCtrl.$inject = ['$scope', '$reactive', 'QuestionService'];
+    ocEditQuestionCtrl.$inject = ['$scope', '$reactive', 'QuestionService', '$state'];
  
-    function ocEditQuestionCtrl($scope, $reactive, QuestionService) {
+    function ocEditQuestionCtrl($scope, $reactive, QuestionService, $state) {
         var vm = this;
         $reactive(vm).attach($scope);
  
@@ -26,7 +26,11 @@
         {
             QuestionService.editQuestion(vm.question._id,
                 vm.question.groupId, vm.question.questionAsked,
-                vm.question.possibleAnswers, vm.question.answer);
+                vm.question.possibleAnswers, vm.question.answer, function () {
+          $state.go('ownedQuestions', {quizId: vm.question.quizId, groupId: vm.question.groupId});
+        }, function () {
+          alert('Failed to edit question.');
+        });
         }
  
         function removeAnswer(i)

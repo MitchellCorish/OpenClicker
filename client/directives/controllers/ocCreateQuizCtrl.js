@@ -31,7 +31,7 @@
             else
             {
                 QuizService.createQuiz(vm.quizName, vm.group._id, function () {
-                    $state.go('home');
+                    $state.go('ownedQuizes', {groupId: vm.groupId});
                 }, function () {
                     alert('Failed to create quiz.');
                 });

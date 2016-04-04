@@ -72,17 +72,31 @@
       });
     }
 
-      function editQuestion(questionId, groupId, questionAsked, possibleAnswers, answer) {
+      function editQuestion(questionId, groupId, questionAsked, possibleAnswers, answer, success, failure) {
           Meteor.call('editQuestion', questionId, groupId, questionAsked, possibleAnswers, answer, function (error, result) {
-              if (error)
-              {
-                  console.log(error.message);
-              }
-              else if (result)
-              {
-                  alert('Question edited successfully');
-              }
-          });
+             if (error)
+        {
+          console.log(error.message);
+          if (failure && typeof(failure) == 'function')
+          {
+            failure();
+          }
+        }
+        else if (result)
+        {
+          if (success && typeof(success) == 'function')
+          {
+            success();
+          }
+        }
+        else
+        {
+          if (failure && typeof(failure) == 'function')
+          {
+            failure();
+          }
+        }
+      });
       }
   }
 
