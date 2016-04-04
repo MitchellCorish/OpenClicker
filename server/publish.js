@@ -90,3 +90,13 @@ Meteor.publish('activeQuestions', function () {
       return null;
   }
 });
+
+Meteor.publish('ownedAnswers', function (questionId) {
+   if(!this.userId)
+  {
+    return null;
+  }
+  return Answers.find({
+    'questionId': questionId
+  });
+});

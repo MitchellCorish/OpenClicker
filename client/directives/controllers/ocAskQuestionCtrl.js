@@ -12,6 +12,7 @@
     $reactive(vm).attach($scope);
     
     vm.subscribe('ownedQuestions');
+    vm.subscribe('ownedAnswers', () => [vm.questionId]);
     
     vm.active = false;
     vm.counter = 30;
@@ -21,12 +22,14 @@
     vm.stop = stop;
     vm.startTimer = startTimer;
     vm.onTimeout = onTimeout;
+    vm.showCount = displayCount;
     
     vm.helpers({
       question: () => Questions.findOne({
         _id: vm.questionId
-      })
-    });
+      }),
+      countAnswer: () => count(),
+    })
     
     function start()
     {
@@ -74,5 +77,27 @@
         QuestionService.updateQuestionEndTime(vm.questionId, 0);
       }
     };
+    
+    function count(){
+        var i;
+        var countAnswerList = [];
+        var selectionLength = 100;
+        for(i=0; i < selectionLength; i++)
+        {
+            countAnswerList.push(
+                Answers.find({
+                    answer: i
+                }).count()
+            )
+        }
+        return countAnswerList;
+    };
+    
+    function displayCount(){
+        if (confirm('Are you sure you want to display the count for each selection?'))
+        {
+            $('[name="count"]').show();
+        }
+    }
   }
 })();
