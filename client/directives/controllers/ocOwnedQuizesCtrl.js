@@ -17,7 +17,10 @@
         vm.helpers({
                 quizes: () => Quizes.find({
                 userId: Meteor.userId()
-                })
+                }),
+                group: () => Groups.findOne({
+                _id: vm.groupId
+                }),
     });
     }
 })();
