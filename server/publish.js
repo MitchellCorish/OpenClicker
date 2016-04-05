@@ -90,3 +90,23 @@ Meteor.publish('activeQuestions', function () {
       return null;
   }
 });
+
+Meteor.publish('answersForQuestion', function (questionId) {
+  if(!this.userId)
+  {
+    return null;
+  }
+  
+  var question = Questions.findOne({ _id: questionId })
+  
+  if (question.userId == this.userId)
+  {
+    return Answers.find({
+      questionId: questionId
+    });
+  }
+  else
+  {
+    return null;
+  }
+});
