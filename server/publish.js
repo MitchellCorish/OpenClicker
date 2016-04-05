@@ -91,12 +91,22 @@ Meteor.publish('activeQuestions', function () {
   }
 });
 
-Meteor.publish('ownedAnswers', function (questionId) {
-   if(!this.userId)
+Meteor.publish('answersForQuestion', function (questionId) {
+  if(!this.userId)
   {
     return null;
   }
-  return Answers.find({
-    'questionId': questionId
-  });
+  
+  var question = Questions.findOne({ _id: questionId })
+  
+  if (question.userId == this.userId)
+  {
+    return Answers.find({
+      questionId: questionId
+    });
+  }
+  else
+  {
+    return null;
+  }
 });

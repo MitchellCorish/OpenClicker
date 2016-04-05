@@ -12,23 +12,24 @@
     $reactive(vm).attach($scope);
     
     vm.subscribe('ownedQuestions');
-    vm.subscribe('ownedAnswers', () => [vm.questionId]);
+    vm.subscribe('answersForQuestion', () => [vm.questionId]);
     
     vm.active = false;
     vm.counter = 30;
     vm.endTime = -1;
     vm.usingTimer = false;
+    vm.displayingAnswers = false;
     vm.start = start;
     vm.stop = stop;
     vm.startTimer = startTimer;
     vm.onTimeout = onTimeout;
-    vm.showCount = displayCount;
+    vm.showCount = showCount;
     
     vm.helpers({
       question: () => Questions.findOne({
         _id: vm.questionId
       }),
-      countAnswer: () => count(),
+      countAnswer: () => count()
     })
     
     function start()
@@ -79,25 +80,24 @@
     };
     
     function count(){
-        var i;
-        var countAnswerList = [];
-        var selectionLength = 100;
-        for(i=0; i < selectionLength; i++)
-        {
-            countAnswerList.push(
-                Answers.find({
-                    answer: i
-                }).count()
-            )
-        }
-        return countAnswerList;
+      var countAnswerList = [];
+      var selectionLimit = 100; // assume an upper limit since question always seems to be undefined here
+      for(var i = 0; i < selectionLimit; i++)
+      {
+        countAnswerList.push(
+          Answers.find({
+            answer: i
+          }).count()
+        )
+      }
+      return countAnswerList;
     };
     
-    function displayCount(){
-        if (confirm('Are you sure you want to display the count for each selection?'))
-        {
-            $('[name="count"]').show();
-        }
+    function showCount(){
+      if (!vm.displayingAnswers && confirm('Are you sure you want to display the count for each selection?'))
+      {
+        vm.displayingAnswers = true;
+      }
     }
   }
 })();
