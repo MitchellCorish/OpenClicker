@@ -4,13 +4,14 @@
   </div>
   <div class="panel-body">
     <div ng-repeat="answer in vm.question.possibleAnswers">
-      {{answer}}
+        {{answer}} <span class="text-danger" ng-if="vm.displayingAnswers"> {{vm.countAnswer[$index]}}</span>
     </div>
   </div>
   <div class="panel-footer">
     <button class="btn btn-success" ng-click="vm.start()" ng-if="!vm.active && !vm.usingTimer">Start</button>
     <button class="btn btn-danger" ng-click="vm.stop()" ng-if="vm.active && !vm.usingTimer">Stop</button>
     <button class="btn btn-primary" ng-click='vm.startTimer()' ng-if="!vm.active || vm.usingTimer">{{ !vm.active ? 'Start Timer' : vm.counter }}</button>
+    <button class="btn btn-info" ng-click="vm.showCount()" id="countButton">Display Answer Totals</button> 
   </div>
 </div>
 

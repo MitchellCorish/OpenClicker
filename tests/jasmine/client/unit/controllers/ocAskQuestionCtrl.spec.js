@@ -52,7 +52,7 @@ describe('ocAskQuestionCtrl', function () {
     // spies that won't change between tests
     spyOn(QuestionService, 'updateQuestionStartTime');
     spyOn(QuestionService, 'updateQuestionEndTime');
-    spyOn(window, 'alert');
+    spyOn(window, 'confirm').and.returnValue(true);
     spyOn(Date, 'now').and.returnValue(now);
     spyOn(controller, 'onTimeout').and.callThrough();
   });
@@ -122,6 +122,20 @@ describe('ocAskQuestionCtrl', function () {
       expect(controller.counter).toEqual(30);
       expect(controller.active).toBe(false);
       expect(controller.usingTimer).toBe(false);
+    });
+  });
+  
+  describe('showCount', function () {
+    it('should ask the user to confirm that they would like to show the answer totals', function () {
+      controller.showCount();
+      
+      expect(window.confirm).toHaveBeenCalled();
+    });
+    
+    it('should set displayingAnswers to true if it is false and the user confirms the action', function () {
+      controller.showCount();
+      
+      expect(controller.displayingAnswers).toBe(true);
     });
   });
 });
