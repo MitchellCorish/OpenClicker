@@ -60,7 +60,7 @@ describe('ocAskQuestionCtrl', function () {
   // test cases  
   describe('start()', function () {
     it('should set the start time to the current time and the end time to 0 if the question is not active', function() {
-      controller.active = false;
+      controller.question.active = false;
       
       controller.start();
       
@@ -71,7 +71,7 @@ describe('ocAskQuestionCtrl', function () {
   
   describe('stop()', function () {
     it('should set the end time to the current time if the question is active', function() {
-      controller.active = true;
+      controller.question.active = true;
       
       controller.stop();
       
@@ -81,7 +81,7 @@ describe('ocAskQuestionCtrl', function () {
   
   describe('startTimer()', function () {    
     it('should set the start time to the current time and the end time to 0 if the question is not active', function() {
-      controller.active = false;
+      controller.question.active = false;
       
       controller.startTimer();
       
@@ -90,7 +90,7 @@ describe('ocAskQuestionCtrl', function () {
     });
     
     it('should set the onTimeout method to be called', function() {
-      controller.active = false;
+      controller.question.active = false;
       
       controller.startTimer();
       
@@ -120,7 +120,6 @@ describe('ocAskQuestionCtrl', function () {
       
       expect(QuestionService.updateQuestionEndTime).toHaveBeenCalledWith(controller.questionId, Math.floor(now / 1000));
       expect(controller.counter).toEqual(30);
-      expect(controller.active).toBe(false);
       expect(controller.usingTimer).toBe(false);
     });
   });
