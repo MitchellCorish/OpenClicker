@@ -29,7 +29,8 @@
       question: () => Questions.findOne({
         _id: vm.questionId
       }),
-      countAnswer: () => count()
+      countAnswer: () => count(),
+      totalAnswers: () => Answers.find({}).count()
     })
     
     function start()
