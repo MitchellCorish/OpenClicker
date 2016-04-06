@@ -100,8 +100,6 @@
           }
         }
       })
-      
-      
       .state('createQuiz', {
         url: '/create-quiz/:groupId',
         views: {
@@ -126,15 +124,14 @@
           }
         }
       })
-      
-      .state('ownedQuizes', {
-        url: '/owned-quizes/:groupId',
+      .state('ownedQuizzes', {
+        url: '/owned-quizzes/:groupId',
         views: {
           header: {
             templateUrl: 'client/templates/header.html'
           },
           main: {
-            templateUrl: 'client/templates/routes/ownedQuizes.html'
+            templateUrl: 'client/templates/routes/ownedQuizzes.html'
           }    
         },
         data: {
@@ -151,7 +148,6 @@
           }
         }
       })
-      
       .state('editQuestion', {
         url: '/edit-question/:questionId',
         views: {
@@ -176,11 +172,8 @@
           }
         }
       })
-      
-      
-      
       .state('ownedQuestions', {
-        url: '/owned-questions/:quizId/:groupId',
+        url: '/owned-questions/:groupId/:quizId',
         views: {
           header: {
             templateUrl: 'client/templates/header.html'
@@ -203,7 +196,6 @@
           }
         }
       })
-      
       .state('editRoles', {
         url: '/edit-roles/:userId',
         views: {

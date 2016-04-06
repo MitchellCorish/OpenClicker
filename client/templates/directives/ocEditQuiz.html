@@ -1,19 +1,8 @@
 <form>
-    <div>
-        <label>Quiz Name: </label> <input type="text" placeholder="{{vm.quiz.name}}" ng-model="vm.quiz.name"/>
-    </div>
-    <label>Questions:</label>
-    <div ng-repeat="question in vm.questions | filter:{quizId:vm.quiz._id}">{{question.questionAsked}}</div>
-    <!--<div ng-repeat="question in vm.quiz.questions">
-    <label><div ng-repeat="ques in vm.questions | filter:{_id:question}">{{ques.questionAsked}}</div>
-            <button ng-click="vm.up($index)">up</button>
-            <button ng-click="vm.down($index)">down</button>
-            <button ng-click="vm.removeQuestion($index)">-</button>
-        </label>
-
-    </div>-->
-
-    <label> <button ng-click="vm.update()">Submit</button></label>
-
-
+  <div>
+    <label>Quiz Name: </label> <input type="text" placeholder="{{vm.quiz.name}}" ng-model="vm.quiz.name"/>
+  </div>
+  <label>Questions:</label>
+  <div ng-repeat="question in vm.questions | filter:{quizId:vm.quiz._id}">{{question.questionAsked}}</div>
+  <label><button ng-click="vm.update()">Submit</button></label>
 </form>

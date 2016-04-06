@@ -1,7 +1,7 @@
 //Collection creation
 Users = Meteor.users;
 Questions = new Mongo.Collection("questions");
-Quizes = new Mongo.Collection("quizes");
+Quizes = new Mongo.Collection("quizzes");
 Groups = new Mongo.Collection("groups");
 Answers = new Mongo.Collection("answers");
 
@@ -10,129 +10,129 @@ var Schema ={};
 
 //User Country Schema
 Schema.UserCountry = new SimpleSchema({
-    name: {
-        type: String
-    },
-    code: {
-        type: String,
-        regEx: /^[A-Z]{2}$/
-    }
+  name: {
+    type: String
+  },
+  code: {
+    type: String,
+    regEx: /^[A-Z]{2}$/
+  }
 });
 
 //User Profile Schema
 Schema.UserProfile = new SimpleSchema({
-    firstName: {
-        type: String,
-        optional: true
-    },
-    lastName: {
-        type: String,
-        optional: true
-    },
-    birthday: {
-        type: Date,
-        optional: true
-    },
-    gender: {
-        type: String,
-        allowedValues: ['Male', 'Female'],
-        optional: true
-    },
-    organization : {
-        type: String,
-        optional: true
-    },
-    website: {
-        type: String,
-        regEx: SimpleSchema.RegEx.Url,
-        optional: true
-    },
-    bio: {
-        type: String,
-        optional: true
-    },
-    country: {
-        type: Schema.UserCountry,
-        optional: true
-    },
-    institution: {
-        type: String,
-        optional: true,
-        defaultValue: '',
-    },
-    studentId: {
-        type: String,
-        optional: true,
-        defaultValue: '',
-    },
-    faculty: {
-        type: String,
-        optional: true,
-        defaultValue: '',
-    }
+  firstName: {
+    type: String,
+    optional: true
+  },
+  lastName: {
+    type: String,
+    optional: true
+  },
+  birthday: {
+    type: Date,
+    optional: true
+  },
+  gender: {
+    type: String,
+    allowedValues: ['Male', 'Female'],
+    optional: true
+  },
+  organization : {
+    type: String,
+    optional: true
+  },
+  website: {
+    type: String,
+    regEx: SimpleSchema.RegEx.Url,
+    optional: true
+  },
+  bio: {
+    type: String,
+    optional: true
+  },
+  country: {
+    type: Schema.UserCountry,
+    optional: true
+  },
+  institution: {
+    type: String,
+    optional: true,
+    defaultValue: '',
+  },
+  studentId: {
+    type: String,
+    optional: true,
+    defaultValue: '',
+  },
+  faculty: {
+    type: String,
+    optional: true,
+    defaultValue: '',
+  }
 });
 
 //Users Schema
 Schema.Users = new SimpleSchema({
   username: {
-        type: String,
-        optional: true,
-        defaultValue: '',
-    },
-    emails: {
-        type: Array,
-        optional: true
-    },
-    "emails.$": {
-        type: Object
-    },
-    "emails.$.address": {
-        type: String,
-        regEx: SimpleSchema.RegEx.Email
-    },
-    "emails.$.verified": {
-        type: Boolean
-    },
-    createdAt: {
-        type: Date
-    },
-    profile: {
-        type: Schema.UserProfile,
-        optional: true
-    },
-    // Make sure this services field is in your schema if you're using any of the accounts packages
-    services: {
-        type: Object,
-        optional: true,
-        blackbox: true
-    },
-    // Add `roles` to your schema if you use the meteor-roles package.
-    // Option 1: Object type
-    // If you specify that type as Object, you must also specify the
-    // `Roles.GLOBAL_GROUP` group whenever you add a user to a role.
-    // Example:
-    // Roles.addUsersToRoles(userId, ["admin"], Roles.GLOBAL_GROUP);
-    // You can't mix and match adding with and without a group since
-    // you will fail validation in some cases.
-    roles: {
-        type: Object,
-        blackbox: true,
-        defaultValue: {
-          [Roles.GLOBAL_GROUP]: [
-            STUDENT_ROLE
-          ]
-        }
-    },
-    // In order to avoid an 'Exception in setInterval callback' from Meteor
-    heartbeat: {
-        type: Date,
-        optional: true
-    },
-    groups: {
-        type: [String],
-        label: "Groups for this user",
-        defaultValue: []
+    type: String,
+    optional: true,
+    defaultValue: '',
+  },
+  emails: {
+    type: Array,
+    optional: true
+  },
+  "emails.$": {
+    type: Object
+  },
+  "emails.$.address": {
+    type: String,
+    regEx: SimpleSchema.RegEx.Email
+  },
+  "emails.$.verified": {
+    type: Boolean
+  },
+  createdAt: {
+    type: Date
+  },
+  profile: {
+    type: Schema.UserProfile,
+    optional: true
+  },
+  // Make sure this services field is in your schema if you're using any of the accounts packages
+  services: {
+    type: Object,
+    optional: true,
+    blackbox: true
+  },
+  // Add `roles` to your schema if you use the meteor-roles package.
+  // Option 1: Object type
+  // If you specify that type as Object, you must also specify the
+  // `Roles.GLOBAL_GROUP` group whenever you add a user to a role.
+  // Example:
+  // Roles.addUsersToRoles(userId, ["admin"], Roles.GLOBAL_GROUP);
+  // You can't mix and match adding with and without a group since
+  // you will fail validation in some cases.
+  roles: {
+    type: Object,
+    blackbox: true,
+    defaultValue: {
+      [Roles.GLOBAL_GROUP]: [
+        STUDENT_ROLE
+      ]
     }
+  },
+  // In order to avoid an 'Exception in setInterval callback' from Meteor
+  heartbeat: {
+    type: Date,
+    optional: true
+  },
+  groups: {
+    type: [String],
+    label: "Groups for this user",
+    defaultValue: []
+  }
 });
 
 //Questions Schema
@@ -163,52 +163,51 @@ Schema.Questions = new SimpleSchema({
     type: Boolean
   },
   startTime: {
-      type: Number,
-      label: "Question Start Time",
-      optional: true
+    type: Number,
+    label: "Question Start Time",
+    optional: true
   },
   endTime: {
-      type: Number,
-      label: "Question End Time",
-      optional: true
+    type: Number,
+    label: "Question End Time",
+    optional: true
   },
-    quizId: {
-        type: String,
-        label: "Quiz ID"
-    }
+  quizId: {
+    type: String,
+    label: "Quiz ID"
+  }
 });
 
 //Quiz Schema
-Schema.Quizes = new SimpleSchema({
-    questions: {
-        type: [String],
-        label: "Questions in a Quiz",
-    },
-    name: {
-        type: String,
-        label: "Quiz Name"
-    },
-    userId: {
-        type: String,
-        label: "User ID"
-    },
-    groupId: {
-        type: String,
-        label: "Group ID"
-    }
-
+Schema.Quizzes = new SimpleSchema({
+  questions: {
+    type: [String],
+    label: "Questions in a Quiz",
+  },
+  name: {
+    type: String,
+    label: "Quiz Name"
+  },
+  userId: {
+    type: String,
+    label: "User ID"
+  },
+  groupId: {
+    type: String,
+    label: "Group ID"
+  }
 });
 
 //Group Schema
 Schema.Groups = new SimpleSchema({
-    userId: {
-        type: String,
-        label: "User Admin ID"
-    },
-    name: {
-        type: String,
-        label: "Group Name"
-    }
+  userId: {
+    type: String,
+    label: "User Admin ID"
+  },
+  name: {
+    type: String,
+    label: "Group Name"
+  }
 });
 
 //Answers Schema
@@ -288,7 +287,7 @@ Meteor.methods({
 
     return true;
   },
-  createQuestion: function (quizid, groupid, question, answers, correctAnswer) {
+  createQuestion: function (quizId, groupid, question, answers, correctAnswer) {
     MethodHelpers.checkUserLoggedIn();
     MethodHelpers.checkVerifiedUser();
     MethodHelpers.checkCreatorPermissions();
@@ -297,7 +296,7 @@ Meteor.methods({
     Questions.insert({
       userId: Meteor.userId(),
       groupId: groupid,
-      quizId: quizid,
+      quizId: quizId,
       questionAsked: question,
       possibleAnswers: answers,
       answer: correctAnswer,
@@ -306,20 +305,20 @@ Meteor.methods({
 
     return true;
   },
-    createQuiz: function (quizName, groupId) {
-        MethodHelpers.checkUserLoggedIn();
-        MethodHelpers.checkVerifiedUser();
-        MethodHelpers.checkCreatorPermissions();
+  createQuiz: function (quizName, groupId) {
+    MethodHelpers.checkUserLoggedIn();
+    MethodHelpers.checkVerifiedUser();
+    MethodHelpers.checkCreatorPermissions();
 
-        Quizes.insert({
-            userId: Meteor.userId(),
-            name: quizName,
-            groupId: groupId,
-            questions: []
-        });
+    Quizzes.insert({
+      userId: Meteor.userId(),
+      name: quizName,
+      groupId: groupId,
+      questions: []
+    });
 
-        return true;
-    },
+    return true;
+  },
   deleteGroup: function (groupId) {
     MethodHelpers.checkUserLoggedIn();
     MethodHelpers.checkVerifiedUser();
@@ -365,71 +364,71 @@ Meteor.methods({
 
     return true;
   },
-    deleteQuiz: function(quizId) {
-        MethodHelpers.checkUserLoggedIn();
-        MethodHelpers.checkVerifiedUser();
-        MethodHelpers.checkCreatorPermissions();
-        MethodHelpers.checkQuizExists(quizId);
+  deleteQuiz: function(quizId) {
+    MethodHelpers.checkUserLoggedIn();
+    MethodHelpers.checkVerifiedUser();
+    MethodHelpers.checkCreatorPermissions();
+    MethodHelpers.checkQuizExists(quizId);
 
-        Quizes.remove({
-            _id: quizId
-        });
-        Questions.remove({
-            quizId: quizId
-        });
-        return true;
-    },
+    Quizzes.remove({
+      _id: quizId
+    });
+    
+    Questions.remove({
+      quizId: quizId
+    });
+    
+    return true;
+  },
+  getQuestionName: function(questionId){
+    MethodHelpers.checkUserLoggedIn();
+    MethodHelpers.checkVerifiedUser();
+    MethodHelpers.checkCreatorPermissions();
+    MethodHelpers.checkQuestionExists(questionId);
+    
+    var question = Questions.findOne({ _id: questionId });
+    
+    return question.questionAsked;
+  },
+  editQuestion: function (questionId, groupId, questionAsked, possibleAnswers, answer) {
+    MethodHelpers.checkUserLoggedIn();
+    MethodHelpers.checkVerifiedUser();
+    MethodHelpers.checkCreatorPermissions();
+    MethodHelpers.checkQuestionExists(questionId);
 
-    getQuestionName: function(questionId){
-        MethodHelpers.checkUserLoggedIn();
-        MethodHelpers.checkVerifiedUser();
-        MethodHelpers.checkCreatorPermissions();
-        MethodHelpers.checkQuestionExists(questionId);
-        var question = Questions.findOne({ _id: questionId });
-        console.log(question.questionAsked);
-        return question.questionAsked;
-    },
+    Questions.update({
+      _id: questionId,
+      userId: Meteor.userId()
+    }, {
+      $set: {
+        groupId: groupId,
+        questionAsked: questionAsked,
+        possibleAnswers: possibleAnswers,
+        answer: answer
+      }
+    });
 
-    editQuestion: function (questionId, groupId, questionAsked, possibleAnswers, answer) {
-        MethodHelpers.checkUserLoggedIn();
-        MethodHelpers.checkVerifiedUser();
-        MethodHelpers.checkCreatorPermissions();
-        MethodHelpers.checkQuestionExists(questionId);
+    return true;
+  },
+  editQuiz: function (quizId, questions, userId, name) {
+    MethodHelpers.checkUserLoggedIn();
+    MethodHelpers.checkVerifiedUser();
+    MethodHelpers.checkCreatorPermissions();
+    MethodHelpers.checkQuizExists(quizId);
 
-        Questions.update({
-            _id: questionId,
-            userId: Meteor.userId()
-        }, {
-            $set: {
-                groupId: groupId,
-                questionAsked: questionAsked,
-                possibleAnswers: possibleAnswers,
-                answer: answer
-            }
-        });
+    Quizzes.update({
+      _id: quizId,
+      userId: Meteor.userId()
+    }, {
+      $set: {
+        userId: userId,
+        questions: questions,
+        name: name
+      }
+    });
 
-        return true;
-    },
-
-    editQuiz: function (quizId, questions, userId, name) {
-        MethodHelpers.checkUserLoggedIn();
-        MethodHelpers.checkVerifiedUser();
-        MethodHelpers.checkCreatorPermissions();
-        MethodHelpers.checkQuizExists(quizId);
-
-        Quizes.update({
-            _id: quizId,
-            userId: Meteor.userId()
-        }, {
-            $set: {
-                userId: userId,
-                questions: questions,
-                name: name
-            }
-        });
-
-        return true;
-    },
+    return true;
+  },
   joinGroup: function (groupId) {
     MethodHelpers.checkUserLoggedIn();
     MethodHelpers.checkVerifiedUser();
@@ -480,7 +479,6 @@ Meteor.methods({
 
     return true;
   },
-  
   updateQuestionStartTime: function (questionId, startTime) {
     MethodHelpers.checkUserLoggedIn();
     MethodHelpers.checkVerifiedUser();
@@ -500,7 +498,6 @@ Meteor.methods({
 
     return true;
   },
-
   updateQuestionEndTime: function (questionId, endTime) {
     MethodHelpers.checkUserLoggedIn();
     MethodHelpers.checkVerifiedUser();
@@ -531,8 +528,6 @@ Meteor.methods({
     
     return true;
   },
-
-
   updateRoles: function (userId, student, professor, admin) {
     MethodHelpers.checkUserLoggedIn();
     MethodHelpers.checkVerifiedUser();
@@ -609,10 +604,10 @@ MethodHelpers = {
 
     if (answerTimestamp < question.startTime)
     {
-        if(question.endTime != 0 || answerTimestamp > question.endTime)
-        {
-            throw new Meteor.Error(ERROR_ANSWER_OUT_OF_TIME);
-        }
+      if(question.endTime != 0 || answerTimestamp > question.endTime)
+      {
+        throw new Meteor.Error(ERROR_ANSWER_OUT_OF_TIME);
+      }
     }
   },
   checkAnswerInRange: function (questionId, selectedAnswer) {
@@ -649,12 +644,12 @@ MethodHelpers = {
       throw new Meteor.Error(ERROR_QUESTION_DOES_NOT_EXIST);
     }
   },
-    checkQuizExists: function (quizId) {
-        if (!Quizes.findOne({ _id: quizId }))
-        {
-            throw new Meteor.Error(ERROR_QUIZ_DOES_NOT_EXIST);
-        }
-    },
+  checkQuizExists: function (quizId) {
+    if (!Quizzes.findOne({ _id: quizId }))
+    {
+      throw new Meteor.Error(ERROR_QUIZ_DOES_NOT_EXIST);
+    }
+  },
   checkQuestionIsActive: function (questionId) {
     var question = Questions.findOne({ _id: questionId });
     

@@ -3,11 +3,11 @@
   
   angular
     .module('openClicker')
-    .controller('ownedQuizesCtrl', ownedQuizesCtrl);
+    .controller('ownedQuizzesCtrl', ownedQuizzesCtrl);
     
-  ownedQuizesCtrl.$inject = ['$stateParams'];
+  ownedQuizzesCtrl.$inject = ['$stateParams'];
   
-  function ownedQuizesCtrl($stateParams) {
+  function ownedQuizzesCtrl($stateParams) {
     var vm = this;
     
     vm.groupId = $stateParams.groupId;

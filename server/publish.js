@@ -63,18 +63,17 @@ Meteor.publish('users', function () {
   });
 });
 
-Meteor.publish('ownedQuizes', function () {
+Meteor.publish('ownedQuizzes', function () {
   if(!this.userId)
   {
     return null;
   }
-  return Quizes.find({
+  return Quizzes.find({
     userId: this.userId
   });
 });
 
 Meteor.publish('questions', function (quizId) {
-  //check(quizId, String);
   return Questions.find({
       quizId: quizId
   });
@@ -99,8 +98,8 @@ Meteor.publish('activeQuestions', function () {
   });
 });
   
- Meteor.publish('usersInGroup', function (groupId) {
-   if(!this.userId)
+Meteor.publish('usersInGroup', function (groupId) {
+  if(!this.userId)
   {
     return null;
   }

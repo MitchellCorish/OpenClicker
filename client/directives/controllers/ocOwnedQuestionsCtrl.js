@@ -12,13 +12,13 @@
     $reactive(vm).attach($scope);
     
     vm.subscribe('ownedQuestions');
-    vm.subscribe('ownedQuizes')
+    vm.subscribe('ownedQuizzes')
     
     vm.helpers({
       questions: () => Questions.find({
         userId: Meteor.userId()
       }),
-      quiz: () => Quizes.findOne({
+      quiz: () => Quizzes.findOne({
         _id: vm.quizId
       }),
     });

@@ -14,8 +14,8 @@
       templateUrl: 'client/templates/directives/ocOwnedQuestions.html',
       restrict: 'E',
       scope: {
-          quizId: '@',
-          groupId: '@'
+        quizId: '@',
+        groupId: '@'
       },
       bindToController: true
     };
