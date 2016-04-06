@@ -18,6 +18,5 @@
         userId: Meteor.userId()
       })
     });
-    
   }
 })();

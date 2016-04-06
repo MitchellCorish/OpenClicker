@@ -15,7 +15,6 @@
       restrict: 'E',
       scope: {
         questionId: '@'
-        
       },
       bindToController: true
     };

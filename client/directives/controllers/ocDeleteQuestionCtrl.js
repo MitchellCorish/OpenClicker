@@ -14,9 +14,7 @@
     vm.subscribe('ownedQuestions');
     
     vm.delete = deleteQuestion;
-    
-    
-    
+
     vm.helpers({
       question: () => Questions.findOne({
         _id: vm.questionId

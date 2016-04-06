@@ -11,28 +11,25 @@
     var vm = this;
     vm.create = create;
     $reactive(vm).attach($scope);
-       
-       
-       
+    
     vm.groupId = "0";
     vm.question = '';
-    vm.answers = [{answer: ''},{answer: ''}];
+    vm.answers = [{answer: ''},{answer: ''}]; // start with minimum number of answers
     vm.correctAnswer = null;
         
     vm.addNewAnswer = function() {
-        var newItemNo = vm.answers.length+1;
-        vm.answers.push({'answer': ''});
+      var newItemNo = vm.answers.length+1;
+      vm.answers.push({'answer': ''});
     };
         
     vm.removeAnswer = function() {
-        var lastItem = vm.answers.length-1;
-        vm.answers.splice(lastItem);
+      var lastItem = vm.answers.length-1;
+      vm.answers.splice(lastItem);
         if (vm.correctAnswer && vm.correctAnswer == lastItem)
         {
           vm.correctAnswer = null;
         }
     };
-    
          
     function create()
     {
@@ -44,15 +41,15 @@
       
       if(vm.correctAnswer == null)
       {
-          alert("Please select the correct answer");
+        alert("Please select the correct answer");
       }
       else if (vm.answers.length == 0 || vm.answers.length == 1) 
       {
-          alert("You need at least 2 answers")
+        alert("You need at least 2 answers")
       }  
       else
       {
-          QuestionService.createQuestion(vm.groupId, vm.question, stringAnswers, vm.correctAnswer);   
+        QuestionService.createQuestion(vm.groupId, vm.question, stringAnswers, vm.correctAnswer);   
       }
     }
   }
