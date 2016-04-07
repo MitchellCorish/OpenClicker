@@ -602,12 +602,9 @@ MethodHelpers = {
   checkAnswerInTime: function (questionId, answerTimestamp) {
     var question = Questions.findOne({ _id: questionId });
 
-    if (answerTimestamp < question.startTime)
+    if (!question.startTime || answerTimestamp < question.startTime || (answerTimestamp > question.endTime && question.endTime != 0))
     {
-      if(question.endTime != 0 || answerTimestamp > question.endTime)
-      {
-        throw new Meteor.Error(ERROR_ANSWER_OUT_OF_TIME);
-      }
+      throw new Meteor.Error(ERROR_ANSWER_OUT_OF_TIME);
     }
   },
   checkAnswerInRange: function (questionId, selectedAnswer) {

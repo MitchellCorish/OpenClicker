@@ -30,7 +30,9 @@ describe('MethodHelpers', function () {
       possibleAnswers: ['11', '4', '5'],
       answer: 1,
       userId: 'testUser',
-      active: false
+      active: false,
+      startTime: Math.floor(Date.now() / 1000),
+      endTime: (Math.floor(Date.now() / 1000)+ 30)
     };
     
     // spies that won't change between tests
@@ -51,6 +53,20 @@ describe('MethodHelpers', function () {
       catch(e) {}
       
       expect(Meteor.Error).toHaveBeenCalledWith(ERROR_NOT_AUTHORIZED);
+    });
+  });
+  
+  describe('checkAnswerInTime', function () {
+    it('should throw a \'' + ERROR_ANSWER_OUT_OF_TIME + '\' error if the answer was not provided during the time the question was active', function () {
+      spyOn(Questions, 'findOne').and.returnValue(question);
+      
+      try
+      {
+        MethodHelpers.checkAnswerInTime(question._id, Math.floor(Date.now() / 1000)+ 60);
+      }
+      catch(e) {}
+      
+      expect(Meteor.Error).toHaveBeenCalledWith(ERROR_ANSWER_OUT_OF_TIME);
     });
   });
   
@@ -130,6 +146,18 @@ describe('MethodHelpers', function () {
       catch(e) {}
       
       expect(Meteor.Error).toHaveBeenCalledWith(ERROR_QUESTION_DOES_NOT_EXIST);
+    });
+  });
+  
+  describe('checkQuizExists', function () {
+    it('should throw a \'' + ERROR_QUIZ_DOES_NOT_EXIST + '\' error if a quiz with the given id does not exist', function () {
+      try
+      {
+        MethodHelpers.checkQuizExists('nonExistentQuiz');
+      }
+      catch(e) {}
+      
+      expect(Meteor.Error).toHaveBeenCalledWith(ERROR_QUIZ_DOES_NOT_EXIST);
     });
   });
   
