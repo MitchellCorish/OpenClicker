@@ -6,6 +6,7 @@ describe('ocCreateQuestionCtrl', function () {
   var controller;
   var question;
   var groupId;
+  var quizId;
   var answers;
   var stringAnswers;
   var correctAnswer;
@@ -36,11 +37,12 @@ describe('ocCreateQuestionCtrl', function () {
       QuestionService: QuestionService
     });
     
-    groupId = 'test group',
-    question = "TEST QUESTION",
-    answers = [{answer: "answer1"},{answer: "answer2"}],
-    stringAnswers = [answers[0].answer, answers[1].answer],
-    correctAnswer = 0,
+    groupId = 'testGroup';
+    quizId = 'testQuiz';
+    question = "TEST QUESTION";
+    answers = [{answer: "answer1"},{answer: "answer2"}];
+    stringAnswers = [answers[0].answer, answers[1].answer];
+    correctAnswer = 0;
     errorMessage = 'error-message';
     
     // spies that won't change between tests
@@ -53,13 +55,14 @@ describe('ocCreateQuestionCtrl', function () {
     it('should call QuestionService.createQuestion()', function() {
         
       controller.groupId = groupId;
+      controller.quizId = quizId;
       controller.question = question;
       controller.answers = answers;
       controller.correctAnswer = correctAnswer;
       
       controller.create();
       
-      expect(QuestionService.createQuestion).toHaveBeenCalledWith(controller.groupId, controller.question, stringAnswers, controller.correctAnswer);
+      expect(QuestionService.createQuestion).toHaveBeenCalledWith(controller.quizId, controller.groupId, controller.question, stringAnswers, controller.correctAnswer, jasmine.any(Function), jasmine.any(Function));
     });
     
     it('should prompt the user to enter a correct answer if none is specified', function() {

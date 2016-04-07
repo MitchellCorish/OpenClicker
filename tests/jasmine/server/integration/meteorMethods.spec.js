@@ -2,6 +2,7 @@
 
 describe('Meteor.methods', function () {
   var question;
+  var quiz;
   var user;
   var group;
   var answer;
@@ -42,6 +43,14 @@ describe('Meteor.methods', function () {
       startTime: Math.floor(Date.now() / 1000),
       endTime: (Math.floor(Date.now() / 1000)+ 30),
     };
+    
+    quiz = {
+      _id: 'testQuiz',
+      questions: [],
+      name: 'test quiz',
+      userId: 'testUser',
+      groupId: 'testGroup'
+    }
     
     group = {
       _id: 'testGroup',
@@ -170,25 +179,25 @@ describe('Meteor.methods', function () {
   
   describe('createQuestion()', function () {
     it('should check that the user is logged in', function () {
-      Meteor.call('createQuestion', group._id, question.questionAsked, question.possibleAnswers, question.answer);
+      Meteor.call('createQuestion', quiz._id, group._id, question.questionAsked, question.possibleAnswers, question.answer);
       
       expect(MethodHelpers.checkUserLoggedIn).toHaveBeenCalled();
     });
     
     it('should check that the user\'s email is verified', function () {
-      Meteor.call('createQuestion', group._id, question.questionAsked, question.possibleAnswers, question.answer);
+      Meteor.call('createQuestion', quiz._id, group._id, question.questionAsked, question.possibleAnswers, question.answer);
       
       expect(MethodHelpers.checkVerifiedUser).toHaveBeenCalled();
     });
     
     it('should check that the user has creator permissions', function () {
-      Meteor.call('createQuestion', group._id, question.questionAsked, question.possibleAnswers, question.answer);
+      Meteor.call('createQuestion', quiz._id, group._id, question.questionAsked, question.possibleAnswers, question.answer);
       
       expect(MethodHelpers.checkCreatorPermissions).toHaveBeenCalled();
     });
     
     it('should check that the user owns the group they are trying to add a question to', function () {
-      Meteor.call('createQuestion', group._id, question.questionAsked, question.possibleAnswers, question.answer);
+      Meteor.call('createQuestion', quiz._id, group._id, question.questionAsked, question.possibleAnswers, question.answer);
       
       expect(MethodHelpers.checkGroupOwnership).toHaveBeenCalledWith(group._id);
     });
@@ -196,11 +205,12 @@ describe('Meteor.methods', function () {
     it('should create a new question with the given name and possible answers owned by the current user', function () {
       spyOn(Questions, 'insert').and.returnValue(true);
       
-      Meteor.call('createQuestion', group._id, question.questionAsked, question.possibleAnswers, question.answer);
+      Meteor.call('createQuestion', quiz._id, group._id, question.questionAsked, question.possibleAnswers, question.answer);
       
       expect(Questions.insert).toHaveBeenCalledWith({
         userId: user._id,
         groupId: group._id,
+        quizId: quiz._id,
         questionAsked: question.questionAsked,
         possibleAnswers: question.possibleAnswers,
         answer: question.answer,
