@@ -1,7 +1,7 @@
 //Collection creation
 Users = Meteor.users;
 Questions = new Mongo.Collection("questions");
-Quizes = new Mongo.Collection("quizzes");
+Quizzes = new Mongo.Collection("quizzes");
 Groups = new Mongo.Collection("groups");
 Answers = new Mongo.Collection("answers");
 
@@ -240,7 +240,7 @@ Schema.Answers = new SimpleSchema({
 //Attaching collections to schemas created
 Users.attachSchema(Schema.Users, {replace: true});
 Questions.attachSchema(Schema.Questions, {replace: true});
-Quizes.attachSchema(Schema.Quizes, {replace: true});
+Quizzes.attachSchema(Schema.Quizzes, {replace: true});
 Groups.attachSchema(Schema.Groups, {replace: true});
 Answers.attachSchema(Schema.Answers, {replace: true});
 
