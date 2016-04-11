@@ -1,0 +1,29 @@
+<div class="page-content">
+  <div class="single-head">
+    <h3 class="pull-left"><i class="fa fa-table purple"></i>Active questions in <span class="text-warning">{{vm.group.name}}</span></h3>
+    <div class="clearfix"></div>
+  </div>
+
+  <br/>
+
+  <div class="page-tables">
+    <div class="table-responsive">
+      <table cellpadding="0" cellspacing="0" border="0" id="data-table" width="100%" class="dataTable">
+        <tbody>
+          <tr ng-if="vm.questions.length==0">
+            <td>There are no active questions for this group.</td>
+          </tr>
+          <tr ng-repeat="question in vm.questions  | filter:{groupId:vm.groupId}">
+            <td>{{question.questionAsked}}</td>
+            <td>
+              <div class="pull-right">
+                <a ui-sref="answerQuestion({ questionId: question._id })"><button class="btn btn-primary">Answer</button></a>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</div>

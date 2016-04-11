@@ -6,6 +6,29 @@
     
     // Define states
     $stateProvider
+      .state('activeQuestions', {
+        url: '/active-questions/:groupId',
+        views: {
+          header: {
+            templateUrl: 'client/templates/header.html'
+          },
+          main: {
+            templateUrl: 'client/templates/routes/activeQuestions.html'
+          }    
+        },
+        data: {
+          rule: function () {
+            if (!Meteor.userId() ||
+                !Meteor.user().emails[0].verified)
+            {
+              return {
+                to: 'home',
+                params: {}
+              }
+            }
+          }
+        }
+      })
       .state('answerQuestion', {
         url: '/answer-question/:questionId',
         views: {

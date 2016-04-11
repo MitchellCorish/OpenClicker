@@ -92,8 +92,23 @@ Meteor.publish('activeQuestions', function () {
   }, {
     fields: {
       answer: false,
-      userId: false,
-      groupId: false
+      userId: false
+    }
+  });
+});
+
+Meteor.publish('joinedGroups', function () {
+  if(!this.userId)
+  {
+    return null;
+  }
+  return Groups.find({
+    _id: {
+      $in: Meteor.users.findOne({_id: this.userId}).groups
+    }
+  }, {
+    fields: {
+      name: true
     }
   });
 });
