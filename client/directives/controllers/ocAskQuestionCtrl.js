@@ -14,7 +14,6 @@
     vm.subscribe('ownedQuestions');
     vm.subscribe('answersForQuestion', () => [vm.questionId]);
     
-    vm.active = false;
     vm.counter = 30;
     vm.endTime = -1;
     vm.usingTimer = false;
@@ -29,14 +28,14 @@
       question: () => Questions.findOne({
         _id: vm.questionId
       }),
-      countAnswer: () => count()
+      countAnswer: () => count(),
+      totalAnswers: () => Answers.find({}).count()
     })
     
     function start()
     {
-      if (!vm.active)
+      if (!vm.question.active)
       {
-        vm.active = true;
         QuestionService.updateQuestionStartTime(vm.questionId, Math.floor(Date.now() / 1000));
         QuestionService.updateQuestionEndTime(vm.questionId, 0);
       }
@@ -44,9 +43,8 @@
     
     function stop()
     {
-      if (vm.active)
+      if (vm.question.active)
       {
-        vm.active = false;
         QuestionService.updateQuestionEndTime(vm.questionId, Math.floor(Date.now() / 1000));
       }
     }
@@ -57,7 +55,6 @@
         QuestionService.updateQuestionEndTime(vm.questionId, vm.endTime);
         $timeout.cancel(questionTimeout);
         vm.counter = 30;
-        vm.active = false;
         vm.usingTimer = false;
         return;
       }
@@ -66,9 +63,8 @@
     };
  
     function startTimer() {
-      if (!vm.active)
+      if (!vm.question.active)
       {
-        vm.active = true;
         vm.usingTimer = true;
         
         questionTimeout = $timeout(vm.onTimeout, 1000);

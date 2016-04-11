@@ -13,7 +13,7 @@
     $reactive(vm).attach($scope);
     
     vm.question = '';    
-    vm.answers = [{answer: ''},{answer: ''}];
+    vm.answers = [{answer: ''},{answer: ''}]; // start with minimum number of answers
     vm.correctAnswer = null;
         
     vm.addNewAnswer = function() {
@@ -39,11 +39,11 @@
       
       if(vm.correctAnswer == null)
       {
-          alert("Please select the correct answer");
+        alert("Please select the correct answer");
       }
       else if (vm.answers.length == 0 || vm.answers.length == 1) 
       {
-          alert("You need at least 2 answers")
+        alert("You need at least 2 answers")
       }  
       else
       {

@@ -4,6 +4,7 @@
   angular.module('openClicker').config(function ($urlRouterProvider, $stateProvider, $locationProvider) {
     $locationProvider.html5Mode(true);
     
+    // Define states
     $stateProvider
       .state('answerQuestion', {
         url: '/answer-question/:questionId',
@@ -322,11 +323,12 @@
         }
       });
       
-      
+    // Set default route for unknown urls
     $urlRouterProvider.otherwise('/');
   });
   
-  // modified from ui-router FAQ (https://github.com/angular-ui/ui-router/wiki/Frequently-Asked-Questions#how-to-create-rules-to-prevent-access-to-a-state)
+  // modified from ui-router FAQ
+  // (https://github.com/angular-ui/ui-router/wiki/Frequently-Asked-Questions#how-to-create-rules-to-prevent-access-to-a-state)
   angular.module('openClicker').run(function($rootScope, $state) {
     $rootScope.$on('$stateChangeStart', function(e, to) {
       if (to.data)

@@ -18,7 +18,7 @@
       Meteor.call('answerQuestion', questionId, selectedAnswer, timestamp, function (error, result) {
         if (error)
         {
-          console.log(error.message);
+          alert('Answer submitted unsuccessfully , please try again');
         }
         else if (result)
         {

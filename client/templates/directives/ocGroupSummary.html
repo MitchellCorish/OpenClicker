@@ -6,6 +6,7 @@
                 <tr>
                     <th>Name</th>
                     <th>Student ID</th>
+                    <th>Email</th>
                     <th>Attendance Rate</th>
                     <th>Currect Rate</th>
                 </tr>
@@ -14,6 +15,7 @@
                 <tr ng-repeat="user in vm.users">
                     <td>{{user.username}}</td>
                     <td>{{user.profile.studentId}}</td>
+                    <td>{{user.emails[0].address}}</td>
                     <td>100</td>
                     <td>100</td>
                     <td><oc-delete-user-from-group user-id="{{user._id}}" group-id="{{vm.groupId}}"> </oc-delete-user-from-group></td>

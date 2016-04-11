@@ -18,6 +18,7 @@
     initializeRoles();
     
     vm.subscribe('userRoles', null, function () {
+      // update the roles when the subscription is ready so that they display properly
       initializeRoles();
     });
     

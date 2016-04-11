@@ -19,18 +19,18 @@
     
     function update()
     {
-        if (vm.user.username.trim().length == 0)
-        {
-            alert('Please enter a name for the user');
-        }
-        else
-        {
-            UserService.updateUser(vm.user, function () {
-                $state.go('home');
-            }, function () {
-                alert('Failed to update user.');
-            });
-        } 
+      if (vm.user.username.trim().length == 0)
+      {
+        alert('Please enter a name for the user');
+      }
+      else
+      {
+        UserService.updateUser(vm.user, function () {
+          $state.go('home');
+        }, function () {
+          alert('Failed to update user.');
+        });
+      } 
     }
   }
 })();

@@ -15,9 +15,7 @@
     
     vm.answer = answer;
     vm.selectedAnswer = null;
-    
-    
-    
+     
     vm.helpers({
       question: () => Questions.findOne({
         _id: vm.questionId
