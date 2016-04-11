@@ -72,9 +72,9 @@
       });
     }
 
-      function editQuestion(questionId, groupId, questionAsked, possibleAnswers, answer, success, failure) {
-          Meteor.call('editQuestion', questionId, groupId, questionAsked, possibleAnswers, answer, function (error, result) {
-             if (error)
+    function editQuestion(questionId, groupId, questionAsked, possibleAnswers, answer, success, failure) {
+      Meteor.call('editQuestion', questionId, groupId, questionAsked, possibleAnswers, answer, function (error, result) {
+        if (error)
         {
           console.log(error.message);
           if (failure && typeof(failure) == 'function')
@@ -97,7 +97,7 @@
           }
         }
       });
-      }
+    }
   }
 
 })();

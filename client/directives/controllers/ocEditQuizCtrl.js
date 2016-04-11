@@ -22,7 +22,7 @@
     vm.test = test;
     
     vm.helpers({
-      quiz: () => Quizes.findOne({
+      quiz: () => Quizzes.findOne({
         _id: vm.quizId
       }),
       questions: () => Questions.find({})
