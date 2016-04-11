@@ -50,5 +50,13 @@ describe('QuestionAnswerService', function () {
 
       expect(window.alert).toHaveBeenCalled();
     });
+    
+    it('should alert the user if it is not successful', function () {
+      VelocityHelpers.stubMethod('answerQuestion', { message: errorMessage }, null);
+            
+      service.answerQuestion(questionId, 0);
+
+      expect(window.alert).toHaveBeenCalled();
+    });
   });
 });
