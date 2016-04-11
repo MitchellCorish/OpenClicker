@@ -26,11 +26,11 @@
             <td>You have not created any groups.</td>
           </tr>
           <tr ng-repeat="group in vm.groups">
-            <td><a class="text-primary">{{group.name}}</a></td>
+            <td><a ui-sref="ownedQuizzes({ groupId: group._id })">{{group.name}}</a></td>
             <td>{{group._id}}</td>
             <td>
               <div class="pull-right">
-                <a ui-sref="home"><button type="button" class="btn btn-primary">Add a Quiz</button></a>
+                <a ui-sref="createQuiz({ groupId: group._id })"><button type="button" class="btn btn-primary">Add a Quiz</button></a>
                 <a ui-sref="updateGroup({ groupId: group._id })"><button type="button" class="btn btn-primary">Update</button></a>
                 <a ui-sref="groupSummary({ groupId: group._id })"><button type="button" class="btn btn-primary">Summary</button></a>
                 

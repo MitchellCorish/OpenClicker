@@ -5,30 +5,28 @@
     .module('openClicker')
     .controller('ocCreateQuestionCtrl', ocCreateQuestionCtrl);
     
-  ocCreateQuestionCtrl.$inject = ['$scope', '$reactive', 'QuestionService'];
+  ocCreateQuestionCtrl.$inject = ['$scope', '$reactive', 'QuestionService', '$state'];
   
-  function ocCreateQuestionCtrl($scope, $reactive, QuestionService) {
+  function ocCreateQuestionCtrl($scope, $reactive, QuestionService, $state) {
     var vm = this;
     vm.create = create;
     $reactive(vm).attach($scope);
     
-    vm.groupId = "0";
-    vm.question = '';
+    vm.question = '';    
     vm.answers = [{answer: ''},{answer: ''}]; // start with minimum number of answers
     vm.correctAnswer = null;
         
     vm.addNewAnswer = function() {
-      var newItemNo = vm.answers.length+1;
       vm.answers.push({'answer': ''});
     };
         
     vm.removeAnswer = function() {
       var lastItem = vm.answers.length-1;
       vm.answers.splice(lastItem);
-        if (vm.correctAnswer && vm.correctAnswer == lastItem)
-        {
-          vm.correctAnswer = null;
-        }
+      if (vm.correctAnswer && vm.correctAnswer == lastItem)
+      {
+        vm.correctAnswer = null;
+      }
     };
          
     function create()
@@ -49,7 +47,11 @@
       }  
       else
       {
-        QuestionService.createQuestion(vm.groupId, vm.question, stringAnswers, vm.correctAnswer);   
+        QuestionService.createQuestion(vm.quizId, vm.groupId, vm.question, stringAnswers, vm.correctAnswer, function () {
+          $state.go('ownedQuestions', {quizId: vm.quizId, groupId: vm.groupId});
+        }, function () {
+          alert('Failed to create question.');
+        });   
       }
     }
   }

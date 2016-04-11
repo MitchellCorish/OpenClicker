@@ -12,16 +12,35 @@
       createQuestion: createQuestion,
       updateQuestionStartTime: updateQuestionStartTime,
       updateQuestionEndTime: updateQuestionEndTime,
-      deleteQuestion: deleteQuestion
+      deleteQuestion: deleteQuestion,
+      editQuestion: editQuestion
     }
     
     return service;
     
-    function createQuestion(groupId, question, answers, correctAnswer) {
-      Meteor.call('createQuestion', groupId, question, answers, correctAnswer, function (error, result) {
+    function createQuestion(quizId, groupId, question, answers, correctAnswer, success, failure) {
+      Meteor.call('createQuestion', quizId, groupId, question, answers, correctAnswer, function (error, result)  {
         if (error)
         {
           console.log(error.message);
+          if (failure && typeof(failure) == 'function')
+          {
+            failure();
+          }
+        }
+        else if (result)
+        {
+          if (success && typeof(success) == 'function')
+          {
+            success();
+          }
+        }
+        else
+        {
+          if (failure && typeof(failure) == 'function')
+          {
+            failure();
+          }
         }
       });
     }
@@ -52,5 +71,33 @@
         }
       });
     }
+
+    function editQuestion(questionId, groupId, questionAsked, possibleAnswers, answer, success, failure) {
+      Meteor.call('editQuestion', questionId, groupId, questionAsked, possibleAnswers, answer, function (error, result) {
+        if (error)
+        {
+          console.log(error.message);
+          if (failure && typeof(failure) == 'function')
+          {
+            failure();
+          }
+        }
+        else if (result)
+        {
+          if (success && typeof(success) == 'function')
+          {
+            success();
+          }
+        }
+        else
+        {
+          if (failure && typeof(failure) == 'function')
+          {
+            failure();
+          }
+        }
+      });
+    }
   }
+
 })();

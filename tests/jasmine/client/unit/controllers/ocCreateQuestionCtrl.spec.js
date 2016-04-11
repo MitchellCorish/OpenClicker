@@ -6,6 +6,7 @@ describe('ocCreateQuestionCtrl', function () {
   var controller;
   var question;
   var groupId;
+  var quizId;
   var answers;
   var stringAnswers;
   var correctAnswer;
@@ -36,30 +37,33 @@ describe('ocCreateQuestionCtrl', function () {
       QuestionService: QuestionService
     });
     
-    groupId = 'test group',
-    question = "TEST QUESTION",
-    answers = [{answer: "answer1"},{answer: "answer2"}],
-    stringAnswers = [answers[0].answer, answers[1].answer],
-    correctAnswer = 0,
+    groupId = 'testGroup';
+    quizId = 'testQuiz';
+    question = "TEST QUESTION";
+    answers = [{answer: "answer1"},{answer: "answer2"}];
+    stringAnswers = [answers[0].answer, answers[1].answer];
+    correctAnswer = 0;
     errorMessage = 'error-message';
     
+    controller.groupId = groupId;
+    controller.quizId = quizId;
+    controller.question = question;
+    controller.answers = answers;
+    controller.correctAnswer = correctAnswer;
+    
     // spies that won't change between tests
-    spyOn(QuestionService, 'createQuestion');
+    spyOn($state, 'go');
     spyOn(window, 'alert');
   });
   
   // test cases  
   describe('create()', function () {    
     it('should call QuestionService.createQuestion()', function() {
-        
-      controller.groupId = groupId;
-      controller.question = question;
-      controller.answers = answers;
-      controller.correctAnswer = correctAnswer;
+      spyOn(QuestionService, 'createQuestion');
       
       controller.create();
       
-      expect(QuestionService.createQuestion).toHaveBeenCalledWith(controller.groupId, controller.question, stringAnswers, controller.correctAnswer);
+      expect(QuestionService.createQuestion).toHaveBeenCalledWith(controller.quizId, controller.groupId, controller.question, stringAnswers, controller.correctAnswer, jasmine.any(Function), jasmine.any(Function));
     });
     
     it('should prompt the user to enter a correct answer if none is specified', function() {
@@ -70,14 +74,37 @@ describe('ocCreateQuestionCtrl', function () {
       expect(window.alert).toHaveBeenCalled();
     });
     
-    it('should prompt the user to enter more than one possible answer if there is none or only one', function() {stringAnswers = ["answer1"];
-      
+    it('should prompt the user to enter more than one possible answer if there are fewer answers given', function() {
+      stringAnswers = ["answer1"];
       controller.answers = [{answer: "answer1"}];
       
       controller.create();
       
       expect(window.alert).toHaveBeenCalled();
-    });    
+    });
+    
+    it('should go to the \'ownedQuestions\' route if the question is created successfully', function () {
+      spyOn(QuestionService, 'createQuestion').and.callFake(function (quizId, groupId, question, stringAnswers, correctAnswer, success, failure) {
+        success();
+      });
+      
+      controller.create();
+      
+      expect($state.go).toHaveBeenCalledWith('ownedQuestions', {
+        quizId: controller.quizId,
+        groupId: controller.groupId
+      });
+    });
+    
+    it('should alert the user if question creation fails', function () {
+      spyOn(QuestionService, 'createQuestion').and.callFake(function (quizId, groupId, question, stringAnswers, correctAnswer, success, failure) {
+        failure();
+      });
+      
+      controller.create();
+      
+      expect(window.alert).toHaveBeenCalled();
+    });  
   });
   
   describe('addNewAnswer()', function () {

@@ -1,24 +1,24 @@
 (function () {
   'use strict';
-  
+
   angular
     .module('openClicker')
-    .directive('ocGroupSummary', ocGroupSummary);
-    
-  ocGroupSummary.$inject = [];
-  
-  function ocGroupSummary() {
+    .directive('ocOwnedQuizzes', ocOwnedQuizzes);
+
+  ocOwnedQuizzes.$inject = [];
+
+  function ocOwnedQuizzes() {
     var directive = {
-      controller: 'ocGroupSummaryCtrl',
+      controller: 'ocOwnedQuizzesCtrl',
       controllerAs: 'vm',
-      templateUrl: 'client/templates/directives/ocGroupSummary.html',
+      templateUrl: 'client/templates/directives/ocOwnedQuizzes.html',
       restrict: 'E',
       scope: {
           groupId: '@'
       },
       bindToController: true
     };
-    
+
     return directive;
   }
 })();

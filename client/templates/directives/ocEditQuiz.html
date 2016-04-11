@@ -1,0 +1,8 @@
+<form>
+  <div>
+    <label>Quiz Name: </label> <input type="text" placeholder="{{vm.quiz.name}}" ng-model="vm.quiz.name"/>
+  </div>
+  <label>Questions:</label>
+  <div ng-repeat="question in vm.questions | filter:{quizId:vm.quiz._id}">{{question.questionAsked}}</div>
+  <label><button ng-click="vm.update()">Submit</button></label>
+</form>
