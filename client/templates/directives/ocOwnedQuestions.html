@@ -22,6 +22,7 @@
             <td><a ui-sref="editQuestion({ questionId: question._id })">{{question.questionAsked}}</a></td>
             <td>
               <div class="pull-right">
+                <a ui-sref="askQuestion({ questionId: question._id })"><button class="btn btn-primary">Ask</button></a>
                 <oc-delete-question question-id="{{question._id}}"></oc-delete-question>
               </div>
             </td>
