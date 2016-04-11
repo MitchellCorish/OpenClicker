@@ -69,6 +69,8 @@ describe('Meteor.methods', function () {
     spyOn(MethodHelpers, 'checkGroupExists').and.returnValue(true);
     spyOn(MethodHelpers, 'checkGroupOwnership').and.returnValue(true);
     spyOn(MethodHelpers, 'checkQuestionExists').and.returnValue(true);
+    spyOn(MethodHelpers, 'checkQuizExists').and.returnValue(true);
+    spyOn(MethodHelpers, 'checkQuizOwnership').and.returnValue(true);
     spyOn(MethodHelpers, 'checkQuestionIsActive').and.returnValue(true);
     spyOn(MethodHelpers, 'checkQuestionOwnership').and.returnValue(true);
     spyOn(MethodHelpers, 'checkUserExists').and.returnValue(true);
@@ -196,10 +198,22 @@ describe('Meteor.methods', function () {
       expect(MethodHelpers.checkCreatorPermissions).toHaveBeenCalled();
     });
     
+    it('should check that the group the user is trying to add a question to exists', function () {
+      Meteor.call('createQuestion', quiz._id, group._id, question.questionAsked, question.possibleAnswers, question.answer);
+      
+      expect(MethodHelpers.checkGroupExists).toHaveBeenCalledWith(group._id);
+    });
+    
     it('should check that the user owns the group they are trying to add a question to', function () {
       Meteor.call('createQuestion', quiz._id, group._id, question.questionAsked, question.possibleAnswers, question.answer);
       
       expect(MethodHelpers.checkGroupOwnership).toHaveBeenCalledWith(group._id);
+    });
+    
+    it('should check that the quiz the user is trying to add a question to exists', function () {
+      Meteor.call('createQuestion', quiz._id, group._id, question.questionAsked, question.possibleAnswers, question.answer);
+      
+      expect(MethodHelpers.checkQuizExists).toHaveBeenCalledWith(quiz._id);
     });
     
     it('should create a new question with the given name and possible answers owned by the current user', function () {
@@ -215,6 +229,51 @@ describe('Meteor.methods', function () {
         possibleAnswers: question.possibleAnswers,
         answer: question.answer,
         active: false,
+      });
+    });
+  });
+  
+  describe('createQuiz', function () {
+    it('should check that the user is logged in', function () {
+      Meteor.call('createQuiz', quiz.name, group._id);
+      
+      expect(MethodHelpers.checkUserLoggedIn).toHaveBeenCalled();
+    });
+    
+    it('should check that the user\'s email is verified', function () {
+      Meteor.call('createQuiz', quiz.name, group._id);
+      
+      expect(MethodHelpers.checkVerifiedUser).toHaveBeenCalled();
+    });
+    
+    it('should check that the user has creator permissions', function () {
+      Meteor.call('createQuiz', quiz.name, group._id);
+      
+      expect(MethodHelpers.checkCreatorPermissions).toHaveBeenCalled();
+    });
+    
+    it('should check that the group the user is trying to add a quiz to exists', function () {
+      Meteor.call('createQuiz', quiz.name, group._id);
+      
+      expect(MethodHelpers.checkGroupExists).toHaveBeenCalledWith(group._id);
+    });
+    
+    it('should check that the user owns the group they are trying to add a quiz to', function () {
+      Meteor.call('createQuiz', quiz.name, group._id);
+      
+      expect(MethodHelpers.checkGroupOwnership).toHaveBeenCalledWith(group._id);
+    });
+    
+    it('should create a new quiz with the given name owned by the current user', function () {
+      spyOn(Quizzes, 'insert').and.returnValue(true);
+      
+      Meteor.call('createQuiz', quiz.name, group._id);
+      
+      expect(Quizzes.insert).toHaveBeenCalledWith({
+        userId: 'testUser',
+        name: 'test quiz',
+        groupId: 'testGroup',
+        questions: []
       });
     });
   });
@@ -261,12 +320,16 @@ describe('Meteor.methods', function () {
       });
     });
     
-    it('should delete any questions and answers that belong to the specified group', function () {
+    it('should delete any quizzes, questions, and answers that belong to the specified group', function () {
+      spyOn(Quizzes, 'remove').and.returnValue(true);
       spyOn(Questions, 'remove').and.returnValue(true);
       spyOn(Answers, 'remove').and.returnValue(true);
       
       Meteor.call('deleteGroup', group._id);
       
+      expect(Quizzes.remove).toHaveBeenCalledWith({
+        groupId: group._id
+      });
       expect(Questions.remove).toHaveBeenCalledWith({
         groupId: group._id
       });
@@ -329,6 +392,169 @@ describe('Meteor.methods', function () {
       expect(Questions.remove).toHaveBeenCalledWith({
         _id: question._id,
         userId: user._id
+      });
+    });
+    
+    it('should remove the question from the associated quiz', function () {
+      spyOn(Quizzes, 'update').and.returnValue(true);
+      
+      Meteor.call('deleteQuestion', question._id);
+      
+      expect(Quizzes.update).toHaveBeenCalledWith({}, {
+        $pull: {
+          questions: question._id
+        }
+      });
+    });
+  });
+  
+  describe('deleteQuiz', function () {
+    it('should check that the user is logged in', function () {
+      Meteor.call('deleteQuiz', quiz._id);
+      
+      expect(MethodHelpers.checkUserLoggedIn).toHaveBeenCalled();
+    });
+    
+    it('should check that the user\'s email is verified', function () {
+      Meteor.call('deleteQuiz', quiz._id);
+      
+      expect(MethodHelpers.checkVerifiedUser).toHaveBeenCalled();
+    });
+    
+    it('should check that the user has creator permissions', function () {
+      Meteor.call('deleteQuiz', quiz._id);
+      
+      expect(MethodHelpers.checkCreatorPermissions).toHaveBeenCalled();
+    });
+    
+    it('should check that the quiz exists', function () {
+      Meteor.call('deleteQuiz', quiz._id);
+      
+      expect(MethodHelpers.checkQuizExists).toHaveBeenCalledWith(quiz._id);
+    });
+    
+    it('should check that the current user owns the specified quiz', function () {
+      Meteor.call('deleteQuiz', quiz._id);
+      
+      expect(MethodHelpers.checkQuizOwnership).toHaveBeenCalledWith(quiz._id);
+    });
+    
+    it('should delete the specified quiz', function () {
+      spyOn(Quizzes, 'remove').and.returnValue(true);
+      
+      Meteor.call('deleteQuiz', quiz._id);
+      
+      expect(Quizzes.remove).toHaveBeenCalledWith({
+        _id: quiz._id
+      });
+    });
+    
+    it('should remove the question from the associated quiz', function () {
+      spyOn(Questions, 'remove').and.returnValue(true);
+      
+      Meteor.call('deleteQuiz', quiz._id);
+      
+      expect(Questions.remove).toHaveBeenCalledWith({
+        quizId: quiz._id
+      });
+    });
+  });
+  
+  describe('editQuestion', function () {
+    it('should check that the user is logged in', function () {
+      Meteor.call('editQuestion', question._id, group._id, question.questionAsked, question.possibleAnswers, question.answer);
+      
+      expect(MethodHelpers.checkUserLoggedIn).toHaveBeenCalled();
+    });
+    
+    it('should check that the user\'s email is verified', function () {
+      Meteor.call('editQuestion', question._id, group._id, question.questionAsked, question.possibleAnswers, question.answer);
+      
+      expect(MethodHelpers.checkVerifiedUser).toHaveBeenCalled();
+    });
+    
+    it('should check that the user has creator permissions', function () {
+      Meteor.call('editQuestion', question._id, group._id, question.questionAsked, question.possibleAnswers, question.answer);
+      
+      expect(MethodHelpers.checkCreatorPermissions).toHaveBeenCalled();
+    });
+    
+    it('should check that the question exists', function () {
+      Meteor.call('editQuestion', question._id, group._id, question.questionAsked, question.possibleAnswers, question.answer);
+      
+      expect(MethodHelpers.checkQuestionExists).toHaveBeenCalledWith(question._id);
+    });
+    
+    it('should check that the current user owns the specified question', function () {
+      Meteor.call('editQuestion', question._id, group._id, question.questionAsked, question.possibleAnswers, question.answer);
+      
+      expect(MethodHelpers.checkQuestionOwnership).toHaveBeenCalledWith(question._id);
+     });
+     
+    it('should update the specified question with the given information', function () {
+      spyOn(Questions, 'update').and.returnValue(true);
+       
+      Meteor.call('editQuestion', question._id, group._id, question.questionAsked, question.possibleAnswers, question.answer);
+       
+      expect(Questions.update).toHaveBeenCalledWith({
+        _id: question._id,
+        userId: Meteor.userId()
+      }, {
+        $set: {
+          groupId: group._id,
+          questionAsked: question.questionAsked,
+          possibleAnswers: question.possibleAnswers,
+          answer: question.answer
+        }
+      });
+    });
+  });
+  
+  describe('editQuiz', function () {
+    it('should check that the user is logged in', function () {
+      Meteor.call('editQuiz', quiz._id, quiz.questions, quiz.userId, quiz.name);
+      
+      expect(MethodHelpers.checkUserLoggedIn).toHaveBeenCalled();
+    });
+    
+    it('should check that the user\'s email is verified', function () {
+      Meteor.call('editQuiz', quiz._id, quiz.questions, quiz.userId, quiz.name);
+      
+      expect(MethodHelpers.checkVerifiedUser).toHaveBeenCalled();
+    });
+    
+    it('should check that the user has creator permissions', function () {
+      Meteor.call('editQuiz', quiz._id, quiz.questions, quiz.userId, quiz.name);
+      
+      expect(MethodHelpers.checkCreatorPermissions).toHaveBeenCalled();
+    });
+    
+    it('should check that the quiz exists', function () {
+      Meteor.call('editQuiz', quiz._id, quiz.questions, quiz.userId, quiz.name);
+      
+      expect(MethodHelpers.checkQuizExists).toHaveBeenCalledWith(quiz._id);
+    });
+    
+    it('should check that the current user owns the specified quiz', function () {
+      Meteor.call('editQuiz', quiz._id, quiz.questions, quiz.userId, quiz.name);
+      
+      expect(MethodHelpers.checkQuizOwnership).toHaveBeenCalledWith(quiz._id);
+     });
+     
+    it('should update the specified quiz with the given information', function () {
+      spyOn(Quizzes, 'update').and.returnValue(true);
+       
+      Meteor.call('editQuiz', quiz._id, quiz.questions, quiz.userId, quiz.name);
+       
+      expect(Quizzes.update).toHaveBeenCalledWith({
+        _id: quiz._id,
+        userId: user._id
+      }, {
+        $set: {
+          userId: quiz.userId,
+          questions: quiz.questions,
+          name: quiz.name
+        }
       });
     });
   });
@@ -458,8 +684,6 @@ describe('Meteor.methods', function () {
       });
     });
   });
-  
-  
   
   describe('updateGroup()', function () {
     it('should check that the user is logged in', function () {

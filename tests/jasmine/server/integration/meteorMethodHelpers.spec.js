@@ -161,6 +161,27 @@ describe('MethodHelpers', function () {
     });
   });
   
+  describe('checkQuizOwnership()', function () {
+    it('should throw a \'' + ERROR_NOT_AUTHORIZED + '\' error if the current user does not own the specified quiz', function () {
+      spyOn(Meteor, 'userId').and.returnValue(user._id);
+      spyOn(Quizzes, 'findOne').and.returnValue({
+        _id: 'unownedTestQuiz',
+        userId: 'testUser2',
+        groupId: 'unownedTestQuiz',
+        name: 'test quiz',
+        questions: []
+      });
+      
+      try
+      {
+        MethodHelpers.checkQuizOwnership('unownedTestQuiz');
+      }
+      catch(e) {}
+
+      expect(Meteor.Error).toHaveBeenCalledWith(ERROR_NOT_AUTHORIZED);
+    });
+  });
+  
   describe('checkQuestionIsActive()', function () {
     it('should throw a \'' + ERROR_QUESTION_INACTIVE + '\' error if the specified question is not active', function () {
       spyOn(Questions, 'findOne').and.returnValue(question);

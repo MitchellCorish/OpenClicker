@@ -287,15 +287,17 @@ Meteor.methods({
 
     return true;
   },
-  createQuestion: function (quizId, groupid, question, answers, correctAnswer) {
+  createQuestion: function (quizId, groupId, question, answers, correctAnswer) {
     MethodHelpers.checkUserLoggedIn();
     MethodHelpers.checkVerifiedUser();
     MethodHelpers.checkCreatorPermissions();
-    MethodHelpers.checkGroupOwnership(groupid);
+    MethodHelpers.checkGroupExists(groupId);
+    MethodHelpers.checkGroupOwnership(groupId);
+    MethodHelpers.checkQuizExists(quizId);
 
     Questions.insert({
       userId: Meteor.userId(),
-      groupId: groupid,
+      groupId: groupId,
       quizId: quizId,
       questionAsked: question,
       possibleAnswers: answers,
@@ -309,6 +311,8 @@ Meteor.methods({
     MethodHelpers.checkUserLoggedIn();
     MethodHelpers.checkVerifiedUser();
     MethodHelpers.checkCreatorPermissions();
+    MethodHelpers.checkGroupExists(groupId);
+    MethodHelpers.checkGroupOwnership(groupId);
 
     Quizzes.insert({
       userId: Meteor.userId(),
@@ -331,13 +335,17 @@ Meteor.methods({
       userId: Meteor.userId()
     });
 
-    //remove all users, questions, and answers from deleted group
+    // remove all users, quizzes, questions, and answers from deleted group
     Users.update({}, {
       $pull: {
         groups: groupId
       }
     }, {
       multi: true
+    });
+
+    Quizzes.remove({
+      groupId: groupId
     });
 
     Questions.remove({
@@ -361,6 +369,13 @@ Meteor.methods({
       _id: questionId,
       userId: Meteor.userId()
     });
+    
+    // remove question from the associated quiz
+    Quizzes.update({}, {
+      $pull: {
+        questions: questionId
+      }
+    });
 
     return true;
   },
@@ -369,11 +384,13 @@ Meteor.methods({
     MethodHelpers.checkVerifiedUser();
     MethodHelpers.checkCreatorPermissions();
     MethodHelpers.checkQuizExists(quizId);
+    MethodHelpers.checkQuizOwnership(quizId);
 
     Quizzes.remove({
       _id: quizId
     });
     
+    // remove questions associated with this quiz
     Questions.remove({
       quizId: quizId
     });
@@ -385,6 +402,7 @@ Meteor.methods({
     MethodHelpers.checkVerifiedUser();
     MethodHelpers.checkCreatorPermissions();
     MethodHelpers.checkQuestionExists(questionId);
+    MethodHelpers.checkQuestionOwnership(questionId);
 
     Questions.update({
       _id: questionId,
@@ -405,6 +423,7 @@ Meteor.methods({
     MethodHelpers.checkVerifiedUser();
     MethodHelpers.checkCreatorPermissions();
     MethodHelpers.checkQuizExists(quizId);
+    MethodHelpers.checkQuizOwnership(quizId);
 
     Quizzes.update({
       _id: quizId,
@@ -635,6 +654,14 @@ MethodHelpers = {
     if (!Quizzes.findOne({ _id: quizId }))
     {
       throw new Meteor.Error(ERROR_QUIZ_DOES_NOT_EXIST);
+    }
+  },
+  checkQuizOwnership: function (quizId) {
+    var quiz = Quizzes.findOne({ _id: quizId });
+
+    if (!(quiz.userId == Meteor.userId()))
+    {
+      throw new Meteor.Error(ERROR_NOT_AUTHORIZED);
     }
   },
   checkQuestionIsActive: function (questionId) {
