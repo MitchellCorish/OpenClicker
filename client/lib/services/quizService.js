@@ -11,8 +11,7 @@
     var service = {
         editQuiz: editQuiz,
         deleteQuiz: deleteQuiz,
-        createQuiz: createQuiz,
-        getQuestionName: getQuestionName
+        createQuiz: createQuiz
     }
 
     return service;
@@ -62,21 +61,6 @@
         if (error)
         {
           console.log(error.message);
-        }
-      });
-    }
-    function getQuestionName(questionId){
-      Meteor.call('getQuestionName', questionId, function (error, result) {
-        if (error)
-        {
-          console.log(error.message);
-        }
-        else if(result){
-          console.log(result);
-          if (success && typeof(success) == 'function')
-          {
-            success(result);
-          }
         }
       });
     }

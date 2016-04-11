@@ -19,7 +19,6 @@
     vm.down = down;
     vm.removeQuestion = removeQuestion;
     vm.addQuestion = addQuestion;
-    vm.questionName = questionName;
     vm.test = test;
     
     vm.helpers({
@@ -32,10 +31,6 @@
     function update()
     {
       QuizService.editQuiz(vm.quiz._id, vm.quiz.questions, vm.quiz.userId, vm.quiz.name);
-    }
-
-    function questionName(questionId){
-      QuizService.getQuestionName(questionId);
     }
 
     function test(){

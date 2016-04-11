@@ -380,16 +380,6 @@ Meteor.methods({
     
     return true;
   },
-  getQuestionName: function(questionId){
-    MethodHelpers.checkUserLoggedIn();
-    MethodHelpers.checkVerifiedUser();
-    MethodHelpers.checkCreatorPermissions();
-    MethodHelpers.checkQuestionExists(questionId);
-    
-    var question = Questions.findOne({ _id: questionId });
-    
-    return question.questionAsked;
-  },
   editQuestion: function (questionId, groupId, questionAsked, possibleAnswers, answer) {
     MethodHelpers.checkUserLoggedIn();
     MethodHelpers.checkVerifiedUser();
