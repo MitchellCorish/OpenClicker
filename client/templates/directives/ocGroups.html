@@ -22,6 +22,7 @@
             <td><a class="text-primary">{{group.name}}</a></td>
             <td>
               <div class="pull-right">
+                <a ui-sref="activeQuestions({ groupId: group._id })"><button class="btn btn-primary">Active Questions</button></a>
                 <oc-leave-group group-id="{{group._id}}"></oc-leave-group>
               </div>
             </td>

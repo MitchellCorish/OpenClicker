@@ -13,14 +13,10 @@
     
     vm.groups = [];
     
-    vm.subscribe('groups');
+    vm.subscribe('joinedGroups');
     
     vm.helpers({
-      groups: () => Groups.find({
-        _id: {
-          $in : Meteor.user().groups
-        },
-      }),
+      groups: () => Groups.find({}),
       userID: () => {
         return Meteor.userId();
       },
