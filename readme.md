@@ -6,8 +6,7 @@
   * [Packages](#packages)
   * [Security](#security)
   * [Setup](#setup)
-  * [Known Issues](#known-issues)
-  * [Other Important Notes](#other-important-notes)
+  * [Known Issues and Other Important Notes](#known-issues-and-other-important-notes)
 
 ## Tools
 
@@ -69,13 +68,12 @@ To install and run the application locally (in development mode, i.e. tests will
   * Run the meteor command.
   * Open a browser and go to http://localhost:3000.
   
-## Known Issues
+## Known Issues and Other Important Notes
 
   * Logging in or out does not currently trigger a redirect/reload
   * Timer for opening and closing questions is client side, so reloading or leaving the page will leave the question open and it must be closed manually
   * Some of the CSS appears to conflict, so some things don't look quite like they are intended to
-  * There is currently no way to change the email for the root user from within the application, so emails for password resets, etc. will be sent to the default (non-existent as far as we know) address
-  
-## Other Important Notes
-
+  * There is currently no way to change the email for the root user from within the application, so emails for password resets, etc. will be sent to the default (non-existent as far as we know) address unless it is changed directly in the database
+  * The group summary page is just a mockup at the moment.  The numbers all display as 100 for now.
+  * Roles are not hierarchical.  They are assigned individually.
   * The application hasn't been tested with a large number of concurrent users yet
