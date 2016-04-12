@@ -6,6 +6,8 @@
   * [Packages](#packages)
   * [Security](#security)
   * [Setup](#setup)
+  * [Known Issues](#known-issues)
+  * [Other Important Notes](#other-important-notes)
 
 ## Tools
 
@@ -59,10 +61,21 @@ The following are potential security issues.  They shouldn't be a problem in the
   
 ### Installation:
 
-To install and run the application locally:
+To install and run the application locally (in development mode, i.e. tests will run etc.):
 
   * Install [Meteor](https://www.meteor.com/).
   * Clone this repository.
   * Open a cmd window in the root directory containing /.meteor, /client, /server, etc.
   * Run the meteor command.
   * Open a browser and go to http://localhost:3000.
+  
+## Known Issues
+
+  * Logging in or out does not currently trigger a redirect/reload
+  * Timer for opening and closing questions is client side, so reloading or leaving the page will leave the question open and it must be closed manually
+  * Some of the CSS appears to conflict, so some things don't look quite like they are intended to
+  * There is currently no way to change the email for the root user from within the application, so emails for password resets, etc. will be sent to the default (non-existent as far as we know) address
+  
+## Other Important Notes
+
+  * The application hasn't been tested with a large number of concurrent users yet
