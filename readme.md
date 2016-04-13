@@ -77,3 +77,4 @@ To install and run the application locally (in development mode, i.e. tests will
   * The group summary page is just a mockup at the moment.  The numbers all display as 100 for now.
   * Roles are not hierarchical.  They are assigned individually.
   * The application hasn't been tested with a large number of concurrent users yet
+  * There is no way for either students or professors to see students' answers
