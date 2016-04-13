@@ -1,0 +1,46 @@
+<div class="page-content">
+  <div class="single-head">
+    <h3 class="pull-left"><i class="fa fa-table purple"></i>Owned Groups</h3>  
+    <div class="clearfix"></div>
+  </div>
+
+  <div class="page-form">
+    <a ui-sref="createGroup"><button type="button" class="btn btn-success">Add Group</button></a>
+    <div class="clearfix"></div>
+  </div>
+  
+  <br/>
+
+  <div class="page-tables">
+    <div class="table-responsive">
+      <table cellpadding="0" cellspacing="0" border="0" id="data-table" width="100%" class="dataTable">
+        <thead ng-if="vm.groups.length > 0">
+          <tr>
+            <td>Name</td>
+            <td>Id</td>
+            <td></td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-if="vm.groups.length == 0">
+            <td>You have not created any groups.</td>
+          </tr>
+          <tr ng-repeat="group in vm.groups">
+            <td><a ui-sref="ownedQuizzes({ groupId: group._id })">{{group.name}}</a></td>
+            <td>{{group._id}}</td>
+            <td>
+              <div class="pull-right">
+                <a ui-sref="createQuiz({ groupId: group._id })"><button type="button" class="btn btn-primary">Add a Quiz</button></a>
+                <a ui-sref="updateGroup({ groupId: group._id })"><button type="button" class="btn btn-primary">Update</button></a>
+                <a ui-sref="groupSummary({ groupId: group._id })"><button type="button" class="btn btn-primary">Summary</button></a>
+                
+                <oc-delete-group group-id="{{group._id}}"></oc-delete-group>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</div>

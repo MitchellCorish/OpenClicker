@@ -1,0 +1,28 @@
+<table cellpadding="0" cellspacing="0" border="0" id="data-table" width="100%" class="dataTable">
+  <thead>
+    <tr>
+      <td>Email</td>
+      <td class="text-center">Student</td>
+      <td class="text-center">Professor</td>
+      <td class="text-center">Admin</td>
+      <td></td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a class="text-primary">{{vm.user.emails[0].address}}</a></td>
+      <td class="text-center">
+        <input type="checkbox" ng-model="vm.isStudent"/>
+      </td>
+      <td class="text-center">
+        <input type="checkbox" ng-model="vm.isProfessor"/>
+      </td>
+      <td class="text-center">
+        <input type="checkbox" ng-model="vm.isAdmin"/>
+      </td>
+      <td class="text-center">
+        <button class="btn btn-primary" ng-click="vm.update()">Update</button>
+      </td>
+    </tr>
+  </tbody>
+</table>

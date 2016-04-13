@@ -1,0 +1,26 @@
+<div class="page-tables">
+    <h4>{{vm.group.name}} | Overall Report</h4>
+    <div class="table-responsive">
+        <table class="table table-hover table-bordered" id="summary_table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Student ID</th>
+                    <th>Email</th>
+                    <th>Attendance Rate</th>
+                    <th>Correct Rate</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="user in vm.users">
+                    <td>{{user.username}}</td>
+                    <td>{{user.profile.studentId}}</td>
+                    <td>{{user.emails[0].address}}</td>
+                    <td>100</td>
+                    <td>100</td>
+                    <td><oc-delete-user-from-group user-id="{{user._id}}" group-id="{{vm.groupId}}"> </oc-delete-user-from-group></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,36 @@
+<div class="page-content">
+  <div class="single-head">
+    <h3 class="pull-left"><i class="fa fa-table purple"></i> Quizes in <span class="text-warning">{{vm.group.name}}</span></h3>
+    <div class="clearfix"></div>
+  </div>
+
+  <div class="page-form">
+   <a ui-sref="createQuiz({ groupId: vm.groupId })"><button type="button" class="btn btn-success">Add Quiz</button></a>
+    <div class="clearfix"></div>
+  </div>
+  
+  <br/>
+
+  <div class="page-tables">
+    <div class="table-responsive">
+      <table cellpadding="0" cellspacing="0" border="0" id="data-table" width="100%" class="dataTable">
+        <tbody>
+          <tr ng-if="vm.quizzes.length==0">
+            <td>You have not created any quizes.</td>
+          </tr>
+          <tr ng-repeat="quiz in vm.quizzes  | filter:{groupId:vm.groupId}">
+            <td><a ui-sref="ownedQuestions({ quizId: quiz._id, groupId: vm.groupId })">{{quiz.name}}</a></td>
+            <td>
+              <div class="pull-right">
+                <a ui-sref="createQuestion({ quizId: quiz._id, groupId: vm.groupId })"><button type="button" class="btn btn-primary">Add a Question</button></a>
+                
+                <oc-delete-quiz quiz-id="{{quiz._id}}"></oc-delete-quiz>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</div>
